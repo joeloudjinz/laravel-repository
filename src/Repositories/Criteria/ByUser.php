@@ -1,6 +1,6 @@
 <?php
 
-namespace Angkosal\Repository\Repositories\Criteria;
+namespace Inz\Repository\Repositories\Criteria;
 
 use Angkosal\Repository\Repositories\Contracts\CriterionInterface;
 

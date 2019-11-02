@@ -1,6 +1,6 @@
 <?php
 
-namespace Angkosal\Repository\Repositories\Eloquent;
+namespace Inz\Repository\Repositories\Eloquent;
 
 use Angkosal\Repository\Exceptions\NoModelDefined;
 use Angkosal\Repository\Exceptions\RepositoryException;

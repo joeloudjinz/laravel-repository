@@ -1,6 +1,6 @@
 <?php
 
-namespace Angkosal\Repository\Repositories\Contracts;
+namespace Inz\Repository\Repositories\Contracts;
 
 interface RepositoryInterface
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Angkosal\Repository\Exceptions;
+namespace Inz\Repository\Exceptions;
 
 use Exception;
 

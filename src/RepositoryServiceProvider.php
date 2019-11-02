@@ -1,6 +1,6 @@
 <?php
 
-namespace Angkosal\Repository;
+namespace Inz\Repository;
 
 use Angkosal\Repository\Commands\MakeBindingCommand;
 use Angkosal\Repository\Commands\MakeCriteriaCommand;
