@@ -1,5 +1,5 @@
 {
-    "name": "codeinz/repository",
+    "name": "inz/repository",
     "description": "Repository pattern file generator for laravel projects",
     "authors": [
         {
@@ -7,5 +7,17 @@
             "email": "addoun.abdellah@gmail.com"
         }
     ],
-    "require": {}
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Inz\\Repository\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Inz\\Repository\\RepositoryServiceProvider"
+            ]
+        }
+    }
 }
