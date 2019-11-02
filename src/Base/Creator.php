@@ -5,6 +5,11 @@ namespace Inz\Repository\Base;
 use Exception;
 use Illuminate\Filesystem\Filesystem;
 
+/**
+ * Abstracts the creation process of the files, this way we can reuse the logic to
+ * generate any type of file for any pattern based on the configuration set up
+ * in the config file of the package.
+ */
 abstract class Creator
 {
     /**
@@ -54,6 +59,7 @@ abstract class Creator
     protected $className;
     /**
      * The string that will be concatenated with the class name.
+     * Ex: in case of generating an interface, the value should be 'Interface'
      *
      * @var String
      */
@@ -102,6 +108,7 @@ abstract class Creator
     }
 
     abstract public function create();
+    abstract public function complete();
 
     /**
      * Extracts the content from the stub file when the $stub attribute is defined, else
@@ -112,12 +119,13 @@ abstract class Creator
     public function extractContent(): bool
     {
         if (!is_null($this->stub)) {
-            $this->content = $this->fileManager->get($this->stubs['contract']);
+            $this->content = $this->fileManager->get($this->stub);
             return true;
         }
         $this->content = null;
         return false;
     }
+
     /**
      * Return the value of the content attribute.
      *
@@ -129,9 +137,9 @@ abstract class Creator
     }
 
     /**
-     * Replace all the occurrences of the strings that matches the keys in $replacements
-     * array with the their values in the array, the replacement process will be
-     * performed on $content attribute.
+     * Based on the key value pairs in $replacements array, it will replace all
+     * string occurrences that matches those keys with their values, the
+     * replacement process will be performed on $content attribute.
      *
      * @return bool
      */
@@ -163,7 +171,7 @@ abstract class Creator
     }
 
     /**
-     * Generates a full path value to the directory  in which the generated file will be stored.
+     * Generates a full path value to the directory in which the generated file will be stored.
      *
      * @return String
      */
@@ -253,7 +261,7 @@ abstract class Creator
         if ($this->isNotEmpty($this->subdirectory)) {
             return $this->namespaceConfig . $this->subdirectory . $this->className;
         }
-        
+
         return $this->namespaceConfig . $this->className;
     }
 
