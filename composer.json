@@ -19,5 +19,8 @@
                 "Inz\\Repository\\RepositoryServiceProvider"
             ]
         }
+    },
+    "require-dev": {
+        "orchestra/testbench": "^4.3"
     }
 }
