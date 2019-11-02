@@ -1,0 +1,11 @@
+{
+    "name": "codeinz/repository",
+    "description": "Repository pattern file generator for laravel projects",
+    "authors": [
+        {
+            "name": "abdellah addoun",
+            "email": "addoun.abdellah@gmail.com"
+        }
+    ],
+    "require": {}
+}
