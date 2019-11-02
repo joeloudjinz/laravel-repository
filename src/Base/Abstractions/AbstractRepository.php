@@ -1,13 +1,13 @@
 <?php
 
-namespace Inz\Repository\Repositories\Eloquent;
+namespace Inz\Repository\Base\Abstractions;
 
+use Illuminate\Database\Eloquent\Model;
 use Inz\Repository\Exceptions\NoModelDefined;
 use Inz\Repository\Exceptions\RepositoryException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Inz\Repository\Repositories\Contracts\CriteriaInterface;
 use Inz\Repository\Repositories\Contracts\RepositoryInterface;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 abstract class AbstractRepository implements RepositoryInterface, CriteriaInterface
 {

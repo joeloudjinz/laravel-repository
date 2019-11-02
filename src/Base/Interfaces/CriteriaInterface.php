@@ -1,6 +1,6 @@
 <?php
 
-namespace Inz\Repository\Repositories\Contracts;
+namespace Inz\Repository\Base\Interfaces;
 
 interface CriteriaInterface
 {

@@ -1,24 +1,24 @@
 <?php
 
-namespace Inz\Repository\Repositories\Criteria;
+namespace Inz\Repository\Base\Criterions;
 
 use Inz\Repository\Repositories\Contracts\CriterionInterface;
 
-class EagerLoad implements CriterionInterface
+class ByUser implements CriterionInterface
 {
     /**
-     * Relations to eagerload.
+     * User id.
      *
-     * @var array
+     * @var int
      */
-    protected $relations;
+    protected $userId;
 
     /**
-     * @param array $relations
+     * @param $userId
      */
-    public function __construct(array $relations)
+    public function __construct($userId)
     {
-        $this->relations = $relations;
+        $this->userId = $userId;
     }
 
     /**
@@ -30,6 +30,6 @@ class EagerLoad implements CriterionInterface
      */
     public function apply($entity)
     {
-        return $entity->with($this->relations);
+        return $entity->where('user_id', $this->userId);
     }
 }
