@@ -37,7 +37,7 @@ class RepositoryServiceProvider extends ServiceProvider
     }
 
     /**
-     * Registers repoist commands.
+     * Registers repository commands.
      */
     public function registerCommands()
     {
