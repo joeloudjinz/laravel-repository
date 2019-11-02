@@ -2,10 +2,10 @@
 
 namespace Inz\Repository\Repositories\Eloquent;
 
-use Angkosal\Repository\Exceptions\NoModelDefined;
-use Angkosal\Repository\Exceptions\RepositoryException;
-use Angkosal\Repository\Repositories\Contracts\CriteriaInterface;
-use Angkosal\Repository\Repositories\Contracts\RepositoryInterface;
+use Inz\Repository\Exceptions\NoModelDefined;
+use Inz\Repository\Exceptions\RepositoryException;
+use Inz\Repository\Repositories\Contracts\CriteriaInterface;
+use Inz\Repository\Repositories\Contracts\RepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 

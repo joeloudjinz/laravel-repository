@@ -2,9 +2,9 @@
 
 namespace Inz\Repository;
 
-use Angkosal\Repository\Commands\MakeBindingCommand;
-use Angkosal\Repository\Commands\MakeCriteriaCommand;
-use Angkosal\Repository\Commands\MakeRepositoryCommand;
+use Inz\Repository\Commands\MakeBindingCommand;
+use Inz\Repository\Commands\MakeCriteriaCommand;
+use Inz\Repository\Commands\MakeRepositoryCommand;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider

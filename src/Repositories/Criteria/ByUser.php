@@ -2,7 +2,7 @@
 
 namespace Inz\Repository\Repositories\Criteria;
 
-use Angkosal\Repository\Repositories\Contracts\CriterionInterface;
+use Inz\Repository\Repositories\Contracts\CriterionInterface;
 
 class ByUser implements CriterionInterface
 {

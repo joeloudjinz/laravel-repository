@@ -5,7 +5,7 @@ namespace %namespaces.repositories%;
 use %model%;
 use %contract%;
 
-use Angkosal\Repository\Repositories\Eloquent\AbstractRepository;
+use Inz\Repository\Repositories\Eloquent\AbstractRepository;
 
 class Eloquent%modelName%Repository extends AbstractRepository implements %contractName%
 {
