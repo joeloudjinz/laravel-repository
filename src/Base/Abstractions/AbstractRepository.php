@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Inz\Repository\Exceptions\NoModelDefined;
 use Inz\Repository\Exceptions\RepositoryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Inz\Repository\Repositories\Contracts\CriteriaInterface;
-use Inz\Repository\Repositories\Contracts\RepositoryInterface;
+use Inz\Repository\Base\Interfaces\CriteriaInterface;
+use Inz\Repository\Base\Interfaces\RepositoryInterface;
 
 abstract class AbstractRepository implements RepositoryInterface, CriteriaInterface
 {
