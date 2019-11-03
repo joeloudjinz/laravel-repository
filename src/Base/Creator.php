@@ -101,7 +101,7 @@ abstract class Creator
 
     public function __construct()
     {
-        $this->fileManager = app()->singleton(Filesystem::class);
+        $this->fileManager = app()->make(Filesystem::class);
         $this->appNamespace = app()->getNamespace();
     }
 
@@ -338,6 +338,16 @@ abstract class Creator
     public function getNamespaceConfig()
     {
         return $this->namespaceConfig;
+    }
+
+    public function getFileManager()
+    {
+        return $this->fileManager;
+    }
+
+    public function getAppNamespace()
+    {
+        return $this->appNamespace;
     }
 
     /**
