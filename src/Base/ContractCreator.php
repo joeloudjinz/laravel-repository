@@ -15,11 +15,11 @@ class ContractCreator extends Creator
     {
         parent::__construct();
         $this->modelName = $modelName;
-        $this->stub = _DIR__ . '/Stubs/Contracts/ExampleRepository.stub';
+        $this->stub = __DIR__ . '/Stubs/Contracts/ExampleRepository.stub';
         $this->classNameAddition = 'Interface';
         $this->configType = 'contracts';
-        $this->pathConfig = $this->getConfigPath();
-        $this->namespaceConfig = $this->getConfigNamespace();
+        $this->setPathFromConfig();
+        $this->setNamespaceFromConfig();
         $this->initializeReplacementsParts($modelName);
     }
 
@@ -32,7 +32,7 @@ class ContractCreator extends Creator
     public function initializeReplacementsParts(String $modelName)
     {
         $this->replacements = [
-            '%namespaces.contracts%' => $this->appNamespace . $this->config('namespaces.contracts') . $this->subDir,
+            '%namespaces.contracts%' => $this->appNamespace . $this->namespaceConfig . $this->subdirectory,
             '%modelName%' => $modelName,
         ];
     }

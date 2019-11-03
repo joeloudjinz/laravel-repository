@@ -2,10 +2,10 @@
 
 namespace Inz\Repository;
 
+use Illuminate\Support\ServiceProvider;
 use Inz\Repository\Commands\MakeBindingCommand;
 use Inz\Repository\Commands\MakeCriteriaCommand;
 use Inz\Repository\Commands\MakeRepositoryCommand;
-use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -27,10 +27,10 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/config/repository.php', 'repository');
+        $this->mergeConfigFrom(__DIR__ . '/config/repository.php', 'repository');
 
         $this->publishes([
-            __DIR__.'/config/repository.php' => app()->basePath().'/config/repository.php',
+            __DIR__ . '/config/repository.php' => app()->basePath() . '/config/repository.php',
         ], 'config');
 
         $this->registerCommands();
