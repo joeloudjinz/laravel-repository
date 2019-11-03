@@ -67,16 +67,20 @@ class ContractCreatorTest extends TestCase
     }
 
     // Methods that should be tested
+    
     /**
-     * extractContent(): bool
+     * extractStubContent(): bool
      * @test
      * */
-    // public function test_extract_content_from_stub_file()
-    // {
-    //     $creator = $this->createInstance();
+    public function test_extract_content_from_stub_file()
+    {
+        $creator = $this->createInstance();
+        $result = $creator->extractStubContent();
+        $this->assertIsBool($result);
+        $this->assertTrue($result);
+        $this->assertNotNull($creator->getContent());
+    }
 
-    //     dd($creator->extractContent());
-    // }
     // getContent(): String
     // replaceContentParts(): bool
     // createClassName(modelName): String

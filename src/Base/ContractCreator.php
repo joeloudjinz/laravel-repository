@@ -47,7 +47,7 @@ class ContractCreator extends Creator
     public function create()
     {
         // get the content of the stub file of contract
-        $this->extractContent();
+        $this->extractStubContent();
 
         // replacing each string that match a key in $replacements with the value of that key in $content
         $this->replaceContentParts();

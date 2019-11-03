@@ -114,7 +114,7 @@ abstract class Creator
      *
      * @return bool
      */
-    public function extractContent(): bool
+    public function extractStubContent(): bool
     {
         if (!is_null($this->stub)) {
             $this->content = $this->fileManager->get($this->stub);
