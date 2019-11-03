@@ -4,6 +4,7 @@ namespace Inz\Repository\Base;
 
 use Exception;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Str;
 
 /**
  * Abstracts the creation process of the files, this way we can reuse the logic to
@@ -24,15 +25,6 @@ abstract class Creator
      * @var string
      */
     protected $appNamespace;
-    /**
-     * Stub paths.
-     *
-     * @var array
-     */
-    protected $stubs = [
-        'contract' => __DIR__ . '/Stubs/Contracts/ExampleRepository.stub',
-        'repository' => __DIR__ . '/Stubs/Eloquent/EloquentExampleRepository.stub',
-    ];
     /**
      * Stub path of the file that will be generated.
      *
@@ -272,32 +264,30 @@ abstract class Creator
     }
 
     /**
-     * Return the path value for the current class from the config file.
+     * Return the path value for the current class from the config file,
+     * if the value from the config file is null it will construct path
+     * value based on the pattern Repositories/ConfigTypeValue/
      *
-     * @return String
+     * @return void
      */
-    public function getConfigPath()
+    public function setPathFromConfig()
     {
-        return config('repository.paths.' . $this->configType);
+        $this->pathConfig = config('repository.paths.' . $this->configType) ??
+        'Repositories/' . Str::title($this->configType) . '/';
     }
 
     /**
-     * Return the namespace value for the current class from the config file.
+     * Return the namespace value for the current class from the config file,
+     * if the value from the config file is null it will construct path
+     * value based on the pattern Repositories\ConfigTypeValue
      *
-     * @return String
+     * @return Void
      */
-    public function getConfigNamespace()
+    public function setNamespaceFromConfig()
     {
-        return config('repository.namespaces.' . $this->configType);
-    }
-    /**
-     * Checks if the given array is not null, is a string & not empty
-     *
-     * @return bool
-     */
-    private function isNotEmpty(String $string)
-    {
-        return !is_null($string) && is_string($string) && $string !== '';
+        $this->namespaceConfig =
+        config('repository.namespaces.' . $this->configType) ??
+        'Repositories\\' . Str::title($this->configType);
     }
 
     public function getStub()
@@ -348,5 +338,15 @@ abstract class Creator
     public function getNamespaceConfig()
     {
         return $this->namespaceConfig;
+    }
+
+    /**
+     * Checks if the given array is not null, is a string & not empty
+     *
+     * @return bool
+     */
+    private function isNotEmpty(String $string)
+    {
+        return !is_null($string) && is_string($string) && $string !== '';
     }
 }

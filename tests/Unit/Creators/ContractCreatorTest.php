@@ -7,31 +7,53 @@ use Orchestra\Testbench\TestCase;
 
 class ContractCreatorTest extends TestCase
 {
+    // attributes that should be tested when creating the object
+    // $classNameAddition;
+    // $stub;
+    // $configType;
+    // $pathConfig;
+    // $namespaceConfig;
+
+    // attributes that are not tested
+    // $content;
+    // $className;
+    // $directory;
+    // $replacements = [];
+    // $path;
+    // $subdirectory;
+
+    // attributes that should not be tested
+    // $fileManager;
+    // $appNamespace;
+    // $permissions = 0755;
+
     private $modelName = 'Post';
+
     /**
      * Initial values for the attributes of the ContractCreator class.
      *
      * @var array
      */
     private $attributesData = [
-        'stub' => _DIR__ . '/Stubs/Contracts/ExampleRepository.stub',
         'classNameAddition' => 'Interface',
         'configType' => 'contracts',
         'pathConfig' => 'Repositories/Contracts/',
         'namespaceConfig' => 'Repositories\Contracts',
     ];
-    // private $stub = _DIR__ . '/Stubs/Contracts/ExampleRepository.stub';
-    // private $classNameAddition = 'Interface';
-    // private $configType = 'contracts';
-    // private $pathConfig = 'Repositories/Contracts/';
-    // private $namespaceConfig = 'Repositories\Contracts';
 
     /** @test */
-    public function creator_attributes_initialized()
+    public function contract_creator_attributes_initialized()
     {
         // preparation
         $creator = new ContractCreator($this->modelName);
+
+        // dd($creator->getNamespaceConfig(), $creator->getPathConfig());
+
         // assertions
-        // $this->assertEquals($this->attributesData[], $creator->);
+        $this->assertNotNull($creator->getStub());
+        $this->assertEquals($this->attributesData['classNameAddition'], $creator->getClassNameAddition());
+        $this->assertEquals($this->attributesData['configType'], $creator->getConfigType());
+        $this->assertEquals($this->attributesData['pathConfig'], $creator->getPathConfig());
+        $this->assertEquals($this->attributesData['namespaceConfig'], $creator->getNamespaceConfig());
     }
 }
