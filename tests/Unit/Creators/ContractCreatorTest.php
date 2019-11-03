@@ -82,6 +82,7 @@ class ContractCreatorTest extends TestCase
     }
 
     // getContent(): String
+
     /**
      * replaceContentParts(): bool
      * @test
@@ -101,9 +102,9 @@ class ContractCreatorTest extends TestCase
         // asserting that the parts are replaced
         $this->assertNotEquals($creator->getContent(), $oldContent);
     }
-    // createClassName(modelName): String
+
     /**
-     * extractStubContent(): bool
+     * createClassName(modelName): String
      * @test
      * */
     public function test_create_class_name()
@@ -114,7 +115,21 @@ class ContractCreatorTest extends TestCase
         $this->assertIsString($result);
         $this->assertEquals($this->modelName . $creator->getClassNameSuffix(), $result);
     }
-    // generateDirectoryFullPath(): String
+    
+    /**
+     * generateDirectoryFullPath(): String
+     * @test
+     * */
+    public function test_generate_directory_full_path()
+    {
+        $creator = $this->createInstance();
+        $result = $creator->generateDirectoryFullPath();
+
+        $this->assertNotNull($result);
+        $this->assertIsString($result);
+        $this->assertStringContainsString(app()->basePath(), $result);
+        $this->assertStringContainsString($creator->getPathConfig(), $result);
+    }
     // generateFileFullPath(): String
     // directoryExists(): bool
     // createDirectory(): bool
