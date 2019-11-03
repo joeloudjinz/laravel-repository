@@ -60,7 +60,7 @@ class ContractCreatorTest extends TestCase
 
         // TODO: assert that stub in creator has the correct value
         $this->assertNotNull($creator->getStub());
-        $this->assertEquals($this->attributesData['classNameSuffix'], $creator->getclassNameSuffix());
+        $this->assertEquals($this->attributesData['classNameSuffix'], $creator->getClassNameSuffix());
         $this->assertEquals($this->attributesData['configType'], $creator->getConfigType());
         $this->assertEquals($this->attributesData['pathConfig'], $creator->getPathConfig());
         $this->assertEquals($this->attributesData['namespaceConfig'], $creator->getNamespaceConfig());
@@ -112,7 +112,7 @@ class ContractCreatorTest extends TestCase
         $result = $creator->createClassName($this->modelName);
         $this->assertNotNull($result);
         $this->assertIsString($result);
-        $this->assertEquals($this->modelName . $creator->getclassNameSuffix(), $result);
+        $this->assertEquals($this->modelName . $creator->getClassNameSuffix(), $result);
     }
     // generateDirectoryFullPath(): String
     // generateFileFullPath(): String
