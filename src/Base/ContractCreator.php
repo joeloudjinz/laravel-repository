@@ -4,19 +4,37 @@ namespace Inz\Repository\Base;
 
 class ContractCreator extends Creator
 {
-    public function __construct()
+    /**
+     * Model name inserted by the developer.
+     *
+     * @var String
+     */
+    private $modelName;
+
+    public function __construct(String $modelName)
     {
         parent::__construct();
-
+        $this->modelName = $modelName;
         $this->stub = _DIR__ . '/Stubs/Contracts/ExampleRepository.stub';
-        $this->replacements = [
-            '%namespaces.contracts%' => $this->appNamespace . $this->config('namespaces.contracts') . $this->subDir,
-            '%modelName%' => $this->modelName,
-        ];
         $this->classNameAddition = 'Interface';
         $this->configType = 'contracts';
         $this->pathConfig = $this->getConfigPath();
         $this->namespaceConfig = $this->getConfigNamespace();
+        $this->initializeReplacementsParts($modelName);
+    }
+
+    /**
+     * Initialize the array of the parts that will be replaced.
+     *
+     * @param String $modelName
+     * @return void
+     */
+    public function initializeReplacementsParts(String $modelName)
+    {
+        $this->replacements = [
+            '%namespaces.contracts%' => $this->appNamespace . $this->config('namespaces.contracts') . $this->subDir,
+            '%modelName%' => $modelName,
+        ];
     }
 
     /**
@@ -24,11 +42,9 @@ class ContractCreator extends Creator
      * it will abort the process and return false, else it will create it and return
      * the full name space to it with it's name in an array.
      *
-     * @param String $modelName
-     *
      * @return mixed bool|array
      */
-    public function create(String $modelName)
+    public function create()
     {
         // get the content of the stub file of contract
         $this->extractContent();
@@ -37,7 +53,7 @@ class ContractCreator extends Creator
         $this->replaceContentParts();
 
         // preparing repository contract (interface) class name
-        $this->createClassName($modelName);
+        $this->createClassName($this->modelName);
 
         // preparing the full path to the directory where the contracts will be stored
         $this->generateDirectoryFullPath();

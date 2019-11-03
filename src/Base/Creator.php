@@ -299,4 +299,54 @@ abstract class Creator
     {
         return !is_null($string) && is_string($string) && $string !== '';
     }
+
+    public function getStub()
+    {
+        return $this->stub;
+    }
+
+    public function getReplacements()
+    {
+        return $this->replacements;
+    }
+
+    public function getClassName()
+    {
+        return $this->className;
+    }
+
+    public function getClassNameAddition()
+    {
+        return $this->classNameAddition;
+    }
+
+    public function getDirectory()
+    {
+        return $this->directory;
+    }
+
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    public function getSubdirectory()
+    {
+        return $this->subdirectory;
+    }
+
+    public function getConfigType()
+    {
+        return $this->configType;
+    }
+
+    public function getPathConfig()
+    {
+        return $this->pathConfig;
+    }
+
+    public function getNamespaceConfig()
+    {
+        return $this->namespaceConfig;
+    }
 }
