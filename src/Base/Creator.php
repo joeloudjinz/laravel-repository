@@ -186,7 +186,7 @@ abstract class Creator
             return $this->directory = $base . $this->subdirectory . '\\';
         }
 
-        return $base;
+        return $this->directory = $base;
     }
 
     /**

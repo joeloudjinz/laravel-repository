@@ -115,7 +115,7 @@ class ContractCreatorTest extends TestCase
         $this->assertIsString($result);
         $this->assertEquals($this->modelName . $creator->getClassNameSuffix(), $result);
     }
-    
+
     /**
      * generateDirectoryFullPath(): String
      * @test
@@ -130,7 +130,28 @@ class ContractCreatorTest extends TestCase
         $this->assertStringContainsString(app()->basePath(), $result);
         $this->assertStringContainsString($creator->getPathConfig(), $result);
     }
-    // generateFileFullPath(): String
+    
+    /**
+     * generateFileFullPath(): String
+     * @test
+     * */
+    public function test_generate_file_full_path()
+    {
+        $creator = $this->createInstance();
+        // create directory path & class name first
+        $creator->generateDirectoryFullPath();
+        $result = $creator->createClassName($this->modelName);
+        
+        $result = $creator->generateFileFullPath();
+
+        $this->assertNotNull($result);
+        $this->assertIsString($result);
+        $this->assertStringContainsString(app()->basePath(), $result);
+        $this->assertStringContainsString($creator->getPathConfig(), $result);
+        $this->assertStringContainsString($creator->getDirectory(), $result);
+        $this->assertStringContainsString($creator->getClassName(), $result);
+        $this->assertStringContainsString('.php', $result);
+    }
     // directoryExists(): bool
     // createDirectory(): bool
     // fileExists(): bool
