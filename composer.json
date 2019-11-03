@@ -13,6 +13,11 @@
             "Inz\\Repository\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Inz\\Repository\\Test": "tests/"
+        }
+    },
     "extra": {
         "laravel": {
             "providers": [
