@@ -2,6 +2,7 @@
 
 namespace Inz\Repository\Test\Unit\Creators;
 
+use Illuminate\Filesystem\Filesystem;
 use Inz\Repository\Base\ContractCreator;
 use Orchestra\Testbench\TestCase;
 
@@ -41,13 +42,22 @@ class ContractCreatorTest extends TestCase
         'namespaceConfig' => 'Repositories\Contracts',
     ];
 
+    private function createInstance()
+    {
+        return new ContractCreator($this->modelName);
+    }
+
     /** @test */
     public function contract_creator_attributes_initialized()
     {
-        $creator = new ContractCreator($this->modelName);
+        $creator = $this->createInstance();
 
         // dd($creator->getNamespaceConfig(), $creator->getPathConfig());
-
+        
+        $this->assertNotNull($creator->getFileManager());
+        $this->assertInstanceOf(Filesystem::class, $creator->getFileManager());
+        $this->assertNotNull($creator->getAppNamespace());
+        
         // TODO: assert that stub in creator has the correct value
         $this->assertNotNull($creator->getStub());
         $this->assertEquals($this->attributesData['classNameAddition'], $creator->getClassNameAddition());
@@ -55,4 +65,26 @@ class ContractCreatorTest extends TestCase
         $this->assertEquals($this->attributesData['pathConfig'], $creator->getPathConfig());
         $this->assertEquals($this->attributesData['namespaceConfig'], $creator->getNamespaceConfig());
     }
+
+    // Methods that should be tested
+    /**
+     * extractContent(): bool
+     * @test
+     * */
+    // public function test_extract_content_from_stub_file()
+    // {
+    //     $creator = $this->createInstance();
+
+    //     dd($creator->extractContent());
+    // }
+    // getContent(): String
+    // replaceContentParts(): bool
+    // createClassName(modelName): String
+    // generateDirectoryFullPath(): String
+    // generateFileFullPath(): String
+    // directoryExists(): bool
+    // createDirectory(): bool
+    // fileExists(): bool
+    // createFile(): int
+    // getClassFullNamespace(): String
 }
