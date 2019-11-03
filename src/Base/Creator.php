@@ -89,6 +89,12 @@ abstract class Creator
      */
     protected $subdirectory;
     /**
+     * Config array key of the current class
+     *
+     * @var String
+     */
+    protected $configType;
+    /**
      * The path value from config file related to the current class
      *
      * @var String
@@ -265,6 +271,25 @@ abstract class Creator
         return $this->namespaceConfig . $this->className;
     }
 
+    /**
+     * Return the path value for the current class from the config file.
+     *
+     * @return String
+     */
+    public function getConfigPath()
+    {
+        return config('repository.paths.' . $this->configType);
+    }
+
+    /**
+     * Return the namespace value for the current class from the config file.
+     *
+     * @return String
+     */
+    public function getConfigNamespace()
+    {
+        return config('repository.namespaces.' . $this->configType);
+    }
     /**
      * Checks if the given array is not null, is a string & not empty
      *
