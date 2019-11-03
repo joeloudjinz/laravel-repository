@@ -14,8 +14,9 @@ class ContractCreator extends Creator
             '%modelName%' => $this->modelName,
         ];
         $this->classNameAddition = 'Interface';
-        $this->pathConfig = config('repository.paths.contracts');
-        $this->namespaceConfig = config('repository.namespaces.contracts');
+        $this->configType = 'contracts';
+        $this->pathConfig = $this->getConfigPath();
+        $this->namespaceConfig = $this->getConfigNamespace();
     }
 
     /**
