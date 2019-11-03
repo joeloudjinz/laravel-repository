@@ -55,7 +55,7 @@ abstract class Creator
      *
      * @var String
      */
-    protected $classNameAddition;
+    protected $classNameSuffix;
     /**
      * Full path to the directory in which the generated file will be stored.
      *
@@ -165,7 +165,7 @@ abstract class Creator
      */
     public function createClassName(String $modelName): String
     {
-        return $this->className = $modelName . $this->classNameAddition;
+        return $this->className = $modelName . $this->classNameSuffix;
     }
 
     /**
@@ -305,9 +305,9 @@ abstract class Creator
         return $this->className;
     }
 
-    public function getClassNameAddition()
+    public function getclassNameSuffix()
     {
-        return $this->classNameAddition;
+        return $this->classNameSuffix;
     }
 
     public function getDirectory()
