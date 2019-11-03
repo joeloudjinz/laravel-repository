@@ -44,12 +44,11 @@ class ContractCreatorTest extends TestCase
     /** @test */
     public function contract_creator_attributes_initialized()
     {
-        // preparation
         $creator = new ContractCreator($this->modelName);
 
         // dd($creator->getNamespaceConfig(), $creator->getPathConfig());
 
-        // assertions
+        // TODO: assert that stub in creator has the correct value
         $this->assertNotNull($creator->getStub());
         $this->assertEquals($this->attributesData['classNameAddition'], $creator->getClassNameAddition());
         $this->assertEquals($this->attributesData['configType'], $creator->getConfigType());

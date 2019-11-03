@@ -15,7 +15,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Inz\\Repository\\Test": "tests/"
+            "Inz\\Repository\\Test\\": "tests/"
         }
     },
     "extra": {
