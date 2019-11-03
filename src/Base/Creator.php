@@ -305,7 +305,7 @@ abstract class Creator
         return $this->className;
     }
 
-    public function getclassNameSuffix()
+    public function getClassNameSuffix()
     {
         return $this->classNameSuffix;
     }
