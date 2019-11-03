@@ -180,7 +180,7 @@ abstract class Creator
             return null;
         }
 
-        $base = app()->basePath() . '/app/' . $this->config($this->pathConfig);
+        $base = app()->basePath() . '/app/' . $this->pathConfig;
 
         if ($this->isNotEmpty($this->subdirectory)) {
             return $this->directory = $base . $this->subdirectory . '\\';
@@ -355,7 +355,7 @@ abstract class Creator
      *
      * @return bool
      */
-    private function isNotEmpty(String $string)
+    private function isNotEmpty(?String $string)
     {
         return !is_null($string) && is_string($string) && $string !== '';
     }
