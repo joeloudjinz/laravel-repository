@@ -16,7 +16,7 @@ class ContractCreator extends Creator
         parent::__construct();
         $this->modelName = $modelName;
         $this->stub = __DIR__ . '/Stubs/Contracts/ExampleRepository.stub';
-        $this->classNameAddition = 'Interface';
+        $this->classNameSuffix = 'RepositoryInterface';
         $this->configType = 'contracts';
         $this->setPathFromConfig();
         $this->setNamespaceFromConfig();

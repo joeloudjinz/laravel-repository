@@ -9,7 +9,7 @@ use Orchestra\Testbench\TestCase;
 class ContractCreatorTest extends TestCase
 {
     // attributes that should be tested when creating the object
-    // $classNameAddition;
+    // $classNameSuffix;
     // $stub;
     // $configType;
     // $pathConfig;
@@ -36,7 +36,7 @@ class ContractCreatorTest extends TestCase
      * @var array
      */
     private $attributesData = [
-        'classNameAddition' => 'Interface',
+        'classNameSuffix' => 'RepositoryInterface',
         'configType' => 'contracts',
         'pathConfig' => 'Repositories/Contracts/',
         'namespaceConfig' => 'Repositories\Contracts',
@@ -53,21 +53,21 @@ class ContractCreatorTest extends TestCase
         $creator = $this->createInstance();
 
         // dd($creator->getNamespaceConfig(), $creator->getPathConfig());
-        
+
         $this->assertNotNull($creator->getFileManager());
         $this->assertInstanceOf(Filesystem::class, $creator->getFileManager());
         $this->assertNotNull($creator->getAppNamespace());
-        
+
         // TODO: assert that stub in creator has the correct value
         $this->assertNotNull($creator->getStub());
-        $this->assertEquals($this->attributesData['classNameAddition'], $creator->getClassNameAddition());
+        $this->assertEquals($this->attributesData['classNameSuffix'], $creator->getclassNameSuffix());
         $this->assertEquals($this->attributesData['configType'], $creator->getConfigType());
         $this->assertEquals($this->attributesData['pathConfig'], $creator->getPathConfig());
         $this->assertEquals($this->attributesData['namespaceConfig'], $creator->getNamespaceConfig());
     }
 
     // Methods that should be tested
-    
+
     /**
      * extractStubContent(): bool
      * @test
@@ -82,8 +82,38 @@ class ContractCreatorTest extends TestCase
     }
 
     // getContent(): String
-    // replaceContentParts(): bool
+    /**
+     * replaceContentParts(): bool
+     * @test
+     * */
+    public function test_replace_content_parts()
+    {
+        $creator = $this->createInstance();
+        // extracting the content first
+        $creator->extractStubContent();
+        // saving the old content
+        $oldContent = $creator->getContent();
+        // performing the replacement process second
+        $result = $creator->replaceContentParts();
+        $this->assertIsBool($result);
+        $this->assertTrue($result);
+        $this->assertNotNull($creator->getContent());
+        // asserting that the parts are replaced
+        $this->assertNotEquals($creator->getContent(), $oldContent);
+    }
     // createClassName(modelName): String
+    /**
+     * extractStubContent(): bool
+     * @test
+     * */
+    public function test_create_class_name()
+    {
+        $creator = $this->createInstance();
+        $result = $creator->createClassName($this->modelName);
+        $this->assertNotNull($result);
+        $this->assertIsString($result);
+        $this->assertEquals($this->modelName . $creator->getclassNameSuffix(), $result);
+    }
     // generateDirectoryFullPath(): String
     // generateFileFullPath(): String
     // directoryExists(): bool
