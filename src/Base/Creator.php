@@ -38,6 +38,24 @@ abstract class Creator
      * @var int
      */
     protected $permissions = 0755;
+    /**
+     * Config array key of the current class
+     *
+     * @var String
+     */
+    protected $configType;
+    /**
+     * The path value from config file related to the current class
+     *
+     * @var String
+     */
+    protected $pathConfig;
+    /**
+     * The namespace value from config file related to the current class
+     *
+     * @var String
+     */
+    protected $namespaceConfig;
 
     public function __construct()
     {
@@ -64,16 +82,6 @@ abstract class Creator
         }
         $this->content = null;
         return false;
-    }
-
-    /**
-     * Return the value of the content attribute.
-     *
-     * @return String
-     */
-    public function getContent(): String
-    {
-        return $this->content;
     }
 
     /**
@@ -120,7 +128,7 @@ abstract class Creator
     public function generateDirectoryFullPath(String $basePath, String $directoryName): String
     {
         // if (!$this->isNotEmpty($this->pathConfig)) {
-            // TODO: throw PathConfigValueIsMissing an exception instead of returning null
+        // TODO: throw PathConfigValueIsMissing an exception instead of returning null
         //     return null;
         // }
 
@@ -218,7 +226,7 @@ abstract class Creator
     public function setPathFromConfig()
     {
         $this->pathConfig = config('repository.paths.' . $this->configType) ??
-        'Repositories'. DIRECTORY_SEPARATOR . Str::title($this->configType) . DIRECTORY_SEPARATOR;
+        'Repositories' . DIRECTORY_SEPARATOR . Str::title($this->configType) . DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -233,6 +241,16 @@ abstract class Creator
         $this->namespaceConfig =
         config('repository.namespaces.' . $this->configType) ??
         'Repositories\\' . Str::title($this->configType);
+    }
+
+    /**
+     * Return the value of the content attribute.
+     *
+     * @return String
+     */
+    public function getContent(): String
+    {
+        return $this->content;
     }
 
     public function getFileManager()
