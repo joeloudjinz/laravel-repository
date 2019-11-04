@@ -2,6 +2,8 @@
 
 namespace Inz\Repository\Base;
 
+use Illuminate\Support\Arr;
+
 class ContractCreator extends Creator
 {
     /**
@@ -28,7 +30,9 @@ class ContractCreator extends Creator
         parent::__construct();
         $values = $this->extractInputValues($input);
         $this->modelName = $values['modelName'];
-        $this->subdirectory = $values['subdirectory'];
+        if (Arr::has($values, 'subdirectory')) {
+            $this->subdirectory = $values['subdirectory'];
+        }
         $this->stub = __DIR__ . '/Stubs/Contracts/ExampleRepository.stub';
         $this->classNameSuffix = 'RepositoryInterface';
         $this->configType = 'contracts';
