@@ -166,14 +166,14 @@ abstract class Creator
      *
      * @return String
      */
-    public function generateFileFullPath(String $directoryPath): String
+    public function generateFileFullPath(String $directoryPath, String $fileName): String
     {
-        if (!$this->isNotEmpty($this->directory)) {
-            // TODO: throw DirectoryValueIsMissing an exception instead of returning null
+        if (!$this->isNotEmpty($directoryPath) && !$this->isNotEmpty($fileName)) {
+            // TODO: throw BadFilNameException an exception instead of returning null
             return null;
         }
 
-        return $directoryPath . DIRECTORY_SEPARATOR . $this->className . '.php';
+        return $directoryPath . DIRECTORY_SEPARATOR . $fileName . '.php';
     }
 
     /**

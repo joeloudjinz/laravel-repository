@@ -28,7 +28,7 @@ class ContractCreatorTest extends TestCase
     // $fileManager;
     // $appNamespace;
     // $permissions = 0755;
-
+    private $fakeStorage;
     private $modelName = 'Post';
 
     /**
@@ -46,9 +46,10 @@ class ContractCreatorTest extends TestCase
     private function prepareFakeStorage($name = 'app')
     {
         Storage::fake($name);
+        $this->fakeStorage = Storage::disk($name);
         return storage_path('framework/testing/disks/' . $name);
     }
-    
+
     private function createInstance()
     {
         return new ContractCreator($this->modelName);
@@ -131,7 +132,7 @@ class ContractCreatorTest extends TestCase
     public function test_generate_directory_full_path()
     {
         $path = $this->prepareFakeStorage();
-        
+
         $creator = $this->createInstance();
         $result = $creator->generateDirectoryFullPath($path, $creator->getPathConfig());
 
@@ -146,23 +147,21 @@ class ContractCreatorTest extends TestCase
      * generateFileFullPath(): String
      * @test
      * */
-    // public function test_generate_file_full_path()
-    // {
-    //     $creator = $this->createInstance();
-    //     // create directory path & class name first
-    //     $creator->generateDirectoryFullPath();
-    //     $creator->createClassName($this->modelName);
+    public function test_generate_file_full_path()
+    {
+        $path = $this->prepareFakeStorage();
+        $creator = $this->createInstance();
+        $fileName = $this->modelName . $this->attributesData['classNameSuffix'];
 
-    //     $result = $creator->generateFileFullPath();
+        $result = $creator->generateFileFullPath($path, $fileName);
 
-    //     $this->assertNotNull($result);
-    //     $this->assertIsString($result);
-    //     $this->assertStringContainsString(app()->basePath(), $result);
-    //     $this->assertStringContainsString($creator->getPathConfig(), $result);
-    //     $this->assertStringContainsString($creator->getDirectory(), $result);
-    //     $this->assertStringContainsString($creator->getClassName(), $result);
-    //     $this->assertStringContainsString('.php', $result);
-    // }
+        $this->assertNotNull($result);
+        $this->assertIsString($result);
+        $this->assertStringContainsString($path, $result);
+        $this->assertStringContainsString($fileName, $result);
+        $this->assertStringContainsString(DIRECTORY_SEPARATOR, $result);
+        $this->assertStringContainsString('.php', $result);
+    }
 
     /**
      * createDirectory(): bool
