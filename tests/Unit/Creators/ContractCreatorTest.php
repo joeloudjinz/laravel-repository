@@ -2,9 +2,9 @@
 
 namespace Inz\Repository\Test\Unit\Creators;
 
+use Orchestra\Testbench\TestCase;
 use Illuminate\Filesystem\Filesystem;
 use Inz\Repository\Base\ContractCreator;
-use Orchestra\Testbench\TestCase;
 
 class ContractCreatorTest extends TestCase
 {
@@ -130,7 +130,7 @@ class ContractCreatorTest extends TestCase
         $this->assertStringContainsString(app()->basePath(), $result);
         $this->assertStringContainsString($creator->getPathConfig(), $result);
     }
-    
+
     /**
      * generateFileFullPath(): String
      * @test
@@ -140,8 +140,8 @@ class ContractCreatorTest extends TestCase
         $creator = $this->createInstance();
         // create directory path & class name first
         $creator->generateDirectoryFullPath();
-        $result = $creator->createClassName($this->modelName);
-        
+        $creator->createClassName($this->modelName);
+
         $result = $creator->generateFileFullPath();
 
         $this->assertNotNull($result);
@@ -152,9 +152,43 @@ class ContractCreatorTest extends TestCase
         $this->assertStringContainsString($creator->getClassName(), $result);
         $this->assertStringContainsString('.php', $result);
     }
-    // directoryExists(): bool
-    // createDirectory(): bool
-    // fileExists(): bool
+
+    /**
+     * createDirectory(): bool
+     * @test
+     * */
+    // public function test_create_directory()
+    // {
+    //     $creator = $this->createInstance();
+    //     $creator->generateDirectoryFullPath();
+
+    //     $result = $creator->createDirectory();
+
+    //     $this->assertNotNull($result);
+    //     $this->assertIsBool($result);
+    //     $this->assertTrue($result);
+    // }
+
     // createFile(): int
+    /**
+     * createFile(): int
+     * @test
+     * */
+    // public function test_create_file()
+    // {
+    //     $creator = $this->createInstance();
+    //     $creator->generateDirectoryFullPath();
+    //     $creator->generateFileFullPath();
+    //     $creator->createDirectory();
+        
+    //     $result = $creator->createFile();
+    //     dd($result);
+    //     $this->assertNotNull($result);
+    //     $this->assertIsInt($result);
+    //     // $this->assertTrue($result);
+    // }
     // getClassFullNamespace(): String
+
+    // fileExists(): bool
+    // directoryExists(): bool
 }
