@@ -56,6 +56,19 @@ abstract class Creator
      * @var String
      */
     protected $namespaceConfig;
+    /**
+     * The string that will be concatenated with the class name.
+     * Ex: in case of generating an interface, the value should be 'Interface'
+     *
+     * @var String
+     */
+    protected $classNameSuffix;
+    /**
+     * name of the class that will be generated.
+     *
+     * @var String
+     */
+    protected $className;
 
     public function __construct()
     {
@@ -261,6 +274,16 @@ abstract class Creator
     public function getAppNamespace()
     {
         return $this->appNamespace;
+    }
+
+    public function getClassNameSuffix()
+    {
+        return $this->classNameSuffix;
+    }
+
+    public function getClassName()
+    {
+        return $this->className;
     }
 
     /**
