@@ -13,7 +13,7 @@ class ContractCreator extends Creator
     /**
      * Stub path of the file that will be generated.
      *
-     * @var array
+     * @var String
      */
     private $stub;
     /**
@@ -53,24 +53,7 @@ class ContractCreator extends Creator
      * @var String
      */
     private $subdirectory;
-    /**
-     * Config array key of the current class
-     *
-     * @var String
-     */
-    private $configType;
-    /**
-     * The path value from config file related to the current class
-     *
-     * @var String
-     */
-    private $pathConfig;
-    /**
-     * The namespace value from config file related to the current class
-     *
-     * @var String
-     */
-    private $namespaceConfig;
+
     public function __construct(String $modelName)
     {
         parent::__construct();
