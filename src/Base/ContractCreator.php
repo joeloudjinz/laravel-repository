@@ -23,12 +23,6 @@ class ContractCreator extends Creator
      */
     private $replacements = [];
     /**
-     * Full path to the directory in which the generated file will be stored.
-     *
-     * @var String
-     */
-    private $directory;
-    /**
      * Full path to the file that will be generated.
      *
      * @var String
@@ -151,11 +145,6 @@ class ContractCreator extends Creator
     public function getReplacements()
     {
         return $this->replacements;
-    }
-
-    public function getDirectory()
-    {
-        return $this->directory;
     }
 
     public function getPath()

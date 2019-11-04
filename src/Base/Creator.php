@@ -69,6 +69,12 @@ abstract class Creator
      * @var String
      */
     protected $className;
+    /**
+     * Full path to the directory in which the generated file will be stored.
+     *
+     * @var String
+     */
+    private $directory;
 
     public function __construct()
     {
@@ -138,7 +144,7 @@ abstract class Creator
      *
      * @return String
      */
-    public function generateDirectoryFullPath(String $basePath, String $directoryName): String
+    public function generateDirectoryFullPath(String $basePath, String $directoryName, ?String $subOne = null): String
     {
         // if (!$this->isNotEmpty($this->pathConfig)) {
         // TODO: throw PathConfigValueIsMissing an exception instead of returning null
@@ -148,8 +154,8 @@ abstract class Creator
         // $base = app()->basePath() . '/app/' . $this->pathConfig;
         $base = $basePath . DIRECTORY_SEPARATOR . $directoryName . DIRECTORY_SEPARATOR;
 
-        if ($this->isNotEmpty($this->subdirectory)) {
-            return $this->directory = $base . $this->subdirectory . DIRECTORY_SEPARATOR;
+        if ($this->isNotEmpty($subOne)) {
+            return $this->directory = $base . $subOne . DIRECTORY_SEPARATOR;
         }
 
         return $this->directory = $base;
@@ -239,7 +245,7 @@ abstract class Creator
     public function setPathFromConfig()
     {
         $this->pathConfig = config('repository.paths.' . $this->configType) ??
-        'Repositories' . DIRECTORY_SEPARATOR . Str::title($this->configType) . DIRECTORY_SEPARATOR;
+        'Repositories' . DIRECTORY_SEPARATOR . Str::title($this->configType);
     }
 
     /**
@@ -286,6 +292,10 @@ abstract class Creator
         return $this->className;
     }
 
+    public function getDirectory()
+    {
+        return $this->directory;
+    }
     /**
      * Checks if the given array is not null, is a string & not empty
      *
