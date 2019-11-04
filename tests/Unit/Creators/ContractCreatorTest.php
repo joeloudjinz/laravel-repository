@@ -2,10 +2,10 @@
 
 namespace Inz\Repository\Test\Unit\Creators;
 
-use Orchestra\Testbench\TestCase;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
 use Inz\Repository\Base\ContractCreator;
+use Orchestra\Testbench\TestCase;
 
 class ContractCreatorTest extends TestCase
 {
@@ -167,17 +167,18 @@ class ContractCreatorTest extends TestCase
      * createDirectory(): bool
      * @test
      * */
-    // public function test_create_directory()
-    // {
-    //     $creator = $this->createInstance();
-    //     $creator->generateDirectoryFullPath();
+    public function test_create_directory()
+    {
+        $creator = $this->createInstance();
+        $fullPath = $this->prepareFakeStorage() . DIRECTORY_SEPARATOR . 'TestRepository';
+        
+        $result = $creator->createDirectory($fullPath);
 
-    //     $result = $creator->createDirectory();
-
-    //     $this->assertNotNull($result);
-    //     $this->assertIsBool($result);
-    //     $this->assertTrue($result);
-    // }
+        $this->assertNotNull($result);
+        $this->assertIsBool($result);
+        $this->assertTrue($result);
+        $this->fakeStorage->assertExists('TestRepository');
+    }
 
     // createFile(): int
     /**
