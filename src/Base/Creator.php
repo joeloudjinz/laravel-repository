@@ -25,12 +25,7 @@ abstract class Creator
      * @var string
      */
     protected $appNamespace;
-    /**
-     * Stub path of the file that will be generated.
-     *
-     * @var array
-     */
-    protected $stub;
+
     /**
      * The content of the stub file that will be manipulated.
      *
@@ -38,66 +33,11 @@ abstract class Creator
      */
     protected $content;
     /**
-     * Key value pairs array of parts that will be replaced in the content.
-     *
-     * @var array
-     */
-    protected $replacements = [];
-    /**
-     * name of the class that will be generated.
-     *
-     * @var String
-     */
-    protected $className;
-    /**
-     * The string that will be concatenated with the class name.
-     * Ex: in case of generating an interface, the value should be 'Interface'
-     *
-     * @var String
-     */
-    protected $classNameSuffix;
-    /**
-     * Full path to the directory in which the generated file will be stored.
-     *
-     * @var String
-     */
-    protected $directory;
-    /**
-     * Full path to the file that will be generated.
-     *
-     * @var String
-     */
-    protected $path;
-    /**
      * Permissions for directory, used during creation of the directory.
      *
      * @var int
      */
     protected $permissions = 0755;
-    /**
-     * The subdirectory specified by the developer.
-     *
-     * @var String
-     */
-    protected $subdirectory;
-    /**
-     * Config array key of the current class
-     *
-     * @var String
-     */
-    protected $configType;
-    /**
-     * The path value from config file related to the current class
-     *
-     * @var String
-     */
-    protected $pathConfig;
-    /**
-     * The namespace value from config file related to the current class
-     *
-     * @var String
-     */
-    protected $namespaceConfig;
 
     public function __construct()
     {
@@ -112,12 +52,14 @@ abstract class Creator
      * Extracts the content from the stub file when the $stub attribute is defined, else
      * it will initialize it to null.
      *
+     * @param String $stubPath
+     *
      * @return bool
      */
-    public function extractStubContent(): bool
+    public function extractStubContent(String $stubPath): bool
     {
-        if (!is_null($this->stub)) {
-            $this->content = $this->fileManager->get($this->stub);
+        if (!is_null($stubPath)) {
+            $this->content = $this->fileManager->get($stubPath);
             return true;
         }
         $this->content = null;
@@ -139,14 +81,16 @@ abstract class Creator
      * string occurrences that matches those keys with their values, the
      * replacement process will be performed on $content attribute.
      *
+     * @param array $replacements
+     *
      * @return bool
      */
-    public function replaceContentParts(): bool
+    public function replaceContentParts(array $replacements): bool
     {
         try {
             $this->content = str_replace(
-                array_keys($this->replacements),
-                array_values($this->replacements),
+                array_keys($replacements),
+                array_values($replacements),
                 $this->content
             );
             return true;
@@ -173,17 +117,18 @@ abstract class Creator
      *
      * @return String
      */
-    public function generateDirectoryFullPath(): String
+    public function generateDirectoryFullPath(String $basePath, String $directoryName): String
     {
-        if (!$this->isNotEmpty($this->pathConfig)) {
+        // if (!$this->isNotEmpty($this->pathConfig)) {
             // TODO: throw PathConfigValueIsMissing an exception instead of returning null
-            return null;
-        }
+        //     return null;
+        // }
 
-        $base = app()->basePath() . '/app/' . $this->pathConfig;
+        // $base = app()->basePath() . '/app/' . $this->pathConfig;
+        $base = $basePath . DIRECTORY_SEPARATOR . $directoryName . DIRECTORY_SEPARATOR;
 
         if ($this->isNotEmpty($this->subdirectory)) {
-            return $this->directory = $base . $this->subdirectory . '\\';
+            return $this->directory = $base . $this->subdirectory . DIRECTORY_SEPARATOR;
         }
 
         return $this->directory = $base;
@@ -194,14 +139,14 @@ abstract class Creator
      *
      * @return String
      */
-    public function generateFileFullPath(): String
+    public function generateFileFullPath(String $directoryPath): String
     {
         if (!$this->isNotEmpty($this->directory)) {
             // TODO: throw DirectoryValueIsMissing an exception instead of returning null
             return null;
         }
 
-        return $this->directory . $this->className . '.php';
+        return $directoryPath . DIRECTORY_SEPARATOR . $this->className . '.php';
     }
 
     /**
@@ -209,9 +154,9 @@ abstract class Creator
      *
      * @return bool
      */
-    public function directoryExists(): bool
+    public function directoryExists(String $path): bool
     {
-        return $this->fileManager->exists($this->directory);
+        return $this->fileManager->exists($path);
     }
 
     /**
@@ -229,9 +174,9 @@ abstract class Creator
      *
      * @return bool
      */
-    public function fileExists(): bool
+    public function fileExists(String $path): bool
     {
-        return $this->fileManager->exists($this->path);
+        return $this->fileManager->exists($path);
     }
 
     /**
@@ -239,9 +184,9 @@ abstract class Creator
      *
      * @return int
      */
-    public function createFile(): int
+    public function createFile(String $path, String $content): int
     {
-        return $this->fileManager->put($this->path, $this->content);
+        return $this->fileManager->put($path, $content);
     }
 
     /**
@@ -273,7 +218,7 @@ abstract class Creator
     public function setPathFromConfig()
     {
         $this->pathConfig = config('repository.paths.' . $this->configType) ??
-        'Repositories/' . Str::title($this->configType) . '/';
+        'Repositories'. DIRECTORY_SEPARATOR . Str::title($this->configType) . DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -288,56 +233,6 @@ abstract class Creator
         $this->namespaceConfig =
         config('repository.namespaces.' . $this->configType) ??
         'Repositories\\' . Str::title($this->configType);
-    }
-
-    public function getStub()
-    {
-        return $this->stub;
-    }
-
-    public function getReplacements()
-    {
-        return $this->replacements;
-    }
-
-    public function getClassName()
-    {
-        return $this->className;
-    }
-
-    public function getClassNameSuffix()
-    {
-        return $this->classNameSuffix;
-    }
-
-    public function getDirectory()
-    {
-        return $this->directory;
-    }
-
-    public function getPath()
-    {
-        return $this->path;
-    }
-
-    public function getSubdirectory()
-    {
-        return $this->subdirectory;
-    }
-
-    public function getConfigType()
-    {
-        return $this->configType;
-    }
-
-    public function getPathConfig()
-    {
-        return $this->pathConfig;
-    }
-
-    public function getNamespaceConfig()
-    {
-        return $this->namespaceConfig;
     }
 
     public function getFileManager()
