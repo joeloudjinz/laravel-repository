@@ -158,7 +158,7 @@ abstract class Creator
      */
     public function generateDirectoryFullPath(String $basePath, String $directoryName): String
     {
-        $base = $basePath . DIRECTORY_SEPARATOR . $directoryName . DIRECTORY_SEPARATOR;
+        $base = $basePath . $directoryName . DIRECTORY_SEPARATOR;
 
         if ($this->isNotEmpty($this->subdirectory)) {
             return $this->directory = $base . $this->subdirectory . DIRECTORY_SEPARATOR;
@@ -179,7 +179,7 @@ abstract class Creator
             return null;
         }
 
-        return app()->basePath() . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . $this->pathConfig;
+        return app()->basePath() . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -194,7 +194,7 @@ abstract class Creator
             return null;
         }
 
-        return $this->path = $directoryPath . DIRECTORY_SEPARATOR . $fileName . '.php';
+        return $this->path = $directoryPath . $fileName . '.php';
     }
 
     /**

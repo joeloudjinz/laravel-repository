@@ -37,9 +37,9 @@ class ContractCreatorTest extends TestCase
         return storage_path('framework/testing/disks/' . $name);
     }
 
-    private function createInstance()
+    private function createInstance($modelName = null)
     {
-        return new ContractCreator($this->modelName);
+        return new ContractCreator($modelName ?? $this->modelName);
     }
 
     /** @test */
@@ -195,5 +195,18 @@ class ContractCreatorTest extends TestCase
         $this->assertStringContainsString($creator->baseNamespace(), $result);
         $this->assertStringContainsString($creator->getNamespaceConfig(), $result);
         $this->assertStringContainsString($this->modelName, $result);
+    }
+
+    /**
+     * create()
+     * @test
+     * */
+    public function test_create_contract_file()
+    {
+        $creator = $this->createInstance();
+
+        $result = $creator->create();
+
+        dd($result);
     }
 }
