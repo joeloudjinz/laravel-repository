@@ -87,21 +87,22 @@ class ContractCreatorTest extends TestCase
      * replaceContentParts(): bool
      * @test
      * */
-    // public function test_replace_content_parts()
-    // {
-    //     $creator = $this->createInstance();
-    //     // extracting the content first
-    //     $creator->extractStubContent();
-    //     // saving the old content
-    //     $oldContent = $creator->getContent();
-    //     // performing the replacement process second
-    //     $result = $creator->replaceContentParts();
-    //     $this->assertIsBool($result);
-    //     $this->assertTrue($result);
-    //     $this->assertNotNull($creator->getContent());
-    //     // asserting that the parts are replaced
-    //     $this->assertNotEquals($creator->getContent(), $oldContent);
-    // }
+    public function test_replace_content_parts()
+    {
+        $creator = $this->createInstance();
+        // extracting the content first
+        $creator->extractStubContent($creator->getStub());
+        // saving the old content
+        $oldContent = $creator->getContent();
+        // performing the replacement process second
+        $result = $creator->replaceContentParts($creator->getReplacements());
+        
+        $this->assertIsBool($result);
+        $this->assertTrue($result);
+        $this->assertNotNull($creator->getContent());
+        // asserting that the parts are replaced
+        $this->assertNotEquals($creator->getContent(), $oldContent);
+    }
 
     /**
      * createClassName(modelName): String
