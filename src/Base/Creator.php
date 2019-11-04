@@ -3,8 +3,8 @@
 namespace Inz\Repository\Base;
 
 use Exception;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
+use Illuminate\Filesystem\Filesystem;
 
 /**
  * Abstracts the creation process of the files, this way we can reuse the logic to
@@ -19,6 +19,12 @@ abstract class Creator
      * @var Illuminate\Filesystem\Filesystem
      */
     protected $fileManager;
+    /**
+     * Application's root path.
+     *
+     * @var string
+     */
+    protected $appBasePath;
     /**
      * Application base namespace.
      *
@@ -88,10 +94,11 @@ abstract class Creator
      */
     protected $path;
 
-    public function __construct()
+    public function __construct($appBasePath)
     {
         $this->fileManager = app()->make(Filesystem::class);
         $this->appNamespace = app()->getNamespace();
+        $this->appBasePath = $appBasePath ?? app()->basePath();
     }
 
     abstract public function create();
@@ -179,7 +186,14 @@ abstract class Creator
             return null;
         }
 
-        return app()->basePath() . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR;
+        $base = $this->appBasePath . DIRECTORY_SEPARATOR;
+        // if the base path points directly to the application's root directory, append
+        // 'app' word to the directory base path so it points to the app folder.
+        if (app()->basePath() === $this->appBasePath) {
+            return $base . 'app' . DIRECTORY_SEPARATOR;
+        }
+
+        return $base;
     }
 
     /**
@@ -309,7 +323,7 @@ abstract class Creator
         $exploded = explode('/', $input);
         if (count($exploded) == 1) {
             return [
-                'modelName' => $exploded[0]
+                'modelName' => $exploded[0],
             ];
         }
         return [
