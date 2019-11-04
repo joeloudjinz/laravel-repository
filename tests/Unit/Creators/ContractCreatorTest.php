@@ -161,6 +161,9 @@ class ContractCreatorTest extends TestCase
         $this->assertStringContainsString($fileName, $result);
         $this->assertStringContainsString(DIRECTORY_SEPARATOR, $result);
         $this->assertStringContainsString('.php', $result);
+
+        $this->assertNotNull($creator->getFileFullPath());
+        $this->assertIsString($creator->getFileFullPath());
     }
 
     /**

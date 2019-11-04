@@ -74,7 +74,19 @@ abstract class Creator
      *
      * @var String
      */
-    private $directory;
+    protected $directory;
+    /**
+     * The subdirectory specified by the developer.
+     *
+     * @var String
+     */
+    protected $subdirectory;
+    /**
+     * Full path to the file that will be generated.
+     *
+     * @var String
+     */
+    protected $path;
 
     public function __construct()
     {
@@ -144,7 +156,7 @@ abstract class Creator
      *
      * @return String
      */
-    public function generateDirectoryFullPath(String $basePath, String $directoryName, ?String $subOne = null): String
+    public function generateDirectoryFullPath(String $basePath, String $directoryName): String
     {
         // if (!$this->isNotEmpty($this->pathConfig)) {
         // TODO: throw PathConfigValueIsMissing an exception instead of returning null
@@ -154,8 +166,8 @@ abstract class Creator
         // $base = app()->basePath() . '/app/' . $this->pathConfig;
         $base = $basePath . DIRECTORY_SEPARATOR . $directoryName . DIRECTORY_SEPARATOR;
 
-        if ($this->isNotEmpty($subOne)) {
-            return $this->directory = $base . $subOne . DIRECTORY_SEPARATOR;
+        if ($this->isNotEmpty($this->subdirectory)) {
+            return $this->directory = $base . $this->subdirectory . DIRECTORY_SEPARATOR;
         }
 
         return $this->directory = $base;
@@ -173,7 +185,7 @@ abstract class Creator
             return null;
         }
 
-        return $directoryPath . DIRECTORY_SEPARATOR . $fileName . '.php';
+        return $this->path = $directoryPath . DIRECTORY_SEPARATOR . $fileName . '.php';
     }
 
     /**
@@ -300,6 +312,17 @@ abstract class Creator
     {
         return $this->directory;
     }
+
+    public function getSubdirectory()
+    {
+        return $this->subdirectory;
+    }
+
+    public function getFileFullPath()
+    {
+        return $this->path;
+    }
+
     /**
      * Checks if the given array is not null, is a string & not empty
      *
