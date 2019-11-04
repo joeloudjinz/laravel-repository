@@ -298,7 +298,25 @@ abstract class Creator
         config('repository.namespaces.' . $this->configType) ??
         'Repositories\\' . Str::title($this->configType);
     }
-
+    /**
+     * Extracting the model name & subdirectory values, which is **only** the
+     * first element, from exploding input value.
+     *
+     * @return array
+     */
+    public function extractInputValues(String $input): array
+    {
+        $exploded = explode('/', $input);
+        if (count($exploded) == 1) {
+            return [
+                'modelName' => $exploded[0]
+            ];
+        }
+        return [
+            'modelName' => $exploded[0],
+            'subdirectory' => $this->subdirectory = $exploded[1],
+        ];
+    }
     /**
      * Return the value of the content attribute.
      *

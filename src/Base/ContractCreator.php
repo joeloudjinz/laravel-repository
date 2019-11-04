@@ -23,16 +23,18 @@ class ContractCreator extends Creator
      */
     private $replacements = [];
 
-    public function __construct(String $modelName)
+    public function __construct(String $input)
     {
         parent::__construct();
-        $this->modelName = $modelName;
+        $values = $this->extractInputValues($input);
+        $this->modelName = $values['modelName'];
+        $this->subdirectory = $values['subdirectory'];
         $this->stub = __DIR__ . '/Stubs/Contracts/ExampleRepository.stub';
         $this->classNameSuffix = 'RepositoryInterface';
         $this->configType = 'contracts';
         $this->setPathFromConfig();
         $this->setNamespaceFromConfig();
-        $this->initializeReplacementsParts($modelName);
+        $this->initializeReplacementsParts($this->modelName);
     }
 
     /**
