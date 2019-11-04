@@ -58,41 +58,41 @@ class ContractCreator extends Creator
      */
     public function create()
     {
-        // // get the content of the stub file of contract
-        // $this->extractStubContent();
+        // get the content of the stub file of contract
+        $this->extractStubContent($this->stub);
 
-        // // replacing each string that match a key in $replacements with the value of that key in $content
-        // $this->replaceContentParts();
+        // replacing each string that match a key in $replacements with the value of that key in $content
+        $this->replaceContentParts($this->replacements);
 
-        // // preparing repository contract (interface) class name
-        // $this->createClassName($this->modelName);
+        // preparing repository contract (interface) class name
+        $this->createClassName($this->modelName);
 
-        // // preparing the full path to the directory where the contracts will be stored
-        // $this->generateDirectoryFullPath();
+        // preparing the full path to the directory where the contracts will be stored
+        $this->generateDirectoryFullPath($this->directoryBasePath(), $this->pathConfig);
 
-        // // preparing the full path to the repository contract file
-        // $this->generateFileFullPath();
+        // checking that the directory of repository contracts doesn't exist
+        if (!$this->directoryExists($this->directory)) {
+            // if so, create the directory
+            $this->createDirectory($this->directory);
+        }
 
-        // // checking that the directory of repository contracts doesn't exist
-        // if (!$this->directoryExists()) {
-        //     // if so, create the directory
-        //     $this->createDirectory();
-        // }
+        // preparing the full path to the repository contract file
+        $this->generateFileFullPath($this->directory, $this->className);
 
-        // // checking that the repository contract file does not exist in the directory
-        // if (!$this->fileExists()) {
-        //     // creating th file
-        //     $result = $this->createFile();
-        //     // if the file wasn't created
-        //     if (is_bool($result)) {
-        //         return false;
-        //     }
-        //     // else, return response
-        //     return $this->getReturnedData();
-        // }
+        // checking that the repository contract file does not exist in the directory
+        if (!$this->fileExists($this->path)) {
+            // creating th file
+            $result = $this->createFile($this->path, $this->content);
+            // if the file wasn't created
+            if (is_bool($result)) {
+                return false;
+            }
+            // else, return response
+            return $this->getReturnedData();
+        }
 
-        // // if the file does exist, don't create the file & return false
-        // return false;
+        // if the file does exist, don't create the file & return false
+        return false;
     }
 
     /**
@@ -102,14 +102,14 @@ class ContractCreator extends Creator
      */
     public function complete()
     {
-        // // overriding the existing file
-        // $result = $this->createFile();
-        // // if the file wasn't created
-        // if (is_bool($result)) {
-        //     return false;
-        // }
-        // // else, return response
-        // return $this->getReturnedData();
+        // overriding the existing file
+        $result = $this->createFile($this->path, $this->content);
+        // if the file wasn't created
+        if (is_bool($result)) {
+            return false;
+        }
+        // else, return response
+        return $this->getReturnedData();
     }
 
     /**
@@ -120,7 +120,7 @@ class ContractCreator extends Creator
     private function getReturnedData(): array
     {
         return [
-            // $this->getClassFullNamespace(),
+            $this->getClassFullNamespace($this->baseNamespace(), $this->className),
             $this->className,
         ];
     }
