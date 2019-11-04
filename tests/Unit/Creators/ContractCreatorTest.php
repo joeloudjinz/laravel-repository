@@ -185,19 +185,19 @@ class ContractCreatorTest extends TestCase
      * createFile(): int
      * @test
      * */
-    // public function test_create_file()
-    // {
-    //     $creator = $this->createInstance();
-    //     $creator->generateDirectoryFullPath();
-    //     $creator->generateFileFullPath();
-    //     $creator->createDirectory();
+    public function test_create_file()
+    {
+        $path = $this->prepareFakeStorage();
+        $creator = $this->createInstance();
+        $fullPath = $path . DIRECTORY_SEPARATOR . 'TestRepository.php';
+        
+        $result = $creator->createFile($fullPath, 'This is a content');
+        
+        $this->assertNotNull($result);
+        $this->assertIsInt($result);
+        $this->fakeStorage->assertExists('TestRepository.php');
+    }
 
-    //     $result = $creator->createFile();
-    //     dd($result);
-    //     $this->assertNotNull($result);
-    //     $this->assertIsInt($result);
-    //     // $this->assertTrue($result);
-    // }
     // getClassFullNamespace(): String
 
     // fileExists(): bool
