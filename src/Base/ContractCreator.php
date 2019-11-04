@@ -120,7 +120,7 @@ class ContractCreator extends Creator
     private function getReturnedData(): array
     {
         return [
-            $this->getClassFullNamespace(),
+            // $this->getClassFullNamespace(),
             $this->className,
         ];
     }
@@ -133,20 +133,5 @@ class ContractCreator extends Creator
     public function getReplacements()
     {
         return $this->replacements;
-    }
-
-    public function getConfigType()
-    {
-        return $this->configType;
-    }
-
-    public function getPathConfig()
-    {
-        return $this->pathConfig;
-    }
-
-    public function getNamespaceConfig()
-    {
-        return $this->namespaceConfig;
     }
 }

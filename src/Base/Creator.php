@@ -158,12 +158,6 @@ abstract class Creator
      */
     public function generateDirectoryFullPath(String $basePath, String $directoryName): String
     {
-        // if (!$this->isNotEmpty($this->pathConfig)) {
-        // TODO: throw PathConfigValueIsMissing an exception instead of returning null
-        //     return null;
-        // }
-
-        // $base = app()->basePath() . '/app/' . $this->pathConfig;
         $base = $basePath . DIRECTORY_SEPARATOR . $directoryName . DIRECTORY_SEPARATOR;
 
         if ($this->isNotEmpty($this->subdirectory)) {
@@ -171,6 +165,21 @@ abstract class Creator
         }
 
         return $this->directory = $base;
+    }
+
+    /**
+     * Returns the base path of the directory in which the generated classes are stored.
+     *
+     * @return String
+     */
+    public function directoryBasePath()
+    {
+        if (!$this->isNotEmpty($this->pathConfig)) {
+            // TODO: throw PathConfigValueIsMissing an exception instead of returning null
+            return null;
+        }
+
+        return app()->basePath() . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . $this->pathConfig;
     }
 
     /**
@@ -262,7 +271,7 @@ abstract class Creator
 
         return $base;
     }
-    
+
     /**
      * Return the path value for the current class from the config file,
      * if the value from the config file is null it will construct path
@@ -300,6 +309,67 @@ abstract class Creator
         return $this->content;
     }
 
+    /**
+     * Return the generated full path to the file that will be created.
+     *
+     * @return String
+     */
+    public function getFileFullPath()
+    {
+        return $this->path;
+    }
+
+    /**
+     * Return the generated full path to the directory
+     * in which the file will be created.
+     *
+     * @return String
+     */
+    public function getDirectory()
+    {
+        return $this->directory;
+    }
+
+    /**
+     * Return the value of the subdirectory name.
+     *
+     * @return String
+     */
+    public function getSubdirectory()
+    {
+        return $this->subdirectory;
+    }
+
+    /**
+     * Gets the key value used by the current class to extract data from config file.
+     *
+     * @return String
+     */
+    public function getConfigType()
+    {
+        return $this->configType;
+    }
+
+    /**
+     * Gets the value of path extracted from the config file.
+     *
+     * @return String
+     */
+    public function getPathConfig()
+    {
+        return $this->pathConfig;
+    }
+
+    /**
+     * Gets the value of namespace extracted from the config file.
+     *
+     * @return String
+     */
+    public function getNamespaceConfig()
+    {
+        return $this->namespaceConfig;
+    }
+
     public function getFileManager()
     {
         return $this->fileManager;
@@ -318,21 +388,6 @@ abstract class Creator
     public function getClassName()
     {
         return $this->className;
-    }
-
-    public function getDirectory()
-    {
-        return $this->directory;
-    }
-
-    public function getSubdirectory()
-    {
-        return $this->subdirectory;
-    }
-
-    public function getFileFullPath()
-    {
-        return $this->path;
     }
 
     /**
