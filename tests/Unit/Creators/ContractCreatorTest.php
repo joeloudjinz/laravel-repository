@@ -2,10 +2,10 @@
 
 namespace Inz\Repository\Test\Unit\Creators;
 
-use Orchestra\Testbench\TestCase;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
 use Inz\Repository\Base\ContractCreator;
+use Orchestra\Testbench\TestCase;
 
 class ContractCreatorTest extends TestCase
 {
@@ -209,6 +209,26 @@ class ContractCreatorTest extends TestCase
 
         // execution
         $result = $creator->create();
+
+        // assertions
+        $this->assertNotNull($result, 'creation result is NULL');
+        $this->assertIsArray($result, 'create() return value is NOT OF TYPE ARRAY');
+        $this->assertCount(2, $result);
+    }
+
+    /**
+     * complete()
+     * @test
+     * */
+    public function test_complete_contract_file_creation()
+    {
+        // preparing
+        $path = $this->prepareFakeStorage();
+        $creator = $this->createInstance($this->modelName, $path);
+
+        $result = $creator->create();
+        // execution
+        $result = $creator->complete();
 
         // assertions
         $this->assertNotNull($result, 'creation result is NULL');
