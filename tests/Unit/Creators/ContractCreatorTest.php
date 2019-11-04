@@ -2,10 +2,10 @@
 
 namespace Inz\Repository\Test\Unit\Creators;
 
+use Orchestra\Testbench\TestCase;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
 use Inz\Repository\Base\ContractCreator;
-use Orchestra\Testbench\TestCase;
 
 class ContractCreatorTest extends TestCase
 {
@@ -154,7 +154,7 @@ class ContractCreatorTest extends TestCase
     {
         $creator = $this->createInstance();
         $fullPath = $this->prepareFakeStorage() . DIRECTORY_SEPARATOR . 'TestRepository';
-        
+
         $result = $creator->createDirectory($fullPath);
 
         $this->assertNotNull($result);
@@ -172,9 +172,9 @@ class ContractCreatorTest extends TestCase
         $path = $this->prepareFakeStorage();
         $creator = $this->createInstance();
         $fullPath = $path . DIRECTORY_SEPARATOR . 'TestRepository.php';
-        
+
         $result = $creator->createFile($fullPath, 'This is a content');
-        
+
         $this->assertNotNull($result);
         $this->assertIsInt($result);
         $this->fakeStorage->assertExists('TestRepository.php');
@@ -201,14 +201,18 @@ class ContractCreatorTest extends TestCase
      * create() where the path is specified
      * @test
      * */
-    public function test_create_contract_file()
+    public function test_create_contract_file_in_specific_path()
     {
-        // $path = $this->prepareFakeStorage();
-        // $creator = $this->createInstance(null, $path);
-        $creator = $this->createInstance(null, null);
+        // preparing
+        $path = $this->prepareFakeStorage();
+        $creator = $this->createInstance($this->modelName, $path);
 
+        // execution
         $result = $creator->create();
 
-        dd($result);
+        // assertions
+        $this->assertNotNull($result, 'creation result is NULL');
+        $this->assertIsArray($result, 'create() return value is NOT OF TYPE ARRAY');
+        $this->assertCount(2, $result);
     }
 }
