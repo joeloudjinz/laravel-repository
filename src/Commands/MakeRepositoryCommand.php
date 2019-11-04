@@ -3,6 +3,7 @@
 namespace Inz\Repository\Commands;
 
 use Illuminate\Support\Facades\Artisan;
+use Inz\Repository\Base\ContractCreator;
 
 class MakeRepositoryCommand extends RepositoryCommand
 {
@@ -45,6 +46,10 @@ class MakeRepositoryCommand extends RepositoryCommand
     protected $modelName;
 
     protected $subDir;
+    /**
+     * @var ContractCreator
+     */
+    private $contractCreator;
 
     /**
      * Create a new command instance.
@@ -52,6 +57,7 @@ class MakeRepositoryCommand extends RepositoryCommand
     public function __construct()
     {
         parent::__construct();
+        $$this->contractCreator = new ContractCreator($this->argument('model'));
     }
 
     /**
@@ -66,10 +72,10 @@ class MakeRepositoryCommand extends RepositoryCommand
         // createContract() will return an array of two values, contract namespace in the first position
         // which will be assigned to $contract variable, and the name of the contract name in the
         // second position which will be assigned to $contractName, that's how list work.
-        list($contract, $contractName) = $this->createContract();
+        list($contractNamespace, $contractName) = $this->createContract();
 
         // using previously extracted variables to construct a repository implementation class
-        $this->createRepository($contract, $contractName);
+        $this->createRepository($contractNamespace, $contractName);
 
         // bind the created contract interface to repository implementation class
         $this->bindingRepository();
@@ -83,67 +89,27 @@ class MakeRepositoryCommand extends RepositoryCommand
     }
 
     /**
-     * Create a new contract.
+     * Handle the process of delivering data to contract creator & processing
+     * results of the creation
+     *
+     * @return array|null
      */
     protected function createContract()
     {
-        // get the content of the stub file of contract
-        $content = $this->fileManager->get($this->stubs['contract']);
-
-        // prepare the parts that are going to be replaced in the contract file
-        $replacements = [
-            // constructing the namespace of the contract
-            '%namespaces.contracts%' => $this->appNamespace . $this->config('namespaces.contracts') . $this->subDir,
-            '%modelName%' => $this->modelName,
-        ];
-
-        // replacing each string that match a key in $replacements with the value of that key in $content
-        $content = str_replace(array_keys($replacements), array_values($replacements), $content);
-
-        // preparing repository contract (interface) class name
-        $fileName = $this->modelName . 'Repository';
-
-        // preparing the full path to the directory where the contracts will be stored
-        $fileDirectory = app()->basePath() . '/app/' . $this->config('paths.contracts') . $this->subDir . '\\';
-
-        // preparing the full path to the repository contract file
-        $filePath = $fileDirectory . $fileName . '.php';
-
-        // checking that the directory of repository contracts doesn't exist
-        if (!$this->fileManager->exists($fileDirectory)) {
-            // if so, create the directory, 755 means read and execute access for
-            // everyone and also write access for the owner of the file.
-            $this->fileManager->makeDirectory($fileDirectory, 0755, true);
+        $result = $this->contractCreator->create();
+        if (is_array($result)) {
+            return $result;
         }
 
-        // checking that the application is running in the console and
-        // the repository contract file exist in the directory
-        if ($this->laravel->runningInConsole() && $this->fileManager->exists($filePath)) {
-            // asking the developer if he desires to override the existing repository contract file
-            $response = $this->ask("The contract [{$fileName}] already exists. Do you want to overwrite it?", 'Yes');
-
-            // if the $response is other then 'yes' or 'y'
-            if (!$this->isResponsePositive($response)) {
-                // will not override the existing file & will not create the new file
-                $this->line("The contract [{$fileName}] will not be overwritten.");
-                // TODO: handle return statement in the case where the file exists already
-                return;
-            }
-            // if the answer was positive, will create the new file which will override the existing one
-            $this->fileManager->put($filePath, $content);
-        } else {
-            // if the file does not exist or the application isn't running in the console
-            // create the file in the directory
-            $this->fileManager->put($filePath, $content);
+        $response = $this->ask("Contract file already exists. Do you want to overwrite it?", 'Yes');
+        if (!$this->isResponsePositive($response)) {
+            $this->warn('Nothing is created');
         }
-        // inform the developer
-        $this->line("The contract [{$fileName}] has been created.");
 
-        // return the namespace of the created repository contract & it's interface name
-        return [
-            $this->config('namespaces.contracts') . $this->subDir . '\\' . $fileName,
-            $fileName,
-        ];
+        $result = $this->contractCreator->complete();
+        if (!is_array($result)) {
+            $this->error('There was an error while creating contract file');
+        }
     }
 
     /**
@@ -209,6 +175,7 @@ class MakeRepositoryCommand extends RepositoryCommand
     /**
      * Checks the models existence, it will be create if the developer approved
      *
+     * TODO: refactor this logic into ModelCreator
      * @return void.
      */
     protected function checkModel()
