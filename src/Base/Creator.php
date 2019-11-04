@@ -191,9 +191,13 @@ abstract class Creator
      *
      * @return bool
      */
-    public function createDirectory(): bool
+    public function createDirectory(String $path): bool
     {
-        return $this->fileManager->makeDirectory($this->directory, $this->permissions, true);
+        try {
+            return $this->fileManager->makeDirectory($path, $this->permissions, true);
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
     /**
