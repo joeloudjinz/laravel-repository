@@ -23,19 +23,6 @@ class ContractCreator extends Creator
      */
     private $replacements = [];
     /**
-     * name of the class that will be generated.
-     *
-     * @var String
-     */
-    private $className;
-    /**
-     * The string that will be concatenated with the class name.
-     * Ex: in case of generating an interface, the value should be 'Interface'
-     *
-     * @var String
-     */
-    private $classNameSuffix;
-    /**
      * Full path to the directory in which the generated file will be stored.
      *
      * @var String
@@ -164,16 +151,6 @@ class ContractCreator extends Creator
     public function getReplacements()
     {
         return $this->replacements;
-    }
-
-    public function getClassName()
-    {
-        return $this->className;
-    }
-
-    public function getClassNameSuffix()
-    {
-        return $this->classNameSuffix;
     }
 
     public function getDirectory()

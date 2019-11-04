@@ -96,7 +96,7 @@ class ContractCreatorTest extends TestCase
         $oldContent = $creator->getContent();
         // performing the replacement process second
         $result = $creator->replaceContentParts($creator->getReplacements());
-        
+
         $this->assertIsBool($result);
         $this->assertTrue($result);
         $this->assertNotNull($creator->getContent());
@@ -108,14 +108,14 @@ class ContractCreatorTest extends TestCase
      * createClassName(modelName): String
      * @test
      * */
-    // public function test_create_class_name()
-    // {
-    //     $creator = $this->createInstance();
-    //     $result = $creator->createClassName($this->modelName);
-    //     $this->assertNotNull($result);
-    //     $this->assertIsString($result);
-    //     $this->assertEquals($this->modelName . $creator->getClassNameSuffix(), $result);
-    // }
+    public function test_create_class_name()
+    {
+        $creator = $this->createInstance();
+        $result = $creator->createClassName($this->modelName);
+        $this->assertNotNull($result);
+        $this->assertIsString($result);
+        $this->assertEquals($this->modelName . $creator->getClassNameSuffix(), $result);
+    }
 
     /**
      * generateDirectoryFullPath(): String
