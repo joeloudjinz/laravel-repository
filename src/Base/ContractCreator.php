@@ -22,18 +22,6 @@ class ContractCreator extends Creator
      * @var array
      */
     private $replacements = [];
-    /**
-     * Full path to the file that will be generated.
-     *
-     * @var String
-     */
-    private $path;
-    /**
-     * The subdirectory specified by the developer.
-     *
-     * @var String
-     */
-    private $subdirectory;
 
     public function __construct(String $modelName)
     {
@@ -145,16 +133,6 @@ class ContractCreator extends Creator
     public function getReplacements()
     {
         return $this->replacements;
-    }
-
-    public function getPath()
-    {
-        return $this->path;
-    }
-
-    public function getSubdirectory()
-    {
-        return $this->subdirectory;
     }
 
     public function getConfigType()
