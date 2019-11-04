@@ -25,9 +25,9 @@ class ContractCreator extends Creator
      */
     private $replacements = [];
 
-    public function __construct(String $input)
+    public function __construct(String $input, $appBasePath = null)
     {
-        parent::__construct();
+        parent::__construct($appBasePath);
         $values = $this->extractInputValues($input);
         $this->modelName = $values['modelName'];
         if (Arr::has($values, 'subdirectory')) {

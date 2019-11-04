@@ -37,9 +37,9 @@ class ContractCreatorTest extends TestCase
         return storage_path('framework/testing/disks/' . $name);
     }
 
-    private function createInstance($modelName = null)
+    private function createInstance($modelName = null, $appBasePath = null)
     {
-        return new ContractCreator($modelName ?? $this->modelName);
+        return new ContractCreator($modelName ?? $this->modelName, $appBasePath);
     }
 
     /** @test */
@@ -198,12 +198,14 @@ class ContractCreatorTest extends TestCase
     }
 
     /**
-     * create()
+     * create() where the path is specified
      * @test
      * */
     public function test_create_contract_file()
     {
-        $creator = $this->createInstance();
+        // $path = $this->prepareFakeStorage();
+        // $creator = $this->createInstance(null, $path);
+        $creator = $this->createInstance(null, null);
 
         $result = $creator->create();
 
