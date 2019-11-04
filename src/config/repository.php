@@ -31,8 +31,8 @@ return [
     |
      */
     'paths' => [
-        'contracts' => 'Repositories/Contracts/',
-        'repositories' => 'Repositories/Eloquent/',
+        'contracts' => 'Repositories/Contracts',
+        'repositories' => 'Repositories/Eloquent',
         'criteria' => 'Repositories\Criteria',
     ],
 ];

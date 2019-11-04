@@ -4,6 +4,7 @@ namespace Inz\Repository\Test\Unit\Creators;
 
 use Orchestra\Testbench\TestCase;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Storage;
 use Inz\Repository\Base\ContractCreator;
 
 class ContractCreatorTest extends TestCase
@@ -38,10 +39,16 @@ class ContractCreatorTest extends TestCase
     private $attributesData = [
         'classNameSuffix' => 'RepositoryInterface',
         'configType' => 'contracts',
-        'pathConfig' => 'Repositories/Contracts/',
+        'pathConfig' => 'Repositories/Contracts',
         'namespaceConfig' => 'Repositories\Contracts',
     ];
 
+    private function prepareFakeStorage($name = 'app')
+    {
+        Storage::fake($name);
+        return storage_path('framework/testing/disks/' . $name);
+    }
+    
     private function createInstance()
     {
         return new ContractCreator($this->modelName);
@@ -121,16 +128,19 @@ class ContractCreatorTest extends TestCase
      * generateDirectoryFullPath(): String
      * @test
      * */
-    // public function test_generate_directory_full_path()
-    // {
-    //     $creator = $this->createInstance();
-    //     $result = $creator->generateDirectoryFullPath();
+    public function test_generate_directory_full_path()
+    {
+        $path = $this->prepareFakeStorage();
+        
+        $creator = $this->createInstance();
+        $result = $creator->generateDirectoryFullPath($path, $creator->getPathConfig());
 
-    //     $this->assertNotNull($result);
-    //     $this->assertIsString($result);
-    //     $this->assertStringContainsString(app()->basePath(), $result);
-    //     $this->assertStringContainsString($creator->getPathConfig(), $result);
-    // }
+        $this->assertNotNull($result);
+        $this->assertIsString($result);
+        $this->assertStringContainsString($path, $result);
+        $this->assertStringContainsString($creator->getPathConfig(), $result);
+        $this->assertStringContainsString(DIRECTORY_SEPARATOR, $result);
+    }
 
     /**
      * generateFileFullPath(): String
@@ -181,7 +191,7 @@ class ContractCreatorTest extends TestCase
     //     $creator->generateDirectoryFullPath();
     //     $creator->generateFileFullPath();
     //     $creator->createDirectory();
-        
+
     //     $result = $creator->createFile();
     //     dd($result);
     //     $this->assertNotNull($result);
