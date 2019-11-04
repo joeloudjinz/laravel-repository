@@ -9,25 +9,6 @@ use Orchestra\Testbench\TestCase;
 
 class ContractCreatorTest extends TestCase
 {
-    // attributes that should be tested when creating the object
-    // $classNameSuffix;
-    // $stub;
-    // $configType;
-    // $pathConfig;
-    // $namespaceConfig;
-
-    // attributes that are not tested
-    // $content;
-    // $className;
-    // $directory;
-    // $replacements = [];
-    // $path;
-    // $subdirectory;
-
-    // attributes that should not be tested
-    // $fileManager;
-    // $appNamespace;
-    // $permissions = 0755;
     private $fakeStorage;
     private $modelName = 'Post';
 
@@ -43,6 +24,12 @@ class ContractCreatorTest extends TestCase
         'namespaceConfig' => 'Repositories\Contracts',
     ];
 
+    /**
+     * Create a fake storage for testing and return the full path
+     * to it to be used during tests if needed.
+     *
+     * @return String
+     */
     private function prepareFakeStorage($name = 'app')
     {
         Storage::fake($name);
@@ -60,21 +47,16 @@ class ContractCreatorTest extends TestCase
     {
         $creator = $this->createInstance();
 
-        // dd($creator->getNamespaceConfig(), $creator->getPathConfig());
-
         $this->assertNotNull($creator->getFileManager());
         $this->assertInstanceOf(Filesystem::class, $creator->getFileManager());
         $this->assertNotNull($creator->getAppNamespace());
 
-        // TODO: assert that stub in creator has the correct value
         $this->assertNotNull($creator->getStub());
         $this->assertEquals($this->attributesData['classNameSuffix'], $creator->getClassNameSuffix());
         $this->assertEquals($this->attributesData['configType'], $creator->getConfigType());
         $this->assertEquals($this->attributesData['pathConfig'], $creator->getPathConfig());
         $this->assertEquals($this->attributesData['namespaceConfig'], $creator->getNamespaceConfig());
     }
-
-    // Methods that should be tested
 
     /**
      * extractStubContent(): bool
@@ -88,8 +70,6 @@ class ContractCreatorTest extends TestCase
         $this->assertTrue($result);
         $this->assertNotNull($creator->getContent());
     }
-
-    // getContent(): String
 
     /**
      * replaceContentParts(): bool
@@ -183,7 +163,6 @@ class ContractCreatorTest extends TestCase
         $this->fakeStorage->assertExists('TestRepository');
     }
 
-    // createFile(): int
     /**
      * createFile(): int
      * @test
@@ -201,8 +180,20 @@ class ContractCreatorTest extends TestCase
         $this->fakeStorage->assertExists('TestRepository.php');
     }
 
-    // getClassFullNamespace(): String
+    /**
+     * getClassFullNamespace(): int
+     * @test
+     * */
+    public function test_get_class_full_namespace()
+    {
+        $creator = $this->createInstance();
 
-    // fileExists(): bool
-    // directoryExists(): bool
+        $result = $creator->getClassFullNamespace($creator->baseNamespace(), $this->modelName);
+
+        $this->assertNotNull($result);
+        $this->assertIsString($result);
+        $this->assertStringContainsString($creator->baseNamespace(), $result);
+        $this->assertStringContainsString($creator->getNamespaceConfig(), $result);
+        $this->assertStringContainsString($this->modelName, $result);
+    }
 }

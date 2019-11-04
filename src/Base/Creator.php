@@ -237,20 +237,32 @@ abstract class Creator
      *
      * @return String
      */
-    public function getClassFullNamespace(): String
+    public function getClassFullNamespace(String $base, String $className): String
+    {
+        return $base . $className;
+    }
+
+    /**
+     * Returns the base namespace of the generated classes, subdirectory name is included.
+     *
+     * @return String
+     */
+    public function baseNamespace(): String
     {
         if (!$this->isNotEmpty($this->namespaceConfig)) {
             // TODO: throw NamespaceConfigValueIsMissing an exception instead of returning null
             return null;
         }
 
+        $base = $this->appNamespace . $this->namespaceConfig . '\\';
+
         if ($this->isNotEmpty($this->subdirectory)) {
-            return $this->namespaceConfig . $this->subdirectory . $this->className;
+            return $base . $this->subdirectory . '\\';
         }
 
-        return $this->namespaceConfig . $this->className;
+        return $base;
     }
-
+    
     /**
      * Return the path value for the current class from the config file,
      * if the value from the config file is null it will construct path
