@@ -173,28 +173,33 @@ class MakeRepositoryCommand extends RepositoryCommand
     }
 
     /**
-     * Checks the models existence, it will be create if the developer approved
+     * Checks the models existence, it will be created if the developer approved
      *
      * TODO: refactor this logic into ModelCreator
      * @return void.
      */
     protected function checkModel()
     {
+        // replacing a ll slash occurrences with anti-slash
         $model = str_replace('/', '\\', $this->argument('model'));
+        // extracting words from the input of the command
         $model_arr = explode('\\', $model);
-
+        // extracting last element from the array, the model name
         $this->modelName = array_pop($model_arr);
+        // constructing the full namespace of the model
         $this->model = $this->appNamespace . $this->modelName;
 
         if (!$this->isLumen() && $this->laravel->runningInConsole()) {
+            // checking the existence of the model class
             if (!class_exists($this->model)) {
+                // if it doesn't, ask the developer if want to create the model
                 $response = $this->ask("Model [{$this->model}] does not exist. Would you like to create it?", 'Yes');
 
                 if ($this->isResponsePositive($response)) {
+                    // create the model class
                     Artisan::call('make:model', [
                         'name' => $this->model,
                     ]);
-
                     $this->line("Model [{$this->model}] has been successfully created.");
                 } else {
                     $this->line("Model [{$this->model}] is not being created.");
@@ -202,9 +207,14 @@ class MakeRepositoryCommand extends RepositoryCommand
             }
         }
 
+        // if the exploded array of the input value has more elements after popping
+        // the model class name from it, this means that the a subdirectory for
+        // the model is specified by the developer
         if (count($model_arr) > 0) {
+            // construct the subdirectory namespace
             $this->subDir = '\\' . implode('\\', $model_arr);
         } else {
+            // else, no subdirectory is specified
             $this->subDir = '';
         }
     }
