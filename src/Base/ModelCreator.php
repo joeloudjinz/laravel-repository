@@ -61,12 +61,11 @@ class ModelCreator
     /**
      * Checking the existence of the model class
      *
-     * @param String $modelNamespace
      * @return bool
      */
-    public function modelExist(String $model)
+    public function modelExist()
     {
-        return class_exists($model);
+        return class_exists($this->modelNamespace);
     }
 
     /**
