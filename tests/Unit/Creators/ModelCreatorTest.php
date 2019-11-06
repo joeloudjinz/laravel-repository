@@ -16,10 +16,9 @@ class ModelCreatorTest extends TestCase
      * @var array
      */
     private $attributesData = [
-        'appNamespace' => 'App\\',
-        'antiSlashedInput' => 'Models\Post',
         'modelName' => 'Post',
         'modelNamespace' => 'App\Models\Post',
+        'modelNamespaceWithoutSubDir' => 'App\Post',
     ];
 
     /**
@@ -40,5 +39,17 @@ class ModelCreatorTest extends TestCase
 
         $this->assertEquals($this->attributesData['modelName'], $creator->getModelName());
         $this->assertEquals($this->attributesData['modelNamespace'], $creator->getModelFullNamespace());
+    }
+
+    /** @test */
+    public function test_model_creator_attributes_initialized_using_modelName_attribute()
+    {
+        $creator = $this->createInstance($this->modelName);
+
+        $this->assertNotNull($creator->getModelName());
+        $this->assertNotNull($creator->getModelFullNamespace());
+
+        $this->assertEquals($this->attributesData['modelName'], $creator->getModelName());
+        $this->assertEquals($this->attributesData['modelNamespaceWithoutSubDir'], $creator->getModelFullNamespace());
     }
 }
