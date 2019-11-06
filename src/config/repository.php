@@ -15,7 +15,7 @@ return [
         // Contracts (interfaces) base namespace
         'contracts' => 'Repositories\Contracts',
         // repository implementations classes namespace
-        'repositories' => 'Repositories\Eloquent',
+        'implementations' => 'Repositories\Implementations',
         // Criterions base namespace
         'criteria' => 'Repositories\Criteria',
     ],
@@ -32,7 +32,7 @@ return [
      */
     'paths' => [
         'contracts' => 'Repositories/Contracts',
-        'repositories' => 'Repositories/Eloquent',
+        'implementations' => 'Repositories/Implementations',
         'criteria' => 'Repositories\Criteria',
     ],
 ];
