@@ -29,7 +29,7 @@ class RepositoryCreator extends Creator
         }
         $this->stub = __DIR__ . '/Stubs/Eloquent/EloquentExampleRepository.stub';
         $this->classNameSuffix = 'Repository';
-        $this->configType = 'repositories';
+        $this->configType = 'implementations';
         $this->setPathFromConfig();
         $this->setNamespaceFromConfig();
     }
@@ -111,5 +111,15 @@ class RepositoryCreator extends Creator
         }
         // else, return response
         return true;
+    }
+
+    public function getStub()
+    {
+        return $this->stub;
+    }
+
+    public function getReplacements()
+    {
+        return $this->replacements;
     }
 }

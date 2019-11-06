@@ -327,8 +327,8 @@ abstract class Creator
             ];
         }
         return [
-            'modelName' => $exploded[0],
-            'subdirectory' => $this->subdirectory = $exploded[1],
+            'modelName' => array_pop($exploded),
+            'subdirectory' => $this->subdirectory = $exploded[0],
         ];
     }
     /**
