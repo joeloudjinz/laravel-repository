@@ -2,10 +2,10 @@
 
 namespace Inz\Repository\Test\Unit\Creators;
 
+use Orchestra\Testbench\TestCase;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
 use Inz\Repository\Base\RepositoryCreator;
-use Orchestra\Testbench\TestCase;
 
 class RepositoryCreatorTest extends TestCase
 {
