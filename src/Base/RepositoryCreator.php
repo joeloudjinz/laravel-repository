@@ -37,7 +37,9 @@ class RepositoryCreator extends Creator
     /**
      * Initialize the array of the parts that will be replaced.
      *
-     * @param String $modelName
+     * @param String $contractNamespace
+     * @param String $contractName
+     * @param String $modelNamespace
      * @return void
      */
     public function initializeReplacementsParts(String $contractNamespace, String $contractName, String $modelNamespace)

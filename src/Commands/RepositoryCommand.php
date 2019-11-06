@@ -37,18 +37,7 @@ class RepositoryCommand extends Command
         $this->appNamespace = app()->getNamespace();
     }
 
-    /**
-     * Determine if the user input is positive.
-     *
-     * @param  string
-     * @param mixed $response
-     *
-     * @return bool
-     */
-    public function isResponsePositive($response)
-    {
-        return in_array(strtolower($response), ['y', 'yes'], true);
-    }
+
 
     /**
      * Gets a configuration value from the config file of the package.
