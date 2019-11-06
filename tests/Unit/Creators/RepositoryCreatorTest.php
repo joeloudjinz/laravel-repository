@@ -82,181 +82,221 @@ class RepositoryCreatorTest extends TestCase
         $this->assertEquals($this->attributesData['namespaceConfig'], $creator->getNamespaceConfig());
     }
 
-    // /**
-    //  * extractStubContent(): bool
-    //  * @test
-    //  * */
-    // public function test_extract_content_from_stub_file()
-    // {
-    //     $creator = $this->createInstance();
-    //     $result = $creator->extractStubContent($creator->getStub());
-    //     $this->assertIsBool($result);
-    //     $this->assertTrue($result);
-    //     $this->assertNotNull($creator->getContent());
-    // }
+    /**
+     * extractStubContent(): bool
+     * @test
+     * @group repository_creator_test
+     * */
+    public function test_extract_content_from_stub_file()
+    {
+        $creator = $this->createInstance();
+        $result = $creator->extractStubContent($creator->getStub());
 
-    // /**
-    //  * replaceContentParts(): bool
-    //  * @test
-    //  * */
-    // public function test_replace_content_parts()
-    // {
-    //     $creator = $this->createInstance();
-    //     // extracting the content first
-    //     $creator->extractStubContent($creator->getStub());
-    //     // saving the old content
-    //     $oldContent = $creator->getContent();
-    //     // performing the replacement process second
-    //     $result = $creator->replaceContentParts($creator->getReplacements());
+        $this->assertIsBool($result);
+        $this->assertTrue($result);
+        $this->assertNotNull($creator->getContent());
+    }
 
-    //     $this->assertIsBool($result);
-    //     $this->assertTrue($result);
-    //     $this->assertNotNull($creator->getContent());
-    //     // asserting that the parts are replaced
-    //     $this->assertNotEquals($creator->getContent(), $oldContent);
-    // }
+    /**
+     * replaceContentParts(): bool
+     * @test
+     * @group repository_creator_test
+     * */
+    public function test_replace_content_parts()
+    {
+        $creator = $this->createInstance();
+        // extracting the content first
+        $creator->extractStubContent($creator->getStub());
+        // saving the old content
+        $oldContent = $creator->getContent();
+        // secondly, initializing replacements attribute
+        $creator->initializeReplacementsParts('ContractNamespace', 'ContractName', 'Post');
+        // finally, performing the replacement process
+        $result = $creator->replaceContentParts($creator->getReplacements());
 
-    // /**
-    //  * createClassName(modelName): String
-    //  * @test
-    //  * */
-    // public function test_create_class_name()
-    // {
-    //     $creator = $this->createInstance();
-    //     $result = $creator->createClassName($this->modelName);
-    //     $this->assertNotNull($result);
-    //     $this->assertIsString($result);
-    //     $this->assertEquals($this->modelName . $creator->getClassNameSuffix(), $result);
-    // }
+        $this->assertIsBool($result);
+        $this->assertTrue($result);
+        $this->assertNotNull($creator->getContent());
+        $this->assertNotEquals($creator->getContent(), $oldContent);
+    }
 
-    // /**
-    //  * generateDirectoryFullPath(): String
-    //  * @test
-    //  * */
-    // public function test_generate_directory_full_path()
-    // {
-    //     $path = $this->prepareFakeStorage();
+    /**
+     * createClassName(modelName): String
+     * @test
+     * @group repository_creator_test
+     * */
+    public function test_create_class_name()
+    {
+        $creator = $this->createInstance();
+        $result = $creator->createClassName($this->modelName);
 
-    //     $creator = $this->createInstance();
-    //     $result = $creator->generateDirectoryFullPath($path, $creator->getPathConfig());
+        $this->assertNotNull($result);
+        $this->assertIsString($result);
+        $this->assertEquals($this->modelName . $creator->getClassNameSuffix(), $result);
+    }
 
-    //     $this->assertNotNull($result);
-    //     $this->assertIsString($result);
-    //     $this->assertStringContainsString($path, $result);
-    //     $this->assertStringContainsString($creator->getPathConfig(), $result);
-    //     $this->assertStringContainsString(DIRECTORY_SEPARATOR, $result);
-    // }
+    /**
+     * generateDirectoryFullPath(): String
+     * @test
+     * @group repository_creator_test
+     * */
+    public function test_generate_directory_full_path()
+    {
+        $path = $this->prepareFakeStorage();
 
-    // /**
-    //  * generateFileFullPath(): String
-    //  * @test
-    //  * */
-    // public function test_generate_file_full_path()
-    // {
-    //     $path = $this->prepareFakeStorage();
-    //     $creator = $this->createInstance();
-    //     $fileName = $this->modelName . $this->attributesData['classNameSuffix'];
+        $creator = $this->createInstance();
+        $result = $creator->generateDirectoryFullPath($path, $creator->getPathConfig());
 
-    //     $result = $creator->generateFileFullPath($path, $fileName);
+        $this->assertNotNull($result);
+        $this->assertIsString($result);
+        $this->assertStringContainsString($path, $result);
+        $this->assertStringContainsString($creator->getPathConfig(), $result);
+        $this->assertStringContainsString(DIRECTORY_SEPARATOR, $result);
+    }
 
-    //     $this->assertNotNull($result);
-    //     $this->assertIsString($result);
-    //     $this->assertStringContainsString($path, $result);
-    //     $this->assertStringContainsString($fileName, $result);
-    //     $this->assertStringContainsString(DIRECTORY_SEPARATOR, $result);
-    //     $this->assertStringContainsString('.php', $result);
+    /**
+     * generateFileFullPath(): String
+     * @test
+     * @group repository_creator_test
+     * */
+    public function test_generate_file_full_path()
+    {
+        $path = $this->prepareFakeStorage();
+        $creator = $this->createInstance();
+        $fileName = $this->modelName . $this->attributesData['classNameSuffix'];
 
-    //     $this->assertNotNull($creator->getFileFullPath());
-    //     $this->assertIsString($creator->getFileFullPath());
-    // }
+        $result = $creator->generateFileFullPath($path, $fileName);
 
-    // /**
-    //  * createDirectory(): bool
-    //  * @test
-    //  * */
-    // public function test_create_directory()
-    // {
-    //     $creator = $this->createInstance();
-    //     $fullPath = $this->prepareFakeStorage() . DIRECTORY_SEPARATOR . 'TestRepository';
+        $this->assertNotNull($result);
+        $this->assertIsString($result);
+        $this->assertStringContainsString($path, $result);
+        $this->assertStringContainsString($fileName, $result);
+        $this->assertStringContainsString(DIRECTORY_SEPARATOR, $result);
+        $this->assertStringContainsString('.php', $result);
 
-    //     $result = $creator->createDirectory($fullPath);
+        $this->assertNotNull($creator->getFileFullPath());
+        $this->assertIsString($creator->getFileFullPath());
+    }
 
-    //     $this->assertNotNull($result);
-    //     $this->assertIsBool($result);
-    //     $this->assertTrue($result);
-    //     $this->fakeStorage->assertExists('TestRepository');
-    // }
+    /**
+     * createDirectory(): bool
+     * @test
+     * @group repository_creator_test
+     * */
+    public function test_create_directory()
+    {
+        $creator = $this->createInstance();
+        $fullPath = $this->prepareFakeStorage() . DIRECTORY_SEPARATOR . 'TestRepository';
 
-    // /**
-    //  * createFile(): int
-    //  * @test
-    //  * */
-    // public function test_create_file()
-    // {
-    //     $path = $this->prepareFakeStorage();
-    //     $creator = $this->createInstance();
-    //     $fullPath = $path . DIRECTORY_SEPARATOR . 'TestRepository.php';
+        $result = $creator->createDirectory($fullPath);
 
-    //     $result = $creator->createFile($fullPath, 'This is a content');
+        $this->assertNotNull($result);
+        $this->assertIsBool($result);
+        $this->assertTrue($result);
+        $this->fakeStorage->assertExists('TestRepository');
+    }
 
-    //     $this->assertNotNull($result);
-    //     $this->assertIsInt($result);
-    //     $this->fakeStorage->assertExists('TestRepository.php');
-    // }
+    /**
+     * createFile(): int
+     * @test
+     * @group repository_creator_test
+     * */
+    public function test_create_file()
+    {
+        $path = $this->prepareFakeStorage();
+        $creator = $this->createInstance();
+        $fullPath = $path . DIRECTORY_SEPARATOR . 'TestRepository.php';
 
-    // /**
-    //  * getClassFullNamespace(): int
-    //  * @test
-    //  * */
-    // public function test_get_class_full_namespace()
-    // {
-    //     $creator = $this->createInstance();
+        $result = $creator->createFile($fullPath, 'This is a content');
 
-    //     $result = $creator->getClassFullNamespace($creator->baseNamespace(), $this->modelName);
+        $this->assertNotNull($result);
+        $this->assertIsInt($result);
+        $this->fakeStorage->assertExists('TestRepository.php');
+    }
 
-    //     $this->assertNotNull($result);
-    //     $this->assertIsString($result);
-    //     $this->assertStringContainsString($creator->baseNamespace(), $result);
-    //     $this->assertStringContainsString($creator->getNamespaceConfig(), $result);
-    //     $this->assertStringContainsString($this->modelName, $result);
-    // }
+    /**
+     * getClassFullNamespace(): int
+     * @test
+     * @group repository_creator_test
+     * */
+    public function test_get_class_full_namespace()
+    {
+        $creator = $this->createInstance();
 
-    // /**
-    //  * create() where the path is specified
-    //  * @test
-    //  * */
-    // public function test_create_contract_file_in_specific_path()
-    // {
-    //     // preparing
-    //     $path = $this->prepareFakeStorage();
-    //     $creator = $this->createInstance($this->modelName, $path);
+        $result = $creator->getClassFullNamespace($creator->baseNamespace(), $this->modelName);
 
-    //     // execution
-    //     $result = $creator->create();
+        $this->assertNotNull($result);
+        $this->assertIsString($result);
+        $this->assertStringContainsString($creator->baseNamespace(), $result);
+        $this->assertStringContainsString($creator->getNamespaceConfig(), $result);
+        $this->assertStringContainsString($this->modelName, $result);
+    }
 
-    //     // assertions
-    //     $this->assertNotNull($result, 'creation result is NULL');
-    //     $this->assertIsArray($result, 'create() return value is NOT OF TYPE ARRAY');
-    //     $this->assertCount(2, $result);
-    // }
+    /**
+     * create() where the path is specified
+     * @test
+     * @group repository_creator_test
+     * */
+    public function test_create_implementation_file_in_specific_path()
+    {
+        // preparing
+        $path = $this->prepareFakeStorage();
+        $creator = $this->createInstance($this->modelName, $path);
+        
+        // initializing replacements attribute
+        $creator->initializeReplacementsParts('ContractNamespace', 'ContractName', 'Post');
 
-    // /**
-    //  * complete()
-    //  * @test
-    //  * */
-    // public function test_complete_contract_file_creation()
-    // {
-    //     // preparing
-    //     $path = $this->prepareFakeStorage();
-    //     $creator = $this->createInstance($this->modelName, $path);
+        // execution
+        $result = $creator->create();
 
-    //     $result = $creator->create();
-    //     // execution
-    //     $result = $creator->complete();
+        // assertions
+        $this->assertNotNull($result, 'creation result is NULL');
+        $this->assertIsBool($result, 'create() return value is NOT OF TYPE BOOLEAN');
+        $this->assertTrue($result, 'create() return value is FALSE');
+    }
 
-    //     // assertions
-    //     $this->assertNotNull($result, 'creation result is NULL');
-    //     $this->assertIsArray($result, 'create() return value is NOT OF TYPE ARRAY');
-    //     $this->assertCount(2, $result);
-    // }
+    /**
+     * create() where the path is specified with a subdirectory
+     * @test
+     * @group repository_creator_test
+     * */
+    public function test_create_implementation_file_in_specific_path_in_subdirectory()
+    {
+        // preparing
+        $path = $this->prepareFakeStorage();
+        $creator = $this->createInstance('Blog/Post', $path);
+        
+        // initializing replacements attribute
+        $creator->initializeReplacementsParts('ContractNamespace', 'ContractName', 'Blog\Post');
+
+        // execution
+        $result = $creator->create();
+
+        // assertions
+        $this->assertNotNull($result, 'creation result is NULL');
+        $this->assertIsBool($result, 'create() return value is NOT OF TYPE BOOLEAN');
+        $this->assertTrue($result, 'create() return value is FALSE');
+    }
+
+    /**
+     * complete()
+     * @test
+     * @group repository_creator_test
+     * */
+    public function test_complete_implementation_file_creation()
+    {
+        // preparing
+        $path = $this->prepareFakeStorage();
+        $creator = $this->createInstance($this->modelName, $path);
+        $creator->initializeReplacementsParts('ContractNamespace', 'ContractName', 'Post');
+
+        $result = $creator->create();
+        // execution
+        $result = $creator->complete();
+
+        // assertions
+        $this->assertNotNull($result, 'creation result is NULL');
+        $this->assertIsBool($result, 'create() return value is NOT OF TYPE BOOLEAN');
+        $this->assertTrue($result, 'create() return value is FALSE');
+    }
 }
