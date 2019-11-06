@@ -5,7 +5,7 @@ namespace Inz\Repository\Test\Unit\Creators;
 use Inz\Repository\Base\ModelCreator;
 use Orchestra\Testbench\TestCase;
 
-class ContractCreatorTest extends TestCase
+class ModelCreatorTest extends TestCase
 {
     private $modelName = 'Post';
     private $modelWithSubDirectory = 'Models/Post';
@@ -22,8 +22,23 @@ class ContractCreatorTest extends TestCase
         'modelNamespace' => 'App\Models\Post',
     ];
 
+    /**
+     * @return ModelCreator
+     */
     private function createInstance($model = null)
     {
         return new ModelCreator($model ?? $this->modelWithSubDirectory);
+    }
+
+    /** @test */
+    public function test_model_creator_attributes_initialized()
+    {
+        $creator = $this->createInstance();
+
+        $this->assertNotNull($creator->getModelName());
+        $this->assertNotNull($creator->getModelFullNamespace());
+
+        $this->assertEquals($this->attributesData['modelName'], $creator->getModelName());
+        $this->assertEquals($this->attributesData['modelNamespace'], $creator->getModelFullNamespace());
     }
 }

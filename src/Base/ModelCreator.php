@@ -39,7 +39,7 @@ class ModelCreator
         // extracting last element from the array, the model name
         $this->modelName = array_pop($exploded);
         // constructing the full namespace of the model
-        $this->modelNamespace = $this->constructFullNamespace($exploded);
+        $this->constructFullNamespace($exploded);
     }
 
     /**
@@ -52,10 +52,10 @@ class ModelCreator
         $this->modelNamespace = $this->appNamespace;
         if (count($explodedInput) > 0) {
             foreach ($explodedInput as $value) {
-                $this->modelNamespace += $value . '\\';
+                $this->modelNamespace .= $value . '\\';
             }
         }
-        $this->modelNamespace += $this->modelName;
+        $this->modelNamespace .= $this->modelName;
     }
 
     /**
