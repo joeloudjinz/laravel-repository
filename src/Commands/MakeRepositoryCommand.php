@@ -48,6 +48,7 @@ class MakeRepositoryCommand
         if (!$this->hasArgument('model')) {
             // $this->error('No Model is specified');
             throw new Exception("No Model is specified");
+            die(1);
         }
 
         $this->input = $this->argument('model');

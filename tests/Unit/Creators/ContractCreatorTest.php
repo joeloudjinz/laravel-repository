@@ -2,10 +2,10 @@
 
 namespace Inz\Repository\Test\Unit\Creators;
 
+use Orchestra\Testbench\TestCase;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
 use Inz\Repository\Base\ContractCreator;
-use Orchestra\Testbench\TestCase;
 
 class ContractCreatorTest extends TestCase
 {
@@ -42,7 +42,10 @@ class ContractCreatorTest extends TestCase
         return new ContractCreator($modelName ?? $this->modelName, $appBasePath);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @group contract_creator_test
+     * */
     public function contract_creator_attributes_initialized()
     {
         $creator = $this->createInstance();
@@ -59,8 +62,30 @@ class ContractCreatorTest extends TestCase
     }
 
     /**
+     * @test
+     * @group contract_creator_test
+     */
+    public function test_repository_creator_attributes_initialized_where_model_in_subdirectory()
+    {
+        $creator = $this->createInstance('Models/Post');
+
+        $this->assertNotNull($creator->getFileManager());
+        $this->assertInstanceOf(Filesystem::class, $creator->getFileManager());
+        $this->assertNotNull($creator->getAppNamespace());
+
+        $this->assertNotNull($creator->getStub());
+        $this->assertNotNull($creator->getSubdirectory());
+        $this->assertEquals('Models', $creator->getSubdirectory());
+        $this->assertEquals($this->attributesData['classNameSuffix'], $creator->getClassNameSuffix());
+        $this->assertEquals($this->attributesData['configType'], $creator->getConfigType());
+        $this->assertEquals($this->attributesData['pathConfig'], $creator->getPathConfig());
+        $this->assertEquals($this->attributesData['namespaceConfig'], $creator->getNamespaceConfig());
+    }
+
+    /**
      * extractStubContent(): bool
      * @test
+     * @group contract_creator_test
      * */
     public function test_extract_content_from_stub_file()
     {
@@ -74,6 +99,7 @@ class ContractCreatorTest extends TestCase
     /**
      * replaceContentParts(): bool
      * @test
+     * @group contract_creator_test
      * */
     public function test_replace_content_parts()
     {
@@ -95,6 +121,7 @@ class ContractCreatorTest extends TestCase
     /**
      * createClassName(modelName): String
      * @test
+     * @group contract_creator_test
      * */
     public function test_create_class_name()
     {
@@ -108,6 +135,7 @@ class ContractCreatorTest extends TestCase
     /**
      * generateDirectoryFullPath(): String
      * @test
+     * @group contract_creator_test
      * */
     public function test_generate_directory_full_path()
     {
@@ -126,6 +154,7 @@ class ContractCreatorTest extends TestCase
     /**
      * generateFileFullPath(): String
      * @test
+     * @group contract_creator_test
      * */
     public function test_generate_file_full_path()
     {
@@ -149,6 +178,7 @@ class ContractCreatorTest extends TestCase
     /**
      * createDirectory(): bool
      * @test
+     * @group contract_creator_test
      * */
     public function test_create_directory()
     {
@@ -166,6 +196,7 @@ class ContractCreatorTest extends TestCase
     /**
      * createFile(): int
      * @test
+     * @group contract_creator_test
      * */
     public function test_create_file()
     {
@@ -183,6 +214,7 @@ class ContractCreatorTest extends TestCase
     /**
      * getClassFullNamespace(): int
      * @test
+     * @group contract_creator_test
      * */
     public function test_get_class_full_namespace()
     {
@@ -200,6 +232,7 @@ class ContractCreatorTest extends TestCase
     /**
      * create() where the path is specified
      * @test
+     * @group contract_creator_test
      * */
     public function test_create_contract_file_in_specific_path()
     {
@@ -217,8 +250,29 @@ class ContractCreatorTest extends TestCase
     }
 
     /**
+     * create() where the path is specified with a subdirectory
+     * @test
+     * @group contract_creator_test
+     * */
+    public function test_create_contract_file_in_specific_path_in_subdirectory()
+    {
+        // preparing
+        $path = $this->prepareFakeStorage();
+        $creator = $this->createInstance('Blog/Post', $path);
+
+        // execution
+        $result = $creator->create();
+
+        // assertions
+        $this->assertNotNull($result, 'creation result is NULL');
+        $this->assertIsArray($result, 'create() return value is NOT OF TYPE ARRAY');
+        $this->assertCount(2, $result);
+    }
+
+    /**
      * complete()
      * @test
+     * @group contract_creator_test
      * */
     public function test_complete_contract_file_creation()
     {
