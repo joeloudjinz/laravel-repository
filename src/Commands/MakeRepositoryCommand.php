@@ -2,6 +2,8 @@
 
 namespace Inz\Repository\Commands;
 
+use Exception;
+use Inz\Repository\Base\ModelCreator;
 use Illuminate\Support\Facades\Artisan;
 use Inz\Repository\Base\ContractCreator;
 
@@ -50,14 +52,31 @@ class MakeRepositoryCommand extends RepositoryCommand
      * @var ContractCreator
      */
     private $contractCreator;
-
+    /**
+     * @var ModelCreator
+     */
+    private $modelCreator;
+    /**
+     * The input of the command.
+     *
+     * @var String
+     */
+    private $input;
     /**
      * Create a new command instance.
      */
     public function __construct()
     {
         parent::__construct();
-        $$this->contractCreator = new ContractCreator($this->argument('model'));
+
+        if (!$this->hasArgument('model')) {
+            // $this->error('No Model is specified');
+            throw new Exception("No Model is specified");
+        }
+
+        $this->input = $this->argument('model');
+        $this->modelCreator = new modelCreator($this->argument('model'));
+        $this->contractCreator = new ContractCreator($this->argument('model'));
     }
 
     /**
@@ -67,7 +86,9 @@ class MakeRepositoryCommand extends RepositoryCommand
      */
     public function handle()
     {
-        $this->checkModel();
+        if (!$this->processModelExistence()) {
+            return;
+        }
 
         // createContract() will return an array of two values, contract namespace in the first position
         // which will be assigned to $contract variable, and the name of the contract name in the
@@ -103,11 +124,13 @@ class MakeRepositoryCommand extends RepositoryCommand
 
         $response = $this->ask("Contract file already exists. Do you want to overwrite it?", 'Yes');
         if (!$this->isResponsePositive($response)) {
-            $this->warn('Nothing is created');
+            // TODO: handle negative response return statement
+            $this->warn("Contract wasn't created");
         }
 
         $result = $this->contractCreator->complete();
         if (!is_array($result)) {
+            // TODO: handle when complete() doesn't create the file return statement
             $this->error('There was an error while creating contract file');
         }
     }
@@ -175,47 +198,21 @@ class MakeRepositoryCommand extends RepositoryCommand
     /**
      * Checks the models existence, it will be created if the developer approved
      *
-     * TODO: refactor this logic into ModelCreator
-     * @return void.
+     * @return boolean.
      */
-    protected function checkModel()
+    protected function processModelExistence(): bool
     {
-        // replacing a ll slash occurrences with anti-slash
-        $model = str_replace('/', '\\', $this->argument('model'));
-        // extracting words from the input of the command
-        $model_arr = explode('\\', $model);
-        // extracting last element from the array, the model name
-        $this->modelName = array_pop($model_arr);
-        // constructing the full namespace of the model
-        $this->model = $this->appNamespace . $this->modelName;
+        if ($this->laravel->runningInConsole() && !$this->modelCreator->modelExist()) {
+            $response = $this->ask("Model [{$this->input}] does not exist. Would you like to create it?", 'Yes');
 
-        if (!$this->isLumen() && $this->laravel->runningInConsole()) {
-            // checking the existence of the model class
-            if (!class_exists($this->model)) {
-                // if it doesn't, ask the developer if want to create the model
-                $response = $this->ask("Model [{$this->model}] does not exist. Would you like to create it?", 'Yes');
-
-                if ($this->isResponsePositive($response)) {
-                    // create the model class
-                    Artisan::call('make:model', [
-                        'name' => $this->model,
-                    ]);
-                    $this->line("Model [{$this->model}] has been successfully created.");
-                } else {
-                    $this->line("Model [{$this->model}] is not being created.");
-                }
+            if ($this->isResponsePositive($response)) {
+                $this->call('make:model', ['name' => $this->input]);
+                // $this->line("Model [{$this->input}] has been successfully created.");
+                return true;
             }
-        }
 
-        // if the exploded array of the input value has more elements after popping
-        // the model class name from it, this means that the a subdirectory for
-        // the model is specified by the developer
-        if (count($model_arr) > 0) {
-            // construct the subdirectory namespace
-            $this->subDir = '\\' . implode('\\', $model_arr);
-        } else {
-            // else, no subdirectory is specified
-            $this->subDir = '';
+            $this->warn("Model wasn't created, aborting command.");
+            return false;
         }
     }
 
