@@ -1,8 +1,8 @@
 <?php
 namespace Inz\Repository\Test\Feature;
 
+use Inz\Repository\Test\TestCase;
 use Inz\Repository\Test\Traits\FakeStorageInitiator;
-use Orchestra\Testbench\TestCase;
 
 class MakeRepositoryCommandTest extends TestCase
 {
