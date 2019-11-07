@@ -3,7 +3,7 @@
 namespace Inz\Repository\Test\Unit\Creators;
 
 use Inz\Base\ContractCreator;
-use Orchestra\Testbench\TestCase;
+use Inz\Repository\Test\TestCase;
 use Illuminate\Filesystem\Filesystem;
 use Inz\Repository\Test\Traits\FakeStorageInitiator;
 

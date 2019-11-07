@@ -3,7 +3,7 @@
 namespace Inz\Repository\Test\Unit\Creators;
 
 use Inz\Base\ModelCreator;
-use Orchestra\Testbench\TestCase;
+use Inz\Repository\Test\TestCase;
 
 class ModelCreatorTest extends TestCase
 {
