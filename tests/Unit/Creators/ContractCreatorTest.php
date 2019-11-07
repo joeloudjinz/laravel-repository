@@ -20,14 +20,13 @@ class ContractCreatorTest extends TestCase
      */
     private $attributesData = [
         'classNameSuffix' => 'RepositoryInterface',
-        'configType' => 'contracts',
         'pathConfig' => 'Repositories/Contracts',
         'namespaceConfig' => 'Repositories\Contracts',
     ];
 
-    private function createInstance($modelName = null, $appBasePath = null)
+    private function createInstance($modelName = null)
     {
-        return new ContractCreator($modelName ?? $this->modelName, $appBasePath);
+        return new ContractCreator($modelName ?? $this->modelName);
     }
 
     /**
@@ -44,7 +43,6 @@ class ContractCreatorTest extends TestCase
 
         $this->assertNotNull($creator->getStub());
         $this->assertEquals($this->attributesData['classNameSuffix'], $creator->getClassNameSuffix());
-        $this->assertEquals($this->attributesData['configType'], $creator->getConfigType());
         $this->assertEquals($this->attributesData['pathConfig'], $creator->getPathConfig());
         $this->assertEquals($this->attributesData['namespaceConfig'], $creator->getNamespaceConfig());
     }
@@ -55,7 +53,7 @@ class ContractCreatorTest extends TestCase
      */
     public function test_repository_creator_attributes_initialized_where_model_in_subdirectory()
     {
-        $creator = $this->createInstance('Models/Post');
+        $creator = $this->createInstance('Blog/Post');
 
         $this->assertNotNull($creator->getFileManager());
         $this->assertInstanceOf(Filesystem::class, $creator->getFileManager());
@@ -63,9 +61,8 @@ class ContractCreatorTest extends TestCase
 
         $this->assertNotNull($creator->getStub());
         $this->assertNotNull($creator->getSubdirectory());
-        $this->assertEquals('Models', $creator->getSubdirectory());
+        $this->assertEquals('Blog', $creator->getSubdirectory());
         $this->assertEquals($this->attributesData['classNameSuffix'], $creator->getClassNameSuffix());
-        $this->assertEquals($this->attributesData['configType'], $creator->getConfigType());
         $this->assertEquals($this->attributesData['pathConfig'], $creator->getPathConfig());
         $this->assertEquals($this->attributesData['namespaceConfig'], $creator->getNamespaceConfig());
     }
@@ -225,8 +222,8 @@ class ContractCreatorTest extends TestCase
     public function test_create_contract_file_in_specific_path()
     {
         // preparing
-        $path = $this->prepareFakeStorage();
-        $creator = $this->createInstance($this->modelName, $path);
+        $this->prepareFakeStorage();
+        $creator = $this->createInstance();
 
         // execution
         $result = $creator->create();
@@ -245,8 +242,8 @@ class ContractCreatorTest extends TestCase
     public function test_create_contract_file_in_specific_path_in_subdirectory()
     {
         // preparing
-        $path = $this->prepareFakeStorage();
-        $creator = $this->createInstance('Blog/Post', $path);
+        $this->prepareFakeStorage();
+        $creator = $this->createInstance('Blog/Post');
 
         // execution
         $result = $creator->create();
@@ -265,8 +262,8 @@ class ContractCreatorTest extends TestCase
     public function test_complete_contract_file_creation()
     {
         // preparing
-        $path = $this->prepareFakeStorage();
-        $creator = $this->createInstance($this->modelName, $path);
+        $this->prepareFakeStorage();
+        $creator = $this->createInstance();
 
         $result = $creator->create();
         // execution
