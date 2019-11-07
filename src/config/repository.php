@@ -1,7 +1,26 @@
 <?php
 
 return [
-    // Namespaces are being prefixed with the applications base namespace.
+
+    /*
+    |--------------------------------------------------------------------------
+    | Base Values
+    |--------------------------------------------------------------------------
+    | this array give you the ability to define base path & namespace for package, path is
+    | used to create the base directory in which all generated file are stored, on the
+    | other hand, namespace is used to define the base namespace for those files.
+    |
+    | Note that the slash & anti-slash, for path & namespace respectively, are
+    | required when defining these values.
+    |
+     */
+    'base' => [
+        // better choices are: 'app/' or root directory of the application
+        'path' => storage_path('framework/testing/disks/app'),
+        // better choice is: 'App\' the application base namespace
+        'namespace' => app()->getNamespace(),
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Namespaces
@@ -12,15 +31,11 @@ return [
     |
      */
     'namespaces' => [
-        // Contracts (interfaces) base namespace
         'contracts' => 'Repositories\Contracts',
-        // repository implementations classes namespace
         'implementations' => 'Repositories\Implementations',
-        // Criterions base namespace
         'criteria' => 'Repositories\Criteria',
     ],
 
-    // Paths will be used with the `app()->basePath().'/app/'` function to reach app directory.
     /*
     |--------------------------------------------------------------------------
     | Paths

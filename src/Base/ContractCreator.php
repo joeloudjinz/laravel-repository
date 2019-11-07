@@ -25,9 +25,9 @@ class ContractCreator extends Creator
      */
     private $replacements = [];
 
-    public function __construct(String $input, $appBasePath = null)
+    public function __construct(String $input)
     {
-        parent::__construct($appBasePath);
+        parent::__construct();
         $values = $this->extractInputValues($input);
         $this->modelName = $values['modelName'];
         if (Arr::has($values, 'subdirectory')) {
@@ -35,9 +35,6 @@ class ContractCreator extends Creator
         }
         $this->stub = __DIR__ . '/Stubs/Contracts/ExampleRepository.stub';
         $this->classNameSuffix = 'RepositoryInterface';
-        $this->configType = 'contracts';
-        $this->setPathFromConfig();
-        $this->setNamespaceFromConfig();
         $this->initializeReplacementsParts($this->modelName);
     }
 
@@ -50,7 +47,7 @@ class ContractCreator extends Creator
     public function initializeReplacementsParts(String $modelName)
     {
         $this->replacements = [
-            '%namespaces.contracts%' => $this->appNamespace . $this->namespaceConfig . $this->subdirectory,
+            '%namespaces.contracts%' => $this->baseNamespace . $this->namespaceConfig . $this->subdirectory,
             '%modelName%' => $modelName,
         ];
     }

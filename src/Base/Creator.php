@@ -3,7 +3,6 @@
 namespace Inz\Base;
 
 use Exception;
-use Illuminate\Support\Str;
 use Illuminate\Filesystem\Filesystem;
 
 /**
@@ -20,17 +19,17 @@ abstract class Creator
      */
     protected $fileManager;
     /**
-     * Application's root path.
+     * Application's path.
      *
      * @var string
      */
-    protected $appBasePath;
+    protected $basePath;
     /**
-     * Application base namespace.
+     * Application's namespace.
      *
      * @var string
      */
-    protected $appNamespace;
+    protected $baseNamespace;
 
     /**
      * The content of the stub file that will be manipulated.
@@ -44,12 +43,6 @@ abstract class Creator
      * @var int
      */
     protected $permissions = 0755;
-    /**
-     * Config array key of the current class
-     *
-     * @var String
-     */
-    protected $configType;
     /**
      * The path value from config file related to the current class
      *
@@ -94,11 +87,13 @@ abstract class Creator
      */
     protected $path;
 
-    public function __construct($appBasePath)
+    public function __construct()
     {
         $this->fileManager = app()->make(Filesystem::class);
-        $this->appNamespace = app()->getNamespace();
-        $this->appBasePath = $appBasePath ?? app()->basePath();
+        $this->baseNamespace = ConfigurationResolver::baseNamespace();
+        $this->basePath = ConfigurationResolver::basePath();
+        $this->namespaceConfig = ConfigurationResolver::namespaceFor(get_called_class());
+        $this->pathConfig = ConfigurationResolver::pathFor(get_called_class());
     }
 
     abstract public function create();
@@ -186,10 +181,10 @@ abstract class Creator
             return null;
         }
 
-        $base = $this->appBasePath . DIRECTORY_SEPARATOR;
+        $base = $this->basePath . DIRECTORY_SEPARATOR;
         // if the base path points directly to the application's root directory, append
         // 'app' word to the directory base path so it points to the app folder.
-        if (app()->basePath() === $this->appBasePath) {
+        if (app()->basePath() === $this->basePath) {
             return $base . 'app' . DIRECTORY_SEPARATOR;
         }
 
@@ -277,7 +272,7 @@ abstract class Creator
             return null;
         }
 
-        $base = $this->appNamespace . $this->namespaceConfig . '\\';
+        $base = $this->baseNamespace . $this->namespaceConfig . '\\';
 
         if ($this->isNotEmpty($this->subdirectory)) {
             return $base . $this->subdirectory . '\\';
@@ -286,32 +281,6 @@ abstract class Creator
         return $base;
     }
 
-    /**
-     * Return the path value for the current class from the config file,
-     * if the value from the config file is null it will construct path
-     * value based on the pattern Repositories/ConfigTypeValue/
-     *
-     * @return void
-     */
-    public function setPathFromConfig()
-    {
-        $this->pathConfig = config('repository.paths.' . $this->configType) ??
-        'Repositories' . DIRECTORY_SEPARATOR . Str::title($this->configType);
-    }
-
-    /**
-     * Return the namespace value for the current class from the config file,
-     * if the value from the config file is null it will construct path
-     * value based on the pattern Repositories\ConfigTypeValue
-     *
-     * @return Void
-     */
-    public function setNamespaceFromConfig()
-    {
-        $this->namespaceConfig =
-        config('repository.namespaces.' . $this->configType) ??
-        'Repositories\\' . Str::title($this->configType);
-    }
     /**
      * Extracting the model name & subdirectory values, which is **only** the
      * first element, from exploding input value.
@@ -377,10 +346,10 @@ abstract class Creator
      *
      * @return String
      */
-    public function getConfigType()
-    {
-        return $this->configType;
-    }
+    // public function getConfigType()
+    // {
+    //     return $this->configType;
+    // }
 
     /**
      * Gets the value of path extracted from the config file.
@@ -409,7 +378,7 @@ abstract class Creator
 
     public function getAppNamespace()
     {
-        return $this->appNamespace;
+        return $this->baseNamespace;
     }
 
     public function getClassNameSuffix()
