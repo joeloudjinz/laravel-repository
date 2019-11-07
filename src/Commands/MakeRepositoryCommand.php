@@ -5,9 +5,10 @@ namespace Inz\Commands;
 use Exception;
 use Inz\Base\ModelCreator;
 use Inz\Base\ContractCreator;
+use Illuminate\Console\Command;
 use Inz\Base\RepositoryCreator;
 
-class MakeRepositoryCommand
+class MakeRepositoryCommand extends Command
 {
     /**
      * The name and signature of the console command.
@@ -26,7 +27,7 @@ class MakeRepositoryCommand
      *
      * @var String
      */
-    private $input;
+    protected $input;
     /**
      * @var ModelCreator
      */
@@ -45,16 +46,21 @@ class MakeRepositoryCommand
      */
     public function __construct()
     {
-        if (!$this->hasArgument('model')) {
-            // $this->error('No Model is specified');
-            throw new Exception("No Model is specified");
-            die(1);
-        }
+        parent::__construct();
+    }
 
+    /**
+     * Takes care of initializing class attributes after the constructor
+     * has completed constructing the object.
+     *
+     * @return void
+     */
+    private function initializeAttributes()
+    {
         $this->input = $this->argument('model');
-        $this->modelCreator = new modelCreator($this->argument('model'));
-        $this->contractCreator = new ContractCreator($this->argument('model'));
-        $this->repositoryCreator = new RepositoryCreator($this->argument('model'));
+        $this->modelCreator = new modelCreator($this->input);
+        $this->contractCreator = new ContractCreator($this->input);
+        $this->repositoryCreator = new RepositoryCreator($this->input);
     }
 
     /**
@@ -64,6 +70,13 @@ class MakeRepositoryCommand
      */
     public function handle()
     {
+        if ($this->isValidArgument('model')) {
+            $this->error('Model name is missing');
+            return;
+        }
+
+        $this->initializeAttributes();
+
         if (!$this->processModelExistence()) {
             return;
         }
@@ -78,6 +91,23 @@ class MakeRepositoryCommand
         }
 
         $this->bindClasses();
+    }
+
+    /**
+     * Checks the presence & validity of the argument with the given name.
+     *
+     * @param String $name
+     *
+     * @return bool
+     */
+    private function isValidArgument(String $name): bool
+    {
+        return $this->hasArgument($name) && count_chars($this->argument($name)) > 0;
+    }
+    
+    public function bindClasses()
+    {
+        $this->call('make:binding', ['repository' => $this->input]);
     }
 
     /**
@@ -158,11 +188,6 @@ class MakeRepositoryCommand
         }
     }
 
-    public function bindClasses()
-    {
-        $this->call('make:binding', ['repository' => $this->input]);
-    }
-
     /**
      * Determine if the user input is positive.
      *
@@ -174,9 +199,4 @@ class MakeRepositoryCommand
     {
         return in_array(strtolower($response), ['y', 'yes'], true);
     }
-
-    // private function isLumen()
-    // {
-    //     return str_contains(app()->version(), 'Lumen');
-    // }
 }
