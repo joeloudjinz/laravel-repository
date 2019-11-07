@@ -2,14 +2,16 @@
 
 namespace Inz\Repository\Test\Unit\Creators;
 
+use Inz\Base\RepositoryCreator;
 use Orchestra\Testbench\TestCase;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Facades\Storage;
-use Inz\Repository\Base\RepositoryCreator;
+
+// use Inz\Repository\Traits\FakeStorageInitiator;
 
 class RepositoryCreatorTest extends TestCase
 {
-    private $fakeStorage;
+    use Inz\Traits\FakeStorageInitiator;
+
     private $modelName = 'Post';
 
     /**
@@ -23,19 +25,6 @@ class RepositoryCreatorTest extends TestCase
         'pathConfig' => 'Repositories/Implementations',
         'namespaceConfig' => 'Repositories\Implementations',
     ];
-
-    /**
-     * Create a fake storage for testing and return the full path
-     * to it to be used during tests if needed.
-     *
-     * @return String
-     */
-    private function prepareFakeStorage($name = 'app')
-    {
-        Storage::fake($name);
-        $this->fakeStorage = Storage::disk($name);
-        return storage_path('framework/testing/disks/' . $name);
-    }
 
     private function createInstance($modelName = null, $appBasePath = null)
     {
@@ -242,7 +231,7 @@ class RepositoryCreatorTest extends TestCase
         // preparing
         $path = $this->prepareFakeStorage();
         $creator = $this->createInstance($this->modelName, $path);
-        
+
         // initializing replacements attribute
         $creator->initializeReplacementsParts('ContractNamespace', 'ContractName', 'Post');
 
@@ -265,7 +254,7 @@ class RepositoryCreatorTest extends TestCase
         // preparing
         $path = $this->prepareFakeStorage();
         $creator = $this->createInstance('Blog/Post', $path);
-        
+
         // initializing replacements attribute
         $creator->initializeReplacementsParts('ContractNamespace', 'ContractName', 'Blog\Post');
 

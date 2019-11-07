@@ -2,7 +2,7 @@
 
 namespace Inz\Repository\Test\Unit\Creators;
 
-use Inz\Repository\Base\ModelCreator;
+use Inz\Base\ModelCreator;
 use Orchestra\Testbench\TestCase;
 
 class ModelCreatorTest extends TestCase

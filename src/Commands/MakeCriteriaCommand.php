@@ -1,6 +1,6 @@
 <?php
 
-namespace Inz\Repository\Commands;
+namespace Inz\Commands;
 
 class MakeCriteriaCommand extends RepositoryCommand
 {

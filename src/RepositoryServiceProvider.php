@@ -1,11 +1,11 @@
 <?php
 
-namespace Inz\Repository;
+namespace Inz;
 
 use Illuminate\Support\ServiceProvider;
-use Inz\Repository\Commands\MakeBindingCommand;
-use Inz\Repository\Commands\MakeCriteriaCommand;
-use Inz\Repository\Commands\MakeRepositoryCommand;
+use Inz\Commands\MakeBindingCommand;
+use Inz\Commands\MakeCriteriaCommand;
+use Inz\Commands\MakeRepositoryCommand;
 
 class RepositoryServiceProvider extends ServiceProvider
 {

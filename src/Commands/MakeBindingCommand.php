@@ -1,6 +1,6 @@
 <?php
 
-namespace Inz\Repository\Commands;
+namespace Inz\Commands;
 
 use File;
 use Illuminate\Console\Command;
