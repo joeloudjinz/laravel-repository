@@ -2,14 +2,16 @@
 
 namespace Inz\Repository\Test\Unit\Creators;
 
-use Orchestra\Testbench\TestCase;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Facades\Storage;
-use Inz\Repository\Base\ContractCreator;
+use Inz\Base\ContractCreator;
+use Orchestra\Testbench\TestCase;
+
+// use Inz\Repository\Traits\FakeStorageInitiator;
 
 class ContractCreatorTest extends TestCase
 {
-    private $fakeStorage;
+    use Inz\Traits\FakeStorageInitiator;
+
     private $modelName = 'Post';
 
     /**
@@ -23,19 +25,6 @@ class ContractCreatorTest extends TestCase
         'pathConfig' => 'Repositories/Contracts',
         'namespaceConfig' => 'Repositories\Contracts',
     ];
-
-    /**
-     * Create a fake storage for testing and return the full path
-     * to it to be used during tests if needed.
-     *
-     * @return String
-     */
-    private function prepareFakeStorage($name = 'app')
-    {
-        Storage::fake($name);
-        $this->fakeStorage = Storage::disk($name);
-        return storage_path('framework/testing/disks/' . $name);
-    }
 
     private function createInstance($modelName = null, $appBasePath = null)
     {

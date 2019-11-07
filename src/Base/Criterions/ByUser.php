@@ -1,8 +1,8 @@
 <?php
 
-namespace Inz\Repository\Base\Criterions;
+namespace Inz\Base\Criterions;
 
-use Inz\Repository\Repositories\Contracts\CriterionInterface;
+use Inz\Base\Interfaces\CriterionInterface;
 
 class ByUser implements CriterionInterface
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Inz\Repository\Base;
+namespace Inz\Base;
 
 use Illuminate\Support\Arr;
 

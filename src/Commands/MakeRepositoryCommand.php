@@ -1,11 +1,11 @@
 <?php
 
-namespace Inz\Repository\Commands;
+namespace Inz\Commands;
 
 use Exception;
-use Inz\Repository\Base\ModelCreator;
-use Inz\Repository\Base\ContractCreator;
-use Inz\Repository\Base\RepositoryCreator;
+use Inz\Base\ModelCreator;
+use Inz\Base\ContractCreator;
+use Inz\Base\RepositoryCreator;
 
 class MakeRepositoryCommand
 {
