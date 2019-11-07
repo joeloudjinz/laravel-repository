@@ -6,22 +6,9 @@ use Illuminate\Support\Arr;
 
 class RepositoryCreator extends Creator
 {
-    /**
-     * Contract full namespace.
-     *
-     * @var String
-     */
-    private $contractNamespace;
-    /**
-     * Contract name.
-     *
-     * @var String
-     */
-    private $contractName;
-
-    public function __construct(String $input, $appBasePath = null)
+    public function __construct(String $input)
     {
-        parent::__construct($appBasePath);
+        parent::__construct();
         $values = $this->extractInputValues($input);
         $this->modelName = $values['modelName'];
         if (Arr::has($values, 'subdirectory')) {
@@ -29,9 +16,6 @@ class RepositoryCreator extends Creator
         }
         $this->stub = __DIR__ . '/Stubs/Eloquent/EloquentExampleRepository.stub';
         $this->classNameSuffix = 'Repository';
-        $this->configType = 'implementations';
-        $this->setPathFromConfig();
-        $this->setNamespaceFromConfig();
     }
 
     /**
@@ -49,7 +33,7 @@ class RepositoryCreator extends Creator
             '%contractName%' => $contractName,
             '%model%' => $modelNamespace,
             '%modelName%' => $this->modelName,
-            '%namespaces.repositories%' => $this->appNamespace . $this->namespaceConfig . $this->subdirectory,
+            '%namespaces.repositories%' => $this->baseNamespace . $this->namespaceConfig . $this->subdirectory,
         ];
     }
 

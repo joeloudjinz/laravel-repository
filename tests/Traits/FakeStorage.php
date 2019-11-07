@@ -22,6 +22,6 @@ trait FakeStorageInitiator
     {
         Storage::fake($name);
         $this->fakeStorage = Storage::disk($name);
-        return storage_path('framework/testing/disks/' . $name);
+        return storage_path('framework/testing/disks/' . $name . DIRECTORY_SEPARATOR);
     }
 }
