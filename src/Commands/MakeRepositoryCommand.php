@@ -3,10 +3,10 @@
 namespace Inz\Commands;
 
 use Exception;
-use Inz\Base\ModelCreator;
-use Inz\Base\ContractCreator;
+use Inz\Base\Creators\ModelCreator;
+use Inz\Base\Creators\ContractCreator;
 use Illuminate\Console\Command;
-use Inz\Base\RepositoryCreator;
+use Inz\Base\Creators\RepositoryCreator;
 
 class MakeRepositoryCommand extends Command
 {
