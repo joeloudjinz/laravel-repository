@@ -15,7 +15,7 @@ class RepositoryCreator extends Creator
         if (Arr::has($values, 'subdirectory')) {
             $this->subdirectory = $values['subdirectory'];
         }
-        $this->stub = __DIR__ . '/../Stubs/Eloquent/EloquentExampleRepository.stub';
+        $this->stub = __DIR__ . '/../Stubs/implementation.stub';
         $this->classNameSuffix = 'Repository';
     }
 
@@ -30,11 +30,11 @@ class RepositoryCreator extends Creator
     public function initializeReplacementsParts(String $contractNamespace, String $contractName, String $modelNamespace)
     {
         $this->replacements = [
-            '%contract%' => $contractNamespace,
+            '%contractNamespace%' => $contractNamespace,
             '%contractName%' => $contractName,
-            '%model%' => $modelNamespace,
+            '%modelNamespace%' => $modelNamespace,
             '%modelName%' => $this->modelName,
-            '%namespaces.repositories%' => $this->baseNamespace . $this->namespaceConfig . $this->subdirectory,
+            '%repositoriesNamespaces%' => $this->baseNamespace . $this->namespaceConfig . $this->subdirectory,
         ];
     }
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace %namespaces.repositories%;
+namespace %repositoriesNamespaces%;
 
-use %model%;
-use %contract%;
+use %modelNamespace%;
+use %contractNamespace%;
 
 use Inz\Base\Abstractions\AbstractRepository;
 

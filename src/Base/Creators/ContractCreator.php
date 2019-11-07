@@ -34,22 +34,22 @@ class ContractCreator extends Creator
         if (Arr::has($values, 'subdirectory')) {
             $this->subdirectory = $values['subdirectory'];
         }
-        $this->stub = __DIR__ . '/../Stubs/Contracts/ExampleRepository.stub';
+        $this->stub = __DIR__ . '/../Stubs/contract.stub';
         $this->classNameSuffix = 'RepositoryInterface';
-        $this->initializeReplacementsParts($this->modelName);
+        $this->createClassName($this->modelName);
+        $this->initializeReplacementsParts();
     }
 
     /**
      * Initialize the array of the parts that will be replaced.
      *
-     * @param String $modelName
      * @return void
      */
-    public function initializeReplacementsParts(String $modelName)
+    public function initializeReplacementsParts()
     {
         $this->replacements = [
-            '%namespaces.contracts%' => $this->baseNamespace . $this->namespaceConfig . $this->subdirectory,
-            '%modelName%' => $modelName,
+            '%contractsNamespace%' => $this->baseNamespace . $this->namespaceConfig . $this->subdirectory,
+            '%contractName%' => $this->className,
         ];
     }
 
@@ -67,9 +67,6 @@ class ContractCreator extends Creator
 
         // replacing each string that match a key in $replacements with the value of that key in $content
         $this->replaceContentParts($this->replacements);
-
-        // preparing repository contract (interface) class name
-        $this->createClassName($this->modelName);
 
         // preparing the full path to the directory where the contracts will be stored
         $this->generateDirectoryFullPath($this->directoryBasePath(), $this->pathConfig);
