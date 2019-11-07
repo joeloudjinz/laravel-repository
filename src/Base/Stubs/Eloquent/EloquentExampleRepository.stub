@@ -5,9 +5,9 @@ namespace %namespaces.repositories%;
 use %model%;
 use %contract%;
 
-use Inz\Repository\Repositories\Eloquent\AbstractRepository;
+use Inz\Base\Abstractions\AbstractRepository;
 
-class Eloquent%modelName%Repository extends AbstractRepository implements %contractName%
+class %modelName%Repository extends AbstractRepository implements %contractName%
 {
     public function model()
     {

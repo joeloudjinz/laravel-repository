@@ -27,7 +27,7 @@ class MakeRepositoryCommand extends Command
      *
      * @var String
      */
-    protected $input;
+    protected $modelArgument;
     /**
      * @var ModelCreator
      */
@@ -57,10 +57,10 @@ class MakeRepositoryCommand extends Command
      */
     private function initializeAttributes()
     {
-        $this->input = $this->argument('model');
-        $this->modelCreator = new modelCreator($this->input);
-        $this->contractCreator = new ContractCreator($this->input);
-        $this->repositoryCreator = new RepositoryCreator($this->input);
+        $this->modelArgument = $this->argument('model');
+        $this->modelCreator = new ModelCreator($this->modelArgument);
+        $this->contractCreator = new ContractCreator($this->modelArgument);
+        $this->repositoryCreator = new RepositoryCreator($this->modelArgument);
     }
 
     /**
@@ -109,7 +109,7 @@ class MakeRepositoryCommand extends Command
 
     public function bindClasses()
     {
-        $this->call('make:binding', ['repository' => $this->input]);
+        $this->call('make:binding', ['repository' => $this->modelArgument]);
     }
 
     /**
@@ -120,11 +120,11 @@ class MakeRepositoryCommand extends Command
     protected function processModelExistence(): bool
     {
         if ($this->laravel->runningInConsole() && !$this->modelCreator->modelExist()) {
-            $response = $this->ask("Model [{$this->input}] does not exist. Would you like to create it?", 'Yes');
+            $response = $this->ask("Model [{$this->modelArgument}] does not exist. Would you like to create it?", 'Yes');
 
             if ($this->isResponsePositive($response)) {
-                $this->callSilent('make:model', ['name' => $this->input]);
-                $this->line("Model [{$this->input}] created successfully");
+                $this->callSilent('make:model', ['name' => $this->modelArgument]);
+                $this->line("Model [{$this->modelArgument}] created successfully");
                 return true;
             }
 

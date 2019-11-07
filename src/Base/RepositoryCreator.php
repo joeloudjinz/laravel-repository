@@ -45,7 +45,7 @@ class RepositoryCreator extends Creator
     public function initializeReplacementsParts(String $contractNamespace, String $contractName, String $modelNamespace)
     {
         $this->replacements = [
-            '%contract%' => $this->appNamespace . $contractNamespace,
+            '%contract%' => $contractNamespace,
             '%contractName%' => $contractName,
             '%model%' => $modelNamespace,
             '%modelName%' => $this->modelName,

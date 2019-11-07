@@ -30,13 +30,28 @@ class MakeRepositoryCommandTest extends TestCase
      * @test
      * @group make_repository_command_test
      */
-    public function test_command_with_model_and_false_answer()
+    public function test_command_with_model_and_negative_answer()
     {
         $this->prepareFakeStorage();
 
         $this->artisan($this->command, ['model' => $this->model])
             ->expectsQuestion("Model [{$this->model}] does not exist. Would you like to create it?", 'no')
             ->expectsOutput("Model wasn't created, aborting command.")
+            ->assertExitCode(0);
+    }
+    /**
+     * testing the case where the model does not exist & the developer want to create it.
+     *
+     * @test
+     * @group make_repository_command_test
+     */
+    public function test_command_with_model_and_positive_answer()
+    {
+        $this->prepareFakeStorage();
+
+        $this->artisan($this->command, ['model' => $this->model])
+            ->expectsQuestion("Model [{$this->model}] does not exist. Would you like to create it?", 'yes')
+            ->expectsOutput("Model [{$this->model}] created successfully")
             ->assertExitCode(0);
     }
 }
