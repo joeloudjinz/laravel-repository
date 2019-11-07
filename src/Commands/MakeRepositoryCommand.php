@@ -70,7 +70,8 @@ class MakeRepositoryCommand extends Command
      */
     public function handle()
     {
-        if ($this->isValidArgument('model')) {
+
+        if (!$this->isValidArgument('model')) {
             $this->error('Model name is missing');
             return;
         }
@@ -102,9 +103,10 @@ class MakeRepositoryCommand extends Command
      */
     private function isValidArgument(String $name): bool
     {
-        return $this->hasArgument($name) && count_chars($this->argument($name)) > 0;
+        return $this->hasArgument($name) &&
+        $this->argument($name) !== '';
     }
-    
+
     public function bindClasses()
     {
         $this->call('make:binding', ['repository' => $this->input]);
@@ -121,13 +123,15 @@ class MakeRepositoryCommand extends Command
             $response = $this->ask("Model [{$this->input}] does not exist. Would you like to create it?", 'Yes');
 
             if ($this->isResponsePositive($response)) {
-                $this->call('make:model', ['name' => $this->input]);
+                $this->callSilent('make:model', ['name' => $this->input]);
+                $this->line("Model [{$this->input}] created successfully");
                 return true;
             }
 
             $this->warn("Model wasn't created, aborting command.");
             return false;
         }
+        return true;
     }
 
     /**
