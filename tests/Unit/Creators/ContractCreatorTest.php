@@ -145,6 +145,7 @@ class ContractCreatorTest extends TestCase
     {
         $path = $this->prepareFakeStorage();
         $creator = $this->createInstance();
+        // .php will be added by the method
         $fileName = $this->modelName . $this->attributesData['classNameSuffix'];
 
         $result = $creator->generateFileFullPath($path, $fileName);

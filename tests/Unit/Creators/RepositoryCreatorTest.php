@@ -20,7 +20,6 @@ class RepositoryCreatorTest extends TestCase
      */
     private $attributesData = [
         'classNameSuffix' => 'Repository',
-        'configType' => 'implementations',
         'pathConfig' => 'Repositories/Implementations',
         'namespaceConfig' => 'Repositories\Implementations',
     ];
@@ -44,7 +43,6 @@ class RepositoryCreatorTest extends TestCase
 
         $this->assertNotNull($creator->getStub());
         $this->assertEquals($this->attributesData['classNameSuffix'], $creator->getClassNameSuffix());
-        $this->assertEquals($this->attributesData['configType'], $creator->getConfigType());
         $this->assertEquals($this->attributesData['pathConfig'], $creator->getPathConfig());
         $this->assertEquals($this->attributesData['namespaceConfig'], $creator->getNamespaceConfig());
     }
@@ -65,7 +63,6 @@ class RepositoryCreatorTest extends TestCase
         $this->assertNotNull($creator->getSubdirectory());
         $this->assertEquals('Models', $creator->getSubdirectory());
         $this->assertEquals($this->attributesData['classNameSuffix'], $creator->getClassNameSuffix());
-        $this->assertEquals($this->attributesData['configType'], $creator->getConfigType());
         $this->assertEquals($this->attributesData['pathConfig'], $creator->getPathConfig());
         $this->assertEquals($this->attributesData['namespaceConfig'], $creator->getNamespaceConfig());
     }
