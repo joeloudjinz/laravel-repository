@@ -1,6 +1,6 @@
 <?php
 
-namespace Inz\Traits;
+namespace Inz\Repository\Test\Traits;
 
 use Illuminate\Support\Facades\Storage;
 

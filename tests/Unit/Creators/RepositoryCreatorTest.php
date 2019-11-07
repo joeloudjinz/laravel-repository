@@ -5,12 +5,11 @@ namespace Inz\Repository\Test\Unit\Creators;
 use Inz\Base\RepositoryCreator;
 use Orchestra\Testbench\TestCase;
 use Illuminate\Filesystem\Filesystem;
-
-// use Inz\Repository\Traits\FakeStorageInitiator;
+use Inz\Repository\Test\Traits\FakeStorageInitiator;
 
 class RepositoryCreatorTest extends TestCase
 {
-    use Inz\Traits\FakeStorageInitiator;
+    use FakeStorageInitiator;
 
     private $modelName = 'Post';
 
