@@ -2,6 +2,9 @@
 
 namespace Inz\Base;
 
+use Inz\Base\Creators\ContractCreator;
+use Inz\Base\Creators\RepositoryCreator;
+
 class ConfigurationResolver
 {
     protected static $configName = 'repository';

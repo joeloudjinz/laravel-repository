@@ -1,6 +1,6 @@
 <?php
 
-namespace Inz\Base;
+namespace Inz\Base\Creators;
 
 class ModelCreator
 {

@@ -2,8 +2,8 @@
 
 namespace Inz\Repository\Test\Unit\Creators;
 
-use Inz\Base\ModelCreator;
 use Inz\Repository\Test\TestCase;
+use Inz\Base\Creators\ModelCreator;
 
 class ModelCreatorTest extends TestCase
 {

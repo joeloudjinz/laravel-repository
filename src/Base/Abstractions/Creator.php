@@ -1,9 +1,10 @@
 <?php
 
-namespace Inz\Base;
+namespace Inz\Base\Abstractions;
 
 use Exception;
 use Illuminate\Filesystem\Filesystem;
+use Inz\Base\ConfigurationResolver;
 
 /**
  * Abstracts the creation process of the files, this way we can reuse the logic to

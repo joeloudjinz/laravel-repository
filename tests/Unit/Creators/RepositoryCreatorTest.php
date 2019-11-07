@@ -2,9 +2,9 @@
 
 namespace Inz\Repository\Test\Unit\Creators;
 
-use Inz\Base\RepositoryCreator;
 use Inz\Repository\Test\TestCase;
 use Illuminate\Filesystem\Filesystem;
+use Inz\Base\Creators\RepositoryCreator;
 use Inz\Repository\Test\Traits\FakeStorageInitiator;
 
 class RepositoryCreatorTest extends TestCase

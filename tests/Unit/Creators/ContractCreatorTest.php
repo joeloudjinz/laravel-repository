@@ -2,9 +2,9 @@
 
 namespace Inz\Repository\Test\Unit\Creators;
 
-use Inz\Base\ContractCreator;
 use Inz\Repository\Test\TestCase;
 use Illuminate\Filesystem\Filesystem;
+use Inz\Base\Creators\ContractCreator;
 use Inz\Repository\Test\Traits\FakeStorageInitiator;
 
 class ContractCreatorTest extends TestCase

@@ -2,12 +2,12 @@
 
 namespace Inz\Base\Abstractions;
 
-use Illuminate\Database\Eloquent\Model;
 use Inz\Exceptions\NoModelDefined;
+use Illuminate\Database\Eloquent\Model;
 use Inz\Exceptions\RepositoryException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Inz\Base\Interfaces\CriteriaInterface;
 use Inz\Base\Interfaces\RepositoryInterface;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 abstract class AbstractRepository implements RepositoryInterface, CriteriaInterface
 {
