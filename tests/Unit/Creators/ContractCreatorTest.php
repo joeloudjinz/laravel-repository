@@ -2,15 +2,14 @@
 
 namespace Inz\Repository\Test\Unit\Creators;
 
-use Illuminate\Filesystem\Filesystem;
 use Inz\Base\ContractCreator;
 use Orchestra\Testbench\TestCase;
-
-// use Inz\Repository\Traits\FakeStorageInitiator;
+use Illuminate\Filesystem\Filesystem;
+use Inz\Repository\Test\Traits\FakeStorageInitiator;
 
 class ContractCreatorTest extends TestCase
 {
-    use Inz\Traits\FakeStorageInitiator;
+    use FakeStorageInitiator;
 
     private $modelName = 'Post';
 
