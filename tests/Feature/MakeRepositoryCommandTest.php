@@ -84,6 +84,27 @@ class MakeRepositoryCommandTest extends TestCase
      * @test
      * @group make_repository_command_test
      */
+    public function test_command_where_contract_file_exist_and_positive_negative()
+    {
+        $this->prepareFakeStorage();
+
+        $creator = new ContractCreator($this->model);
+        $creator->create();
+
+        $this->artisan($this->command, ['model' => $this->model])
+            ->expectsQuestion("Model [{$this->model}] does not exist. Would you like to create it?", 'yes')
+            ->expectsOutput("Model [{$this->model}] created successfully")
+            ->expectsQuestion("Contract file already exists. Do you want to overwrite it?", 'yes')
+            ->expectsOutput("Contract [{$creator->getClassName()}] created successfully")
+            ->assertExitCode(0);
+    }
+
+    /**
+     * testing the case where the contract file does exist & the developer doesn't want to create it.
+     *
+     * @test
+     * @group make_repository_command_test
+     */
     public function test_command_where_implementation_file_exist_and_answer_negative()
     {
         $this->prepareFakeStorage();
