@@ -24,9 +24,9 @@ class RepositoryCreatorTest extends TestCase
         'namespaceConfig' => 'Repositories\Implementations',
     ];
 
-    private function createInstance($modelName = null, $appBasePath = null)
+    private function createInstance($modelName = null)
     {
-        return new RepositoryCreator($modelName ?? $this->modelName, $appBasePath);
+        return new RepositoryCreator($modelName ?? $this->modelName);
     }
 
     /**
@@ -225,8 +225,8 @@ class RepositoryCreatorTest extends TestCase
     public function test_create_implementation_file_in_specific_path()
     {
         // preparing
-        $path = $this->prepareFakeStorage();
-        $creator = $this->createInstance($this->modelName, $path);
+        $this->prepareFakeStorage();
+        $creator = $this->createInstance($this->modelName);
 
         // initializing replacements attribute
         $creator->initializeReplacementsParts('ContractNamespace', 'ContractName', 'Post');
@@ -248,8 +248,8 @@ class RepositoryCreatorTest extends TestCase
     public function test_create_implementation_file_in_specific_path_in_subdirectory()
     {
         // preparing
-        $path = $this->prepareFakeStorage();
-        $creator = $this->createInstance('Blog/Post', $path);
+        $this->prepareFakeStorage();
+        $creator = $this->createInstance('Blog/Post');
 
         // initializing replacements attribute
         $creator->initializeReplacementsParts('ContractNamespace', 'ContractName', 'Blog\Post');
@@ -271,11 +271,11 @@ class RepositoryCreatorTest extends TestCase
     public function test_complete_implementation_file_creation()
     {
         // preparing
-        $path = $this->prepareFakeStorage();
-        $creator = $this->createInstance($this->modelName, $path);
+        $this->prepareFakeStorage();
+        $creator = $this->createInstance($this->modelName);
         $creator->initializeReplacementsParts('ContractNamespace', 'ContractName', 'Post');
-
         $result = $creator->create();
+
         // execution
         $result = $creator->complete();
 
