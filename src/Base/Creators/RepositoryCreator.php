@@ -2,7 +2,6 @@
 
 namespace Inz\Base\Creators;
 
-use Illuminate\Support\Arr;
 use Inz\Base\Abstractions\Creator;
 
 class RepositoryCreator extends Creator
@@ -15,12 +14,7 @@ class RepositoryCreator extends Creator
     private $replacements = [];
     public function __construct(String $input)
     {
-        parent::__construct();
-        $values = $this->extractInputValues($input);
-        $this->modelName = $values['modelName'];
-        if (Arr::has($values, 'subdirectory')) {
-            $this->subdirectory = $values['subdirectory'];
-        }
+        parent::__construct($input);
         $this->stub = __DIR__ . '/../Stubs/implementation.stub';
         $this->classNameSuffix = 'Repository';
     }
