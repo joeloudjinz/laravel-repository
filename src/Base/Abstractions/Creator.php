@@ -3,8 +3,9 @@
 namespace Inz\Base\Abstractions;
 
 use Exception;
-use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Arr;
 use Inz\Base\ConfigurationResolver;
+use Illuminate\Filesystem\Filesystem;
 
 /**
  * Abstracts the creation process of the files, this way we can reuse the logic to
@@ -31,7 +32,12 @@ abstract class Creator
      * @var string
      */
     protected $baseNamespace;
-
+    /**
+     * Model name inserted by the developer.
+     *
+     * @var String
+     */
+    protected $modelName;
     /**
      * The content of the stub file that will be manipulated.
      *
@@ -88,13 +94,19 @@ abstract class Creator
      */
     protected $path;
 
-    public function __construct()
+    public function __construct(String $input)
     {
         $this->fileManager = app()->make(Filesystem::class);
         $this->baseNamespace = ConfigurationResolver::baseNamespace();
         $this->basePath = ConfigurationResolver::basePath();
         $this->namespaceConfig = ConfigurationResolver::namespaceFor(get_called_class());
         $this->pathConfig = ConfigurationResolver::pathFor(get_called_class());
+
+        $values = $this->extractInputValues($input);
+        $this->modelName = $values['modelName'];
+        if (Arr::has($values, 'subdirectory')) {
+            $this->subdirectory = $values['subdirectory'];
+        }
     }
 
     abstract public function create();

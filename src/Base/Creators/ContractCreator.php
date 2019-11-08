@@ -2,17 +2,10 @@
 
 namespace Inz\Base\Creators;
 
-use Illuminate\Support\Arr;
 use Inz\Base\Abstractions\Creator;
 
 class ContractCreator extends Creator
 {
-    /**
-     * Model name inserted by the developer.
-     *
-     * @var String
-     */
-    private $modelName;
     /**
      * Stub path of the file that will be generated.
      *
@@ -28,12 +21,7 @@ class ContractCreator extends Creator
 
     public function __construct(String $input)
     {
-        parent::__construct();
-        $values = $this->extractInputValues($input);
-        $this->modelName = $values['modelName'];
-        if (Arr::has($values, 'subdirectory')) {
-            $this->subdirectory = $values['subdirectory'];
-        }
+        parent::__construct($input);
         $this->stub = __DIR__ . '/../Stubs/contract.stub';
         $this->classNameSuffix = 'RepositoryInterface';
         $this->createClassName($this->modelName);
