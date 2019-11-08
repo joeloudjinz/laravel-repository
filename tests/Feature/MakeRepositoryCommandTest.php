@@ -84,7 +84,7 @@ class MakeRepositoryCommandTest extends TestCase
      * @test
      * @group make_repository_command_test
      */
-    public function test_command_where_contract_file_exist_and_positive_negative()
+    public function test_command_where_contract_file_exist_and_answer_positive()
     {
         $this->prepareFakeStorage();
 
@@ -100,7 +100,7 @@ class MakeRepositoryCommandTest extends TestCase
     }
 
     /**
-     * testing the case where the contract file does exist & the developer doesn't want to create it.
+     * testing the case where the implementation file does exist & the developer doesn't want to create it.
      *
      * @test
      * @group make_repository_command_test
@@ -116,6 +116,27 @@ class MakeRepositoryCommandTest extends TestCase
             ->expectsOutput("Model [{$this->model}] created successfully")
             ->expectsQuestion("Implementations file already exists. Do you want to overwrite it?", 'no')
             ->expectsOutput("Implementation class wasn't created")
+            ->assertExitCode(0);
+    }
+
+    /**
+     * testing the case where the implementation file does exist & the developer want to create it.
+     *
+     * @test
+     * @group make_repository_command_test
+     */
+    public function test_command_where_implementation_file_exist_and_answer_positive()
+    {
+        $this->prepareFakeStorage();
+
+        $creator = new RepositoryCreator($this->model);
+        $creator->create();
+
+        $this->artisan($this->command, ['model' => $this->model])
+            ->expectsQuestion("Model [{$this->model}] does not exist. Would you like to create it?", 'yes')
+            ->expectsOutput("Model [{$this->model}] created successfully")
+            ->expectsQuestion("Implementations file already exists. Do you want to overwrite it?", 'yes')
+            ->expectsOutput("Implementation [{$creator->getClassName()}] created successfully")
             ->assertExitCode(0);
     }
 }

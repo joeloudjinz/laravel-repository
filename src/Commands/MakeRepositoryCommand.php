@@ -178,8 +178,7 @@ class MakeRepositoryCommand extends Command
             $this->modelCreator->getModelFullNamespace()
         );
 
-        $result = $this->repositoryCreator->create();
-        if ($result) {
+        if ($this->repositoryCreator->create()) {
             return true;
         }
 
@@ -189,10 +188,12 @@ class MakeRepositoryCommand extends Command
             return false;
         }
 
-        $result = $this->repositoryCreator->complete();
-        if (!is_array($result)) {
+        if (!$this->repositoryCreator->complete()) {
             throw new Exception("There was an error while creating implementation file");
         }
+
+        $this->line("Implementation [{$this->repositoryCreator->getClassName()}] created successfully");
+        return true;
     }
 
     /**
