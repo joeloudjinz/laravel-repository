@@ -3,9 +3,9 @@
 namespace Inz\Commands;
 
 use Exception;
-use Inz\Base\Creators\ModelCreator;
-use Inz\Base\Creators\ContractCreator;
 use Illuminate\Console\Command;
+use Inz\Base\Creators\ContractCreator;
+use Inz\Base\Creators\ModelCreator;
 use Inz\Base\Creators\RepositoryCreator;
 
 class MakeRepositoryCommand extends Command
@@ -119,18 +119,18 @@ class MakeRepositoryCommand extends Command
      */
     protected function processModelExistence(): bool
     {
-        if ($this->laravel->runningInConsole() && !$this->modelCreator->modelExist()) {
-            $response = $this->ask("Model [{$this->modelArgument}] does not exist. Would you like to create it?", 'Yes');
+        if ($this->modelCreator->modelExist()) {
+            return true;
+        }
 
-            if ($this->isResponsePositive($response)) {
-                $this->callSilent('make:model', ['name' => $this->modelArgument]);
-                $this->line("Model [{$this->modelArgument}] created successfully");
-                return true;
-            }
-
+        $response = $this->ask("Model [{$this->modelArgument}] does not exist. Would you like to create it?", 'Yes');
+        if (!$this->isResponsePositive($response)) {
             $this->warn("Model wasn't created, aborting command.");
             return false;
         }
+
+        $this->callSilent('make:model', ['name' => $this->modelArgument]);
+        $this->line("Model [{$this->modelArgument}] created successfully");
         return true;
     }
 
