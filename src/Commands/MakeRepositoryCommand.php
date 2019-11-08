@@ -157,6 +157,9 @@ class MakeRepositoryCommand extends Command
         if (!is_array($result)) {
             throw new Exception("There was an error while creating contract file");
         }
+
+        $this->line("Contract [{$this->contractCreator->getClassName()}] created successfully");
+        return $result;
     }
 
     /**
