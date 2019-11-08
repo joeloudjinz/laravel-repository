@@ -343,16 +343,6 @@ abstract class Creator
     }
 
     /**
-     * Gets the key value used by the current class to extract data from config file.
-     *
-     * @return String
-     */
-    // public function getConfigType()
-    // {
-    //     return $this->configType;
-    // }
-
-    /**
      * Gets the value of path extracted from the config file.
      *
      * @return String
