@@ -7,6 +7,12 @@ use Inz\Base\Abstractions\Creator;
 
 class RepositoryCreator extends Creator
 {
+    /**
+     * Key value pairs array of parts that will be replaced in the content.
+     *
+     * @var array
+     */
+    private $replacements = [];
     public function __construct(String $input)
     {
         parent::__construct();
