@@ -31,7 +31,10 @@ class RepositoryServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__ . '/config/repository.php' => app()->basePath() . '/config/repository.php',
-        ], 'config');
+        ],
+        // TODO: rename this tag
+            'config'
+        );
 
         $this->registerCommands();
     }

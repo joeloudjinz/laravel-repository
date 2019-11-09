@@ -19,7 +19,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Inz\\Repository\\RepositoryServiceProvider"
+                "Inz\\RepositoryServiceProvider"
             ]
         }
     },
