@@ -106,7 +106,7 @@ abstract class Creator
         $this->modelName = $values['modelName'];
         if (Arr::has($values, 'subdirectory')) {
             $this->subdirectory = $values['subdirectory'];
-            $this->namespaceConfig . '\\';
+            $this->namespaceConfig .= '\\';
         }
     }
 
