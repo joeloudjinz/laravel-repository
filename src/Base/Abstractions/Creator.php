@@ -3,9 +3,9 @@
 namespace Inz\Base\Abstractions;
 
 use Exception;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Arr;
 use Inz\Base\ConfigurationResolver;
-use Illuminate\Filesystem\Filesystem;
 
 /**
  * Abstracts the creation process of the files, this way we can reuse the logic to
@@ -106,6 +106,7 @@ abstract class Creator
         $this->modelName = $values['modelName'];
         if (Arr::has($values, 'subdirectory')) {
             $this->subdirectory = $values['subdirectory'];
+            $this->namespaceConfig . '\\';
         }
     }
 
