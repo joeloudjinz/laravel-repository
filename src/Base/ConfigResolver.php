@@ -9,7 +9,7 @@ use Inz\Exceptions\MissingConfigurationValueException;
 
 class ConfigurationResolver
 {
-    protected static $configName = 'repository';
+    public static $configName = 'repository';
 
     /**
      * Retrieve the base path from configuration file

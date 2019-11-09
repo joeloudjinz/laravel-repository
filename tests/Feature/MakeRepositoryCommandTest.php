@@ -1,9 +1,9 @@
 <?php
 namespace Inz\Repository\Test\Feature;
 
+use Inz\Repository\Test\TestCase;
 use Inz\Base\Creators\ContractCreator;
 use Inz\Base\Creators\RepositoryCreator;
-use Inz\Repository\Test\TestCase;
 use Inz\Repository\Test\Traits\FakeStorageInitiator;
 
 class MakeRepositoryCommandTest extends TestCase
