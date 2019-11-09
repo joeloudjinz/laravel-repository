@@ -34,7 +34,7 @@ class RepositoryCreator extends Creator
             '%contractName%' => $contractName,
             '%modelNamespace%' => $modelNamespace,
             '%modelName%' => $this->modelName,
-            '%repositoriesNamespaces%' => $this->baseNamespace . $this->namespaceConfig . $this->subdirectory,
+            '%repositoriesNamespaces%' => $this->baseNamespace(),
         ];
     }
 
