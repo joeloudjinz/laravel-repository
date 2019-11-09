@@ -106,7 +106,6 @@ abstract class Creator
         $this->modelName = $values['modelName'];
         if (Arr::has($values, 'subdirectory')) {
             $this->subdirectory = $values['subdirectory'];
-            $this->namespaceConfig .= '\\';
         }
     }
 
@@ -271,7 +270,7 @@ abstract class Creator
      */
     public function getClassFullNamespace(String $base, String $className): String
     {
-        return $base . $className;
+        return $base . '\\' . $className;
     }
 
     /**
@@ -286,10 +285,10 @@ abstract class Creator
             return null;
         }
 
-        $base = $this->baseNamespace . $this->namespaceConfig . '\\';
+        $base = $this->baseNamespace . $this->namespaceConfig;
 
         if ($this->isNotEmpty($this->subdirectory)) {
-            return $base . $this->subdirectory . '\\';
+            return $base . '\\' . $this->subdirectory;
         }
 
         return $base;
