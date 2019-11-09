@@ -5,13 +5,12 @@ namespace Inz\Repository\Test\Unit\Creators;
 use Inz\Repository\Test\TestCase;
 use Illuminate\Filesystem\Filesystem;
 use Inz\Base\Creators\ContractCreator;
+use Inz\Repository\Test\Traits\DifferentModelNames;
 use Inz\Repository\Test\Traits\FakeStorageInitiator;
 
 class ContractCreatorTest extends TestCase
 {
-    use FakeStorageInitiator;
-
-    private $modelName = 'Post';
+    use FakeStorageInitiator, DifferentModelNames;
 
     /**
      * Initial values for the attributes of the ContractCreator class.
@@ -24,18 +23,18 @@ class ContractCreatorTest extends TestCase
         'namespaceConfig' => 'Repositories\Contracts',
     ];
 
-    private function createInstance($modelName = null)
+    private function createInstance($modelName)
     {
-        return new ContractCreator($modelName ?? $this->modelName);
+        return new ContractCreator($modelName);
     }
 
     /**
      * @test
      * @group contract_creator_test
      * */
-    public function contract_creator_attributes_initialized()
+    public function test_class_attributes_initialized()
     {
-        $creator = $this->createInstance();
+        $creator = $this->createInstance($this->modelName);
 
         $this->assertNotNull($creator->getFileManager());
         $this->assertInstanceOf(Filesystem::class, $creator->getFileManager());
@@ -51,9 +50,9 @@ class ContractCreatorTest extends TestCase
      * @test
      * @group contract_creator_test
      */
-    public function test_repository_creator_attributes_initialized_where_model_in_subdirectory()
+    public function test_class_attributes_initialized_where_model_in_subdirectory()
     {
-        $creator = $this->createInstance('Blog/Post');
+        $creator = $this->createInstance($this->modelWithSubDirectory);
 
         $this->assertNotNull($creator->getFileManager());
         $this->assertInstanceOf(Filesystem::class, $creator->getFileManager());
@@ -61,7 +60,47 @@ class ContractCreatorTest extends TestCase
 
         $this->assertNotNull($creator->getStub());
         $this->assertNotNull($creator->getSubdirectory());
-        $this->assertEquals('Blog', $creator->getSubdirectory());
+        $this->assertEquals($this->subDirectoryName, $creator->getSubdirectory());
+        $this->assertEquals($this->attributesData['classNameSuffix'], $creator->getClassNameSuffix());
+        $this->assertEquals($this->attributesData['pathConfig'], $creator->getPathConfig());
+        $this->assertEquals($this->attributesData['namespaceConfig'], $creator->getNamespaceConfig());
+    }
+
+    /**
+     * @test
+     * @group contract_creator_test
+     */
+    public function test_class_attributes_initialized_where_model_in_subdirectory_in_models()
+    {
+        $creator = $this->createInstance($this->modelWithSubDirectoryInModels);
+
+        $this->assertNotNull($creator->getFileManager());
+        $this->assertInstanceOf(Filesystem::class, $creator->getFileManager());
+        $this->assertNotNull($creator->getAppNamespace());
+
+        $this->assertNotNull($creator->getStub());
+        $this->assertNotNull($creator->getSubdirectory());
+        $this->assertEquals($this->subDirectoryName, $creator->getSubdirectory());
+        $this->assertEquals($this->attributesData['classNameSuffix'], $creator->getClassNameSuffix());
+        $this->assertEquals($this->attributesData['pathConfig'], $creator->getPathConfig());
+        $this->assertEquals($this->attributesData['namespaceConfig'], $creator->getNamespaceConfig());
+    }
+
+    /**
+     * @test
+     * @group contract_creator_test
+     */
+    public function test_class_attributes_initialized_with_full_model_name()
+    {
+        $creator = $this->createInstance($this->fullModelName);
+
+        $this->assertNotNull($creator->getFileManager());
+        $this->assertInstanceOf(Filesystem::class, $creator->getFileManager());
+        $this->assertNotNull($creator->getAppNamespace());
+
+        $this->assertNotNull($creator->getStub());
+        $this->assertNotNull($creator->getSubdirectory());
+        $this->assertEquals($this->subDirectoryName, $creator->getSubdirectory());
         $this->assertEquals($this->attributesData['classNameSuffix'], $creator->getClassNameSuffix());
         $this->assertEquals($this->attributesData['pathConfig'], $creator->getPathConfig());
         $this->assertEquals($this->attributesData['namespaceConfig'], $creator->getNamespaceConfig());
@@ -74,7 +113,7 @@ class ContractCreatorTest extends TestCase
      * */
     public function test_extract_content_from_stub_file()
     {
-        $creator = $this->createInstance();
+        $creator = $this->createInstance($this->modelName);
         $result = $creator->extractStubContent($creator->getStub());
         $this->assertIsBool($result);
         $this->assertTrue($result);
@@ -88,7 +127,7 @@ class ContractCreatorTest extends TestCase
      * */
     public function test_replace_content_parts()
     {
-        $creator = $this->createInstance();
+        $creator = $this->createInstance($this->modelName);
         // extracting the content first
         $creator->extractStubContent($creator->getStub());
         // saving the old content
@@ -110,7 +149,7 @@ class ContractCreatorTest extends TestCase
      * */
     public function test_create_class_name()
     {
-        $creator = $this->createInstance();
+        $creator = $this->createInstance($this->modelName);
         $result = $creator->createClassName($this->modelName);
         $this->assertNotNull($result);
         $this->assertIsString($result);
@@ -126,7 +165,7 @@ class ContractCreatorTest extends TestCase
     {
         $path = $this->prepareFakeStorage();
 
-        $creator = $this->createInstance();
+        $creator = $this->createInstance($this->modelName);
         $result = $creator->generateDirectoryFullPath($path, $creator->getPathConfig());
 
         $this->assertNotNull($result);
@@ -144,7 +183,7 @@ class ContractCreatorTest extends TestCase
     public function test_generate_file_full_path()
     {
         $path = $this->prepareFakeStorage();
-        $creator = $this->createInstance();
+        $creator = $this->createInstance($this->modelName);
         // .php will be added by the method
         $fileName = $this->modelName . $this->attributesData['classNameSuffix'];
 
@@ -168,7 +207,7 @@ class ContractCreatorTest extends TestCase
      * */
     public function test_create_directory()
     {
-        $creator = $this->createInstance();
+        $creator = $this->createInstance($this->modelName);
         $fullPath = $this->prepareFakeStorage() . DIRECTORY_SEPARATOR . 'TestRepository';
 
         $result = $creator->createDirectory($fullPath);
@@ -187,7 +226,7 @@ class ContractCreatorTest extends TestCase
     public function test_create_file()
     {
         $path = $this->prepareFakeStorage();
-        $creator = $this->createInstance();
+        $creator = $this->createInstance($this->modelName);
         $fullPath = $path . DIRECTORY_SEPARATOR . 'TestRepository.php';
 
         $result = $creator->createFile($fullPath, 'This is a content');
@@ -204,7 +243,7 @@ class ContractCreatorTest extends TestCase
      * */
     public function test_get_class_full_namespace()
     {
-        $creator = $this->createInstance();
+        $creator = $this->createInstance($this->modelName);
 
         $result = $creator->getClassFullNamespace($creator->baseNamespace(), $this->modelName);
 
@@ -224,7 +263,7 @@ class ContractCreatorTest extends TestCase
     {
         // preparing
         $this->prepareFakeStorage();
-        $creator = $this->createInstance();
+        $creator = $this->createInstance($this->modelName);
 
         // execution
         $result = $creator->create();
@@ -244,7 +283,7 @@ class ContractCreatorTest extends TestCase
     {
         // preparing
         $this->prepareFakeStorage();
-        $creator = $this->createInstance('Blog/Post');
+        $creator = $this->createInstance($this->modelWithSubDirectory);
 
         // execution
         $result = $creator->create();
@@ -264,7 +303,7 @@ class ContractCreatorTest extends TestCase
     {
         // preparing
         $this->prepareFakeStorage();
-        $creator = $this->createInstance();
+        $creator = $this->createInstance($this->modelName);
 
         $result = $creator->create();
         // execution

@@ -310,9 +310,10 @@ abstract class Creator
         }
         return [
             'modelName' => array_pop($exploded),
-            'subdirectory' => $this->subdirectory = $exploded[0],
+            'subdirectory' => $this->subdirectory = array_pop($exploded),
         ];
     }
+
     /**
      * Return the value of the content attribute.
      *
