@@ -4,11 +4,11 @@ namespace Inz\Repository\Test\Unit\Creators;
 
 use Inz\Repository\Test\TestCase;
 use Inz\Base\Creators\ModelCreator;
+use Inz\Repository\Test\Traits\DifferentModelNames;
 
 class ModelCreatorTest extends TestCase
 {
-    private $modelName = 'Post';
-    private $modelWithSubDirectory = 'Models/Post';
+    use DifferentModelNames;
 
     /**
      * Initial values for the attributes of the ModelCreator class.
@@ -17,32 +17,24 @@ class ModelCreatorTest extends TestCase
      */
     private $attributesData = [
         'modelName' => 'Post',
-        'modelNamespace' => 'App\Models\Post',
-        'modelNamespaceWithoutSubDir' => 'App\Post',
+        'namespaceOfModelName' => 'App\Post',
+        'namespaceOfFullModelName' => 'App\Models\Blog\Post',
+        'namespaceOfModelNameWithSubdirectory' => 'App\Blog\Post',
     ];
 
     /**
      * @return ModelCreator
      */
-    private function createInstance($model = null)
+    private function createInstance($modelName)
     {
-        return new ModelCreator($model ?? $this->modelWithSubDirectory);
+        return new ModelCreator($modelName);
     }
 
-    /** @test */
-    public function test_model_creator_attributes_initialized()
-    {
-        $creator = $this->createInstance();
-
-        $this->assertNotNull($creator->getModelName());
-        $this->assertNotNull($creator->getModelFullNamespace());
-
-        $this->assertEquals($this->attributesData['modelName'], $creator->getModelName());
-        $this->assertEquals($this->attributesData['modelNamespace'], $creator->getModelFullNamespace());
-    }
-
-    /** @test */
-    public function test_model_creator_attributes_initialized_using_modelName_attribute()
+    /**
+     * @test
+     * @group model_creator_test
+     **/
+    public function test_class_attributes_initialized_using_model_in_base_app_directory()
     {
         $creator = $this->createInstance($this->modelName);
 
@@ -50,6 +42,45 @@ class ModelCreatorTest extends TestCase
         $this->assertNotNull($creator->getModelFullNamespace());
 
         $this->assertEquals($this->attributesData['modelName'], $creator->getModelName());
-        $this->assertEquals($this->attributesData['modelNamespaceWithoutSubDir'], $creator->getModelFullNamespace());
+        $this->assertEquals(
+            $this->attributesData['namespaceOfModelName'],
+            $creator->getModelFullNamespace()
+        );
+    }
+
+    /**
+     * @test
+     * @group model_creator_test
+     **/
+    public function test_class_attributes_initialized_using_model_in_subdirectory()
+    {
+        $creator = $this->createInstance($this->modelWithSubDirectory);
+
+        $this->assertNotNull($creator->getModelName());
+        $this->assertNotNull($creator->getModelFullNamespace());
+
+        $this->assertEquals($this->attributesData['modelName'], $creator->getModelName());
+        $this->assertEquals(
+            $this->attributesData['namespaceOfModelNameWithSubdirectory'],
+            $creator->getModelFullNamespace()
+        );
+    }
+
+    /**
+     * @test
+     * @group model_creator_test
+     **/
+    public function test_class_attributes_initialized_using_model_in_models_directory()
+    {
+        $creator = $this->createInstance($this->modelWithSubDirectoryInModels);
+
+        $this->assertNotNull($creator->getModelName());
+        $this->assertNotNull($creator->getModelFullNamespace());
+
+        $this->assertEquals($this->attributesData['modelName'], $creator->getModelName());
+        $this->assertEquals(
+            $this->attributesData['namespaceOfFullModelName'],
+            $creator->getModelFullNamespace()
+        );
     }
 }
