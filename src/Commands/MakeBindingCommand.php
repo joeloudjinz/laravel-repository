@@ -30,7 +30,7 @@ class MakeBindingCommand extends RepositoryCommand
      */
     public function __construct()
     {
-        $this->providerDist = app()->basePath().'/app/Providers/'.$this->providerName.'.php';
+        $this->providerDist = app()->basePath() . '/app/Providers/' . $this->providerName . '.php';
         parent::__construct();
     }
 
@@ -55,9 +55,9 @@ class MakeBindingCommand extends RepositoryCommand
         }
 
         $provider = File::get($this->providerDist);
-        $repositoryInterface = '\\'.$this->getRepository().'::class';
-        $repositoryEloquent = '\\'.$this->getEloquentRepository().'::class';
-        File::put($this->providerDist, str_replace($this->bindPlaceholder, "\$this->app->bind({$repositoryInterface}, {$repositoryEloquent});".PHP_EOL.'        '.$this->bindPlaceholder, $provider));
+        $repositoryInterface = '\\' . $this->getRepository() . '::class';
+        $repositoryEloquent = '\\' . $this->getEloquentRepository() . '::class';
+        File::put($this->providerDist, str_replace($this->bindPlaceholder, "\$this->app->bind({$repositoryInterface}, {$repositoryEloquent});" . PHP_EOL . '        ' . $this->bindPlaceholder, $provider));
 
         $this->info('Binding have been added to RepositoryServiceProvider created successfully.');
     }
@@ -90,8 +90,8 @@ class MakeBindingCommand extends RepositoryCommand
 
     public function getRepository()
     {
-        return app()->getNamespace().$this->config('namespaces.contracts').'\\'.
-          str_replace('/', '\\', $this->argument('repository')).'Repository';
+        return app()->getNamespace() . $this->config('namespaces.contracts') . '\\' .
+        str_replace('/', '\\', $this->argument('repository')) . 'Repository';
     }
 
     public function getEloquentRepository()
@@ -103,10 +103,10 @@ class MakeBindingCommand extends RepositoryCommand
 
         $prefixName = '';
         if (count($repo_ex) > 0) {
-            $prefixName = implode('\\', $repo_ex).'\\';
+            $prefixName = implode('\\', $repo_ex) . '\\';
         }
 
-        return app()->getNamespace().$this->config('namespaces.repositories').'\\'.
-        $prefixName.'Eloquent'.$repositoryName.'Repository';
+        return app()->getNamespace() . $this->config('namespaces.repositories') . '\\' .
+            $prefixName . 'Eloquent' . $repositoryName . 'Repository';
     }
 }

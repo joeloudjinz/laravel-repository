@@ -3,15 +3,15 @@
 namespace Inz\Repository\Test\Unit\Creators;
 
 use Inz\Repository\Test\TestCase;
-use Inz\Base\Creators\ModelCreator;
+use Inz\Base\Creators\ModelAssistor;
 use Inz\Repository\Test\Traits\DifferentModelNames;
 
-class ModelCreatorTest extends TestCase
+class ModelAssistorTest extends TestCase
 {
     use DifferentModelNames;
 
     /**
-     * Initial values for the attributes of the ModelCreator class.
+     * Initial values for the attributes of the ModelAssistor class.
      *
      * @var array
      */
@@ -23,11 +23,11 @@ class ModelCreatorTest extends TestCase
     ];
 
     /**
-     * @return ModelCreator
+     * @return ModelAssistor
      */
     private function createInstance($modelName)
     {
-        return new ModelCreator($modelName);
+        return new ModelAssistor($modelName);
     }
 
     /**

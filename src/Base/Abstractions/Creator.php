@@ -101,13 +101,7 @@ abstract class Creator
         $this->basePath = ConfigurationResolver::basePath();
         $this->namespaceConfig = ConfigurationResolver::namespaceFor(get_called_class());
         $this->pathConfig = ConfigurationResolver::pathFor(get_called_class());
-
-        $values = $this->extractInputValues($input);
-        $this->modelName = $values['modelName'];
-        if (Arr::has($values, 'subdirectory')) {
-            $this->subdirectory = $values['subdirectory'];
-            $this->namespaceConfig .= '\\';
-        }
+        $this->extractValuesFromInput($input);
     }
 
     abstract public function create();
@@ -190,11 +184,6 @@ abstract class Creator
      */
     public function directoryBasePath()
     {
-        if (!$this->isNotEmpty($this->pathConfig)) {
-            // TODO: throw PathConfigValueIsMissing an exception instead of returning null
-            return null;
-        }
-
         $base = $this->basePath . DIRECTORY_SEPARATOR;
         // if the base path points directly to the application's root directory, append
         // 'app' word to the directory base path so it points to the app folder.
@@ -213,7 +202,6 @@ abstract class Creator
     public function generateFileFullPath(String $directoryPath, String $fileName): String
     {
         if (!$this->isNotEmpty($directoryPath) && !$this->isNotEmpty($fileName)) {
-            // TODO: throw BadFilNameException an exception instead of returning null
             return null;
         }
 
@@ -281,11 +269,6 @@ abstract class Creator
      */
     public function baseNamespace(): String
     {
-        if (!$this->isNotEmpty($this->namespaceConfig)) {
-            // TODO: throw NamespaceConfigValueIsMissing an exception instead of returning null
-            return null;
-        }
-
         $base = $this->baseNamespace . $this->namespaceConfig;
 
         if ($this->isNotEmpty($this->subdirectory)) {
@@ -296,23 +279,39 @@ abstract class Creator
     }
 
     /**
-     * Extracting the model name & subdirectory values, which is **only** the
-     * first element, from exploding input value.
+     * Extracting the model name & subdirectory values.
      *
-     * @return array
+     * @param String $input
      */
-    public function extractInputValues(String $input): array
+    public function extractValuesFromInput(String $input)
     {
         $exploded = explode('/', $input);
+
         if (count($exploded) == 1) {
-            return [
-                'modelName' => $exploded[0],
-            ];
+            $this->modelName = $exploded[0];
         }
-        return [
-            'modelName' => array_pop($exploded),
-            'subdirectory' => $this->subdirectory = array_pop($exploded),
-        ];
+
+        $this->modelName = array_pop($exploded);
+        $temp = array_pop($exploded);
+        $this->subdirectory = $this->isValidSubdirectory($temp) ? $temp : null;
+    }
+
+    /**
+     * Checks the validity of the subdirectory value, to avoid using 'Models'
+     * as a subdirectory or similar words.
+     *
+     * @param String|null $subdirectory
+     * @return bool
+     */
+    public function isValidSubdirectory(?String $subdirectory)
+    {
+        $unwanted = ['Models', 'models', 'model', 'App', 'app'];
+        foreach ($unwanted as $value) {
+            if ($subdirectory === $value) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

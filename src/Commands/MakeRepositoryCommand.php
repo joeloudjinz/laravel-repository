@@ -5,7 +5,7 @@ namespace Inz\Commands;
 use Exception;
 use Illuminate\Console\Command;
 use Inz\Base\Creators\ContractCreator;
-use Inz\Base\Creators\ModelCreator;
+use Inz\Base\Creators\ModelAssistor;
 use Inz\Base\Creators\RepositoryCreator;
 
 class MakeRepositoryCommand extends Command
@@ -29,9 +29,9 @@ class MakeRepositoryCommand extends Command
      */
     protected $modelArgument;
     /**
-     * @var ModelCreator
+     * @var ModelAssistor
      */
-    private $modelCreator;
+    private $modelAssistor;
     /**
      * @var ContractCreator
      */
@@ -58,7 +58,7 @@ class MakeRepositoryCommand extends Command
     private function initializeAttributes()
     {
         $this->modelArgument = $this->argument('model');
-        $this->modelCreator = new ModelCreator($this->modelArgument);
+        $this->modelAssistor = new ModelAssistor($this->modelArgument);
         $this->contractCreator = new ContractCreator($this->modelArgument);
         $this->repositoryCreator = new RepositoryCreator($this->modelArgument);
     }
@@ -120,7 +120,7 @@ class MakeRepositoryCommand extends Command
      */
     protected function processModelExistence(): bool
     {
-        if ($this->modelCreator->modelExist()) {
+        if ($this->modelAssistor->modelExist()) {
             return true;
         }
 
@@ -175,7 +175,7 @@ class MakeRepositoryCommand extends Command
         $this->repositoryCreator->initializeReplacementsParts(
             $contractNamespace,
             $contractName,
-            $this->modelCreator->getModelFullNamespace()
+            $this->modelAssistor->getModelFullNamespace()
         );
 
         if ($this->repositoryCreator->create()) {
