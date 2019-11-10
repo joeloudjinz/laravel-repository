@@ -1,3 +1,5 @@
+[![Build Status](https://semaphoreci.com/api/v1/projects/b74ac48e-13ce-4e03-ab12-236f989c9c37/3009082/badge.svg)](https://semaphoreci.com/joe-inz-94/laravel-repository)
+
 # Repository pattern generator
 
 This package helps you get started quickly to use **repository pattern** in your next, or current, laravel project because after watching those laracon videos (which by the way are A LOT :p) that talks about design patterns and SOLID principals you became all hipped to try and adapt them, at least i'm :D.
