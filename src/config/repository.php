@@ -31,7 +31,7 @@ return [
     'namespaces' => [
         'contracts' => 'Repositories\Contracts',
         'implementations' => 'Repositories\Implementations',
-        'criteria' => 'Repositories\Criteria',
+        // 'criteria' => 'Repositories\Criteria',
     ],
 
     /*
@@ -47,6 +47,6 @@ return [
     'paths' => [
         'contracts' => 'Repositories/Contracts',
         'implementations' => 'Repositories/Implementations',
-        'criteria' => 'Repositories/Criteria',
+        // 'criteria' => 'Repositories/Criteria',
     ],
 ];
