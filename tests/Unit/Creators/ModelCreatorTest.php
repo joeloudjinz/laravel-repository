@@ -2,8 +2,8 @@
 
 namespace Inz\Repository\Test\Unit\Creators;
 
-use Inz\Repository\Test\TestCase;
 use Inz\Base\Creators\ModelCreator;
+use Inz\Repository\Test\TestCase;
 use Inz\Repository\Test\Traits\DifferentModelNames;
 
 class ModelCreatorTest extends TestCase
@@ -16,9 +16,9 @@ class ModelCreatorTest extends TestCase
      * @var array
      */
     private $attributesData = [
-        'modelName' => 'Post',
-        'namespaceOfModelName' => 'App\Post',
-        'namespaceOfFullModelName' => 'App\Models\Blog\Post',
+        'modelName'                            => 'Post',
+        'namespaceOfModelName'                 => 'App\Post',
+        'namespaceOfFullModelName'             => 'App\Models\Blog\Post',
         'namespaceOfModelNameWithSubdirectory' => 'App\Blog\Post',
     ];
 

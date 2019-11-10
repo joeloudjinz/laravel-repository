@@ -35,13 +35,13 @@ abstract class Creator
     /**
      * Model name inserted by the developer.
      *
-     * @var String
+     * @var string
      */
     protected $modelName;
     /**
      * The content of the stub file that will be manipulated.
      *
-     * @var String
+     * @var string
      */
     protected $content;
     /**
@@ -51,50 +51,50 @@ abstract class Creator
      */
     protected $permissions = 0755;
     /**
-     * The path value from config file related to the current class
+     * The path value from config file related to the current class.
      *
-     * @var String
+     * @var string
      */
     protected $pathConfig;
     /**
-     * The namespace value from config file related to the current class
+     * The namespace value from config file related to the current class.
      *
-     * @var String
+     * @var string
      */
     protected $namespaceConfig;
     /**
      * The string that will be concatenated with the class name.
-     * Ex: in case of generating an interface, the value should be 'Interface'
+     * Ex: in case of generating an interface, the value should be 'Interface'.
      *
-     * @var String
+     * @var string
      */
     protected $classNameSuffix;
     /**
      * name of the class that will be generated.
      *
-     * @var String
+     * @var string
      */
     protected $className;
     /**
      * Full path to the directory in which the generated file will be stored.
      *
-     * @var String
+     * @var string
      */
     protected $directory;
     /**
      * The subdirectory specified by the developer.
      *
-     * @var String
+     * @var string
      */
     protected $subdirectory;
     /**
      * Full path to the file that will be generated.
      *
-     * @var String
+     * @var string
      */
     protected $path;
 
-    public function __construct(String $input)
+    public function __construct(string $input)
     {
         $this->fileManager = app()->make(Filesystem::class);
         $this->baseNamespace = ConfigurationResolver::baseNamespace();
@@ -111,23 +111,26 @@ abstract class Creator
     }
 
     abstract public function create();
+
     abstract public function complete();
 
     /**
      * Extracts the content from the stub file when the $stub attribute is defined, else
      * it will initialize it to null.
      *
-     * @param String $stubPath
+     * @param string $stubPath
      *
      * @return bool
      */
-    public function extractStubContent(String $stubPath): bool
+    public function extractStubContent(string $stubPath): bool
     {
         if (!is_null($stubPath)) {
             $this->content = $this->fileManager->get($stubPath);
+
             return true;
         }
         $this->content = null;
+
         return false;
     }
 
@@ -148,6 +151,7 @@ abstract class Creator
                 array_values($replacements),
                 $this->content
             );
+
             return true;
         } catch (Exception $e) {
             return false;
@@ -157,27 +161,27 @@ abstract class Creator
     /**
      * Creates a class name based on the passed model name and the addition part.
      *
-     * @param String $modelName
-     * the name of the model class that is associated with the generated file.
+     * @param string $modelName
+     *                          the name of the model class that is associated with the generated file.
      *
-     * @return String
+     * @return string
      */
-    public function createClassName(String $modelName): String
+    public function createClassName(string $modelName): string
     {
-        return $this->className = $modelName . $this->classNameSuffix;
+        return $this->className = $modelName.$this->classNameSuffix;
     }
 
     /**
      * Generates a full path value to the directory in which the generated file will be stored.
      *
-     * @return String
+     * @return string
      */
-    public function generateDirectoryFullPath(String $basePath, String $directoryName): String
+    public function generateDirectoryFullPath(string $basePath, string $directoryName): string
     {
-        $base = $basePath . $directoryName . DIRECTORY_SEPARATOR;
+        $base = $basePath.$directoryName.DIRECTORY_SEPARATOR;
 
         if ($this->isNotEmpty($this->subdirectory)) {
-            return $this->directory = $base . $this->subdirectory . DIRECTORY_SEPARATOR;
+            return $this->directory = $base.$this->subdirectory.DIRECTORY_SEPARATOR;
         }
 
         return $this->directory = $base;
@@ -186,20 +190,20 @@ abstract class Creator
     /**
      * Returns the base path of the directory in which the generated classes are stored.
      *
-     * @return String
+     * @return string
      */
     public function directoryBasePath()
     {
         if (!$this->isNotEmpty($this->pathConfig)) {
             // TODO: throw PathConfigValueIsMissing an exception instead of returning null
-            return null;
+            return;
         }
 
-        $base = $this->basePath . DIRECTORY_SEPARATOR;
+        $base = $this->basePath.DIRECTORY_SEPARATOR;
         // if the base path points directly to the application's root directory, append
         // 'app' word to the directory base path so it points to the app folder.
         if (app()->basePath() === $this->basePath) {
-            return $base . 'app' . DIRECTORY_SEPARATOR;
+            return $base.'app'.DIRECTORY_SEPARATOR;
         }
 
         return $base;
@@ -208,16 +212,16 @@ abstract class Creator
     /**
      * Generates a full path value to the file that is generated.
      *
-     * @return String
+     * @return string
      */
-    public function generateFileFullPath(String $directoryPath, String $fileName): String
+    public function generateFileFullPath(string $directoryPath, string $fileName): string
     {
         if (!$this->isNotEmpty($directoryPath) && !$this->isNotEmpty($fileName)) {
             // TODO: throw BadFilNameException an exception instead of returning null
             return null;
         }
 
-        return $this->path = $directoryPath . $fileName . '.php';
+        return $this->path = $directoryPath.$fileName.'.php';
     }
 
     /**
@@ -225,7 +229,7 @@ abstract class Creator
      *
      * @return bool
      */
-    public function directoryExists(String $path): bool
+    public function directoryExists(string $path): bool
     {
         return $this->fileManager->exists($path);
     }
@@ -235,7 +239,7 @@ abstract class Creator
      *
      * @return bool
      */
-    public function createDirectory(String $path): bool
+    public function createDirectory(string $path): bool
     {
         try {
             return $this->fileManager->makeDirectory($path, $this->permissions, true);
@@ -249,7 +253,7 @@ abstract class Creator
      *
      * @return bool
      */
-    public function fileExists(String $path): bool
+    public function fileExists(string $path): bool
     {
         return $this->fileManager->exists($path);
     }
@@ -259,7 +263,7 @@ abstract class Creator
      *
      * @return int
      */
-    public function createFile(String $path, String $content): int
+    public function createFile(string $path, string $content): int
     {
         return $this->fileManager->put($path, $content);
     }
@@ -267,29 +271,29 @@ abstract class Creator
     /**
      * Gets the full namespace of the generated class.
      *
-     * @return String
+     * @return string
      */
-    public function getClassFullNamespace(String $base, String $className): String
+    public function getClassFullNamespace(string $base, string $className): string
     {
-        return $base . '\\' . $className;
+        return $base.'\\'.$className;
     }
 
     /**
      * Returns the base namespace of the generated classes, subdirectory name is included.
      *
-     * @return String
+     * @return string
      */
-    public function baseNamespace(): String
+    public function baseNamespace(): string
     {
         if (!$this->isNotEmpty($this->namespaceConfig)) {
             // TODO: throw NamespaceConfigValueIsMissing an exception instead of returning null
             return null;
         }
 
-        $base = $this->baseNamespace . $this->namespaceConfig;
+        $base = $this->baseNamespace.$this->namespaceConfig;
 
         if ($this->isNotEmpty($this->subdirectory)) {
-            return $base . '\\' . $this->subdirectory;
+            return $base.'\\'.$this->subdirectory;
         }
 
         return $base;
@@ -301,7 +305,7 @@ abstract class Creator
      *
      * @return array
      */
-    public function extractInputValues(String $input): array
+    public function extractInputValues(string $input): array
     {
         $exploded = explode('/', $input);
         if (count($exploded) == 1) {
@@ -309,8 +313,9 @@ abstract class Creator
                 'modelName' => $exploded[0],
             ];
         }
+
         return [
-            'modelName' => array_pop($exploded),
+            'modelName'    => array_pop($exploded),
             'subdirectory' => $this->subdirectory = array_pop($exploded),
         ];
     }
@@ -318,9 +323,9 @@ abstract class Creator
     /**
      * Return the value of the content attribute.
      *
-     * @return String
+     * @return string
      */
-    public function getContent(): String
+    public function getContent(): string
     {
         return $this->content;
     }
@@ -328,7 +333,7 @@ abstract class Creator
     /**
      * Return the generated full path to the file that will be created.
      *
-     * @return String
+     * @return string
      */
     public function getFileFullPath()
     {
@@ -339,7 +344,7 @@ abstract class Creator
      * Return the generated full path to the directory
      * in which the file will be created.
      *
-     * @return String
+     * @return string
      */
     public function getDirectory()
     {
@@ -349,7 +354,7 @@ abstract class Creator
     /**
      * Return the value of the subdirectory name.
      *
-     * @return String
+     * @return string
      */
     public function getSubdirectory()
     {
@@ -359,7 +364,7 @@ abstract class Creator
     /**
      * Gets the value of path extracted from the config file.
      *
-     * @return String
+     * @return string
      */
     public function getPathConfig()
     {
@@ -369,7 +374,7 @@ abstract class Creator
     /**
      * Gets the value of namespace extracted from the config file.
      *
-     * @return String
+     * @return string
      */
     public function getNamespaceConfig()
     {
@@ -397,7 +402,7 @@ abstract class Creator
     }
 
     /**
-     * Checks if the given array is not null, is a string & not empty
+     * Checks if the given array is not null, is a string & not empty.
      *
      * @return bool
      */

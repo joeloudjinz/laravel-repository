@@ -9,7 +9,7 @@ class ContractCreator extends Creator
     /**
      * Stub path of the file that will be generated.
      *
-     * @var String
+     * @var string
      */
     private $stub;
     /**
@@ -19,10 +19,10 @@ class ContractCreator extends Creator
      */
     private $replacements = [];
 
-    public function __construct(String $input)
+    public function __construct(string $input)
     {
         parent::__construct($input);
-        $this->stub = __DIR__ . '/../Stubs/contract.stub';
+        $this->stub = __DIR__.'/../Stubs/contract.stub';
         $this->classNameSuffix = 'RepositoryInterface';
         $this->createClassName($this->modelName);
         $this->initializeReplacementsParts();
@@ -37,7 +37,7 @@ class ContractCreator extends Creator
     {
         $this->replacements = [
             '%contractsNamespace%' => $this->baseNamespace(),
-            '%contractName%' => $this->className,
+            '%contractName%'       => $this->className,
         ];
     }
 

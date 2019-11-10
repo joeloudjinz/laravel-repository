@@ -12,35 +12,37 @@ class RepositoryCreator extends Creator
      * @var array
      */
     private $replacements = [];
-    public function __construct(String $input)
+
+    public function __construct(string $input)
     {
         parent::__construct($input);
-        $this->stub = __DIR__ . '/../Stubs/implementation.stub';
+        $this->stub = __DIR__.'/../Stubs/implementation.stub';
         $this->classNameSuffix = 'Repository';
     }
 
     /**
      * Initialize the array of the parts that will be replaced.
      *
-     * @param String $contractNamespace
-     * @param String $contractName
-     * @param String $modelNamespace
+     * @param string $contractNamespace
+     * @param string $contractName
+     * @param string $modelNamespace
+     *
      * @return void
      */
-    public function initializeReplacementsParts(String $contractNamespace, String $contractName, String $modelNamespace)
+    public function initializeReplacementsParts(string $contractNamespace, string $contractName, string $modelNamespace)
     {
         $this->replacements = [
-            '%contractNamespace%' => $contractNamespace,
-            '%contractName%' => $contractName,
-            '%modelNamespace%' => $modelNamespace,
-            '%modelName%' => $this->modelName,
+            '%contractNamespace%'      => $contractNamespace,
+            '%contractName%'           => $contractName,
+            '%modelNamespace%'         => $modelNamespace,
+            '%modelName%'              => $this->modelName,
             '%repositoriesNamespaces%' => $this->baseNamespace(),
         ];
     }
 
     /**
      * Takes care of the creation process of the repository file, if the file does exist
-     * it will abort the process and return false, else it will create it and return
+     * it will abort the process and return false, else it will create it and return.
      *
      * @return bool
      */

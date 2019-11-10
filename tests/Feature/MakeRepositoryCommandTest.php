@@ -1,9 +1,10 @@
 <?php
+
 namespace Inz\Repository\Test\Feature;
 
-use Inz\Repository\Test\TestCase;
 use Inz\Base\Creators\ContractCreator;
 use Inz\Base\Creators\RepositoryCreator;
+use Inz\Repository\Test\TestCase;
 use Inz\Repository\Test\Traits\FakeStorageInitiator;
 
 class MakeRepositoryCommandTest extends TestCase
@@ -73,7 +74,7 @@ class MakeRepositoryCommandTest extends TestCase
         $this->artisan($this->command, ['model' => $this->model])
             ->expectsQuestion("Model [{$this->model}] does not exist. Would you like to create it?", 'yes')
             ->expectsOutput("Model {$this->model} created successfully")
-            ->expectsQuestion("Contract file already exists. Do you want to overwrite it?", 'no')
+            ->expectsQuestion('Contract file already exists. Do you want to overwrite it?', 'no')
             ->expectsOutput("Contract wasn't created")
             ->assertExitCode(0);
     }
@@ -94,7 +95,7 @@ class MakeRepositoryCommandTest extends TestCase
         $this->artisan($this->command, ['model' => $this->model])
             ->expectsQuestion("Model [{$this->model}] does not exist. Would you like to create it?", 'yes')
             ->expectsOutput("Model {$this->model} created successfully")
-            ->expectsQuestion("Contract file already exists. Do you want to overwrite it?", 'yes')
+            ->expectsQuestion('Contract file already exists. Do you want to overwrite it?', 'yes')
             ->expectsOutput("{$creator->getClassName()} created successfully")
             ->assertExitCode(0);
     }
@@ -114,7 +115,7 @@ class MakeRepositoryCommandTest extends TestCase
         $this->artisan($this->command, ['model' => $this->model])
             ->expectsQuestion("Model [{$this->model}] does not exist. Would you like to create it?", 'yes')
             ->expectsOutput("Model {$this->model} created successfully")
-            ->expectsQuestion("Implementations file already exists. Do you want to overwrite it?", 'no')
+            ->expectsQuestion('Implementations file already exists. Do you want to overwrite it?', 'no')
             ->expectsOutput("Implementation class wasn't created")
             ->assertExitCode(0);
     }
@@ -135,7 +136,7 @@ class MakeRepositoryCommandTest extends TestCase
         $this->artisan($this->command, ['model' => $this->model])
             ->expectsQuestion("Model [{$this->model}] does not exist. Would you like to create it?", 'yes')
             ->expectsOutput("Model {$this->model} created successfully")
-            ->expectsQuestion("Implementations file already exists. Do you want to overwrite it?", 'yes')
+            ->expectsQuestion('Implementations file already exists. Do you want to overwrite it?', 'yes')
             ->expectsOutput("{$creator->getClassName()} created successfully")
             ->assertExitCode(0);
     }

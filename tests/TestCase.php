@@ -17,7 +17,7 @@ class TestCase extends OrchestraTestCase
     {
         parent::setUp();
         config()->set(
-            ConfigurationResolver::$configName . '.base.path',
+            ConfigurationResolver::$configName.'.base.path',
             storage_path('framework/testing/disks/app')
         );
     }

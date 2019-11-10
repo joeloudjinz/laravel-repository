@@ -49,7 +49,7 @@ class MakeCriteriaCommand extends RepositoryCommand
 
         $replacements = [
             '%namespaces.criteria%' => $this->appNamespace.$this->config('namespaces.criteria'),
-            '%criteria%' => $criteria,
+            '%criteria%'            => $criteria,
         ];
 
         $content = str_replace(array_keys($replacements), array_values($replacements), $content);

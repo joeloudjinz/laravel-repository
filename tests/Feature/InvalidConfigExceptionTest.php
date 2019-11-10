@@ -1,11 +1,12 @@
 <?php
+
 namespace Inz\Repository\Test\Feature;
 
-use Inz\Repository\Test\TestCase;
 use Inz\Base\ConfigurationResolver;
 use Inz\Exceptions\InvalidConfigurationValueException;
+use Inz\Repository\Test\TestCase;
 
-class InvalidConfigurationExceptionTest extends TestCase
+class InvalidConfigExceptionTest extends TestCase
 {
     private $command = 'make:repository';
     private $model = 'Post';
@@ -18,10 +19,10 @@ class InvalidConfigurationExceptionTest extends TestCase
      */
     public function test_invalid_base_path_value_in_config()
     {
-        config()->set(ConfigurationResolver::$configName . '.base.path', '');
+        config()->set(ConfigurationResolver::$configName.'.base.path', '');
 
         $this->expectException(InvalidConfigurationValueException::class);
-        $this->expectExceptionMessage("base path is not valid in configuration file.");
+        $this->expectExceptionMessage('base path is not valid in configuration file.');
 
         $this->artisan($this->command, ['model' => $this->model])->execute();
     }
@@ -34,10 +35,10 @@ class InvalidConfigurationExceptionTest extends TestCase
      */
     public function test_invalid_base_namespace_value_in_config()
     {
-        config()->set(ConfigurationResolver::$configName . '.base.namespace', '');
+        config()->set(ConfigurationResolver::$configName.'.base.namespace', '');
 
         $this->expectException(InvalidConfigurationValueException::class);
-        $this->expectExceptionMessage("base namespace is not valid in configuration file.");
+        $this->expectExceptionMessage('base namespace is not valid in configuration file.');
 
         $this->artisan($this->command, ['model' => $this->model])->execute();
     }
@@ -50,10 +51,10 @@ class InvalidConfigurationExceptionTest extends TestCase
      */
     public function test_invalid_contracts_value_in_namespaces_in_config()
     {
-        config()->set(ConfigurationResolver::$configName . '.namespaces.contracts', '');
+        config()->set(ConfigurationResolver::$configName.'.namespaces.contracts', '');
 
         $this->expectException(InvalidConfigurationValueException::class);
-        $this->expectExceptionMessage("contracts namespace is not valid in configuration file.");
+        $this->expectExceptionMessage('contracts namespace is not valid in configuration file.');
 
         $this->artisan($this->command, ['model' => $this->model])->execute();
     }
@@ -66,10 +67,10 @@ class InvalidConfigurationExceptionTest extends TestCase
      */
     public function test_invalid_implementations_value_in_namespaces_in_config()
     {
-        config()->set(ConfigurationResolver::$configName . '.namespaces.implementations', '');
+        config()->set(ConfigurationResolver::$configName.'.namespaces.implementations', '');
 
         $this->expectException(InvalidConfigurationValueException::class);
-        $this->expectExceptionMessage("implementations namespace is not valid in configuration file.");
+        $this->expectExceptionMessage('implementations namespace is not valid in configuration file.');
 
         $this->artisan($this->command, ['model' => $this->model])->execute();
     }
@@ -82,10 +83,10 @@ class InvalidConfigurationExceptionTest extends TestCase
      */
     public function test_invalid_contracts_value_in_paths_in_config()
     {
-        config()->set(ConfigurationResolver::$configName . '.paths.contracts', '');
+        config()->set(ConfigurationResolver::$configName.'.paths.contracts', '');
 
         $this->expectException(InvalidConfigurationValueException::class);
-        $this->expectExceptionMessage("contracts path is not valid in configuration file.");
+        $this->expectExceptionMessage('contracts path is not valid in configuration file.');
 
         $this->artisan($this->command, ['model' => $this->model])->execute();
     }
@@ -98,10 +99,10 @@ class InvalidConfigurationExceptionTest extends TestCase
      */
     public function test_invalid_implementations_value_in_paths_in_config()
     {
-        config()->set(ConfigurationResolver::$configName . '.paths.implementations', '');
+        config()->set(ConfigurationResolver::$configName.'.paths.implementations', '');
 
         $this->expectException(InvalidConfigurationValueException::class);
-        $this->expectExceptionMessage("implementations path is not valid in configuration file.");
+        $this->expectExceptionMessage('implementations path is not valid in configuration file.');
 
         $this->artisan($this->command, ['model' => $this->model])->execute();
     }

@@ -19,7 +19,7 @@ class ContractCreatorTest extends TestCase
      */
     private $attributesData = [
         'classNameSuffix' => 'RepositoryInterface',
-        'pathConfig' => 'Repositories/Contracts',
+        'pathConfig'      => 'Repositories/Contracts',
         'namespaceConfig' => 'Repositories\Contracts',
     ];
 
@@ -63,7 +63,7 @@ class ContractCreatorTest extends TestCase
         $this->assertEquals($this->subDirectoryName, $creator->getSubdirectory());
         $this->assertEquals($this->attributesData['classNameSuffix'], $creator->getClassNameSuffix());
         $this->assertEquals($this->attributesData['pathConfig'], $creator->getPathConfig());
-        $this->assertEquals($this->attributesData['namespaceConfig'] . '\\', $creator->getNamespaceConfig());
+        $this->assertEquals($this->attributesData['namespaceConfig'].'\\', $creator->getNamespaceConfig());
     }
 
     /**
@@ -83,7 +83,7 @@ class ContractCreatorTest extends TestCase
         $this->assertEquals($this->subDirectoryName, $creator->getSubdirectory());
         $this->assertEquals($this->attributesData['classNameSuffix'], $creator->getClassNameSuffix());
         $this->assertEquals($this->attributesData['pathConfig'], $creator->getPathConfig());
-        $this->assertEquals($this->attributesData['namespaceConfig'] . '\\', $creator->getNamespaceConfig());
+        $this->assertEquals($this->attributesData['namespaceConfig'].'\\', $creator->getNamespaceConfig());
     }
 
     /**
@@ -103,11 +103,12 @@ class ContractCreatorTest extends TestCase
         $this->assertEquals($this->subDirectoryName, $creator->getSubdirectory());
         $this->assertEquals($this->attributesData['classNameSuffix'], $creator->getClassNameSuffix());
         $this->assertEquals($this->attributesData['pathConfig'], $creator->getPathConfig());
-        $this->assertEquals($this->attributesData['namespaceConfig'] . '\\', $creator->getNamespaceConfig());
+        $this->assertEquals($this->attributesData['namespaceConfig'].'\\', $creator->getNamespaceConfig());
     }
 
     /**
-     * extractStubContent(): bool
+     * extractStubContent(): bool.
+     *
      * @test
      * @group contract_creator_test
      * */
@@ -121,7 +122,8 @@ class ContractCreatorTest extends TestCase
     }
 
     /**
-     * replaceContentParts(): bool
+     * replaceContentParts(): bool.
+     *
      * @test
      * @group contract_creator_test
      * */
@@ -143,7 +145,8 @@ class ContractCreatorTest extends TestCase
     }
 
     /**
-     * createClassName(modelName): String
+     * createClassName(modelName): String.
+     *
      * @test
      * @group contract_creator_test
      * */
@@ -153,11 +156,12 @@ class ContractCreatorTest extends TestCase
         $result = $creator->createClassName($this->modelName);
         $this->assertNotNull($result);
         $this->assertIsString($result);
-        $this->assertEquals($this->modelName . $creator->getClassNameSuffix(), $result);
+        $this->assertEquals($this->modelName.$creator->getClassNameSuffix(), $result);
     }
 
     /**
-     * generateDirectoryFullPath(): String
+     * generateDirectoryFullPath(): String.
+     *
      * @test
      * @group contract_creator_test
      * */
@@ -176,7 +180,8 @@ class ContractCreatorTest extends TestCase
     }
 
     /**
-     * generateFileFullPath(): String
+     * generateFileFullPath(): String.
+     *
      * @test
      * @group contract_creator_test
      * */
@@ -185,7 +190,7 @@ class ContractCreatorTest extends TestCase
         $path = $this->prepareFakeStorage();
         $creator = $this->createInstance($this->modelName);
         // .php will be added by the method
-        $fileName = $this->modelName . $this->attributesData['classNameSuffix'];
+        $fileName = $this->modelName.$this->attributesData['classNameSuffix'];
 
         $result = $creator->generateFileFullPath($path, $fileName);
 
@@ -201,14 +206,15 @@ class ContractCreatorTest extends TestCase
     }
 
     /**
-     * createDirectory(): bool
+     * createDirectory(): bool.
+     *
      * @test
      * @group contract_creator_test
      * */
     public function test_create_directory()
     {
         $creator = $this->createInstance($this->modelName);
-        $fullPath = $this->prepareFakeStorage() . DIRECTORY_SEPARATOR . 'TestRepository';
+        $fullPath = $this->prepareFakeStorage().DIRECTORY_SEPARATOR.'TestRepository';
 
         $result = $creator->createDirectory($fullPath);
 
@@ -219,7 +225,8 @@ class ContractCreatorTest extends TestCase
     }
 
     /**
-     * createFile(): int
+     * createFile(): int.
+     *
      * @test
      * @group contract_creator_test
      * */
@@ -227,7 +234,7 @@ class ContractCreatorTest extends TestCase
     {
         $path = $this->prepareFakeStorage();
         $creator = $this->createInstance($this->modelName);
-        $fullPath = $path . DIRECTORY_SEPARATOR . 'TestRepository.php';
+        $fullPath = $path.DIRECTORY_SEPARATOR.'TestRepository.php';
 
         $result = $creator->createFile($fullPath, 'This is a content');
 
@@ -237,7 +244,8 @@ class ContractCreatorTest extends TestCase
     }
 
     /**
-     * getClassFullNamespace(): int
+     * getClassFullNamespace(): int.
+     *
      * @test
      * @group contract_creator_test
      * */
@@ -255,7 +263,8 @@ class ContractCreatorTest extends TestCase
     }
 
     /**
-     * create() where the path is specified
+     * create() where the path is specified.
+     *
      * @test
      * @group contract_creator_test
      * */
@@ -275,7 +284,8 @@ class ContractCreatorTest extends TestCase
     }
 
     /**
-     * create() where the path is specified with a subdirectory
+     * create() where the path is specified with a subdirectory.
+     *
      * @test
      * @group contract_creator_test
      * */
@@ -295,7 +305,8 @@ class ContractCreatorTest extends TestCase
     }
 
     /**
-     * complete()
+     * complete().
+     *
      * @test
      * @group contract_creator_test
      * */

@@ -37,17 +37,15 @@ class RepositoryCommand extends Command
         $this->appNamespace = app()->getNamespace();
     }
 
-
-
     /**
      * Gets a configuration value from the config file of the package.
      *
      * @param string $key
      *
-     * @return String|null
+     * @return string|null
      */
-    protected function config(String $key)
+    protected function config(string $key)
     {
-        return config($this->configName . '.' . $key);
+        return config($this->configName.'.'.$key);
     }
 }

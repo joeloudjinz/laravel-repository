@@ -7,61 +7,63 @@ use Inz\Base\Creators\RepositoryCreator;
 use Inz\Exceptions\InvalidConfigurationValueException;
 use Inz\Exceptions\MissingConfigurationValueException;
 
-class ConfigurationResolver
+class ConfigResolver
 {
     public static $configName = 'repository';
 
     /**
-     * Retrieve the base path from configuration file
+     * Retrieve the base path from configuration file.
      *
-     * @return String
+     * @return string
      */
     public static function basePath()
     {
-        $value = config(self::$configName . ".base.path");
-        if (self::validateConfigValue($value, "base path")) {
+        $value = config(self::$configName.'.base.path');
+        if (self::validateConfigValue($value, 'base path')) {
             return $value;
         }
     }
 
     /**
-     * Retrieve the base namespace from configuration file
+     * Retrieve the base namespace from configuration file.
      *
-     * @return String
+     * @return string
      */
     public static function baseNamespace()
     {
-        $value = config(self::$configName . ".base.namespace");
-        if (self::validateConfigValue($value, "base namespace")) {
+        $value = config(self::$configName.'.base.namespace');
+        if (self::validateConfigValue($value, 'base namespace')) {
             return $value;
         }
     }
 
     /**
-     * Retrieve the namespace value for the given class category from configuration file
+     * Retrieve the namespace value for the given class category from configuration file.
      *
-     * @param String $class
-     * @return String
+     * @param string $class
+     *
+     * @return string
      */
-    public static function namespaceFor(String $class)
+    public static function namespaceFor(string $class)
     {
         $key = self::getKeyName($class);
-        $value = config(self::$configName . ".namespaces." . $key);
+        $value = config(self::$configName.'.namespaces.'.$key);
         if (self::validateConfigValue($value, "{$key} namespace")) {
             return $value;
         }
     }
 
     /**
-     * Retrieve the path value for the given class category from configuration file
+     * Retrieve the path value for the given class category from configuration file.
      *
-     * @param String $class
-     * @return String
+     * @param string $class
+     *
+     * @return string
      */
-    public static function pathFor(String $class)
+    public static function pathFor(string $class)
     {
         $key = self::getKeyName($class);
-        $value = config(self::$configName . ".paths." . $key);
+        $value = config(self::$configName.'.paths.'.$key);
         if (self::validateConfigValue($value, "{$key} path")) {
             return $value;
         }
@@ -70,25 +72,26 @@ class ConfigurationResolver
     /**
      * Determines the key name of the configuration array based on the given class.
      *
-     * @param String $class
-     * @return String
+     * @param string $class
+     *
+     * @return string
      */
-    private static function getKeyName(String $class)
+    private static function getKeyName(string $class)
     {
         if ($class === ContractCreator::class) {
-            return "contracts";
+            return 'contracts';
         } elseif ($class === RepositoryCreator::class) {
-            return "implementations";
+            return 'implementations';
         } else {
-            return "criterions";
+            return 'criterions';
         }
     }
 
     /**
      * Checks if the given config value is valid or not.
      *
-     * @param String $value
-     * @param String $whatsWrong
+     * @param string $value
+     * @param string $whatsWrong
      *
      * @throw MissingConfigurationValueException|InvalidConfigurationValueException
      *
@@ -105,7 +108,7 @@ class ConfigurationResolver
         if ($value == '') {
             throw new InvalidConfigurationValueException($whatsWrong);
         }
-        
+
         return true;
     }
 }

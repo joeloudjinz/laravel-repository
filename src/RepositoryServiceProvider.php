@@ -27,10 +27,10 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__ . '/config/repository.php', 'repository');
+        $this->mergeConfigFrom(__DIR__.'/config/repository.php', 'repository');
 
         $this->publishes(
-            [__DIR__ . '/config/repository.php' => app()->basePath() . '/config/repository.php'],
+            [__DIR__.'/config/repository.php' => app()->basePath().'/config/repository.php'],
             'inz-repository'
         );
 

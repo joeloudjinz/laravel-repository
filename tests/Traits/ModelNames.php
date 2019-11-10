@@ -2,26 +2,26 @@
 
 namespace Inz\Repository\Test\Traits;
 
-trait DifferentModelNames
+trait ModelNames
 {
     /**
-     * Simple model name without subdirectory
+     * Simple model name without subdirectory.
      *
-     * @var String
+     * @var string
      */
     private $modelName = 'Post';
 
     /**
-     * Model name with subdirectory
+     * Model name with subdirectory.
      *
-     * @var String
+     * @var string
      */
     private $modelWithSubDirectory = 'Blog/Post';
 
     /**
-     * Model name with subdirectory in models directory
+     * Model name with subdirectory in models directory.
      *
-     * @var String
+     * @var string
      */
     private $modelWithSubDirectoryInModels = 'Models/Blog/Post';
 
@@ -29,14 +29,14 @@ trait DifferentModelNames
      * Full model name with subdirectory contained in models
      * directory in application folder.
      *
-     * @var String
+     * @var string
      */
     private $fullModelName = 'App/Models/Blog/Post';
 
     /**
      * Name of the subdirectory.
      *
-     * @var String
+     * @var string
      */
     private $subDirectoryName = 'Blog';
 }

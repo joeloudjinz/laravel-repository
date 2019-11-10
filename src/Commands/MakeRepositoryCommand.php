@@ -25,7 +25,7 @@ class MakeRepositoryCommand extends Command
     /**
      * The input of the command.
      *
-     * @var String
+     * @var string
      */
     protected $modelArgument;
     /**
@@ -72,6 +72,7 @@ class MakeRepositoryCommand extends Command
     {
         if (!$this->isValidArgument('model')) {
             $this->error('Model name is missing');
+
             return;
         }
 
@@ -98,11 +99,11 @@ class MakeRepositoryCommand extends Command
     /**
      * Checks the presence & validity of the argument with the given name.
      *
-     * @param String $name
+     * @param string $name
      *
      * @return bool
      */
-    private function isValidArgument(String $name): bool
+    private function isValidArgument(string $name): bool
     {
         return $this->hasArgument($name) &&
         $this->argument($name) !== '';
@@ -114,7 +115,7 @@ class MakeRepositoryCommand extends Command
     }
 
     /**
-     * Checks the models existence, it will be created if the developer approved
+     * Checks the models existence, it will be created if the developer approved.
      *
      * @return boolean.
      */
@@ -127,17 +128,19 @@ class MakeRepositoryCommand extends Command
         $response = $this->ask("Model [{$this->modelArgument}] does not exist. Would you like to create it?", 'Yes');
         if (!$this->isResponsePositive($response)) {
             $this->warn("Model wasn't created, aborting command.");
+
             return false;
         }
 
         $this->callSilent('make:model', ['name' => $this->modelArgument]);
         $this->info("Model {$this->modelArgument} created successfully");
+
         return true;
     }
 
     /**
      * Handle the process of delivering data to contract creator & processing
-     * results of the creation
+     * results of the creation.
      *
      * @return array|bool
      */
@@ -148,15 +151,16 @@ class MakeRepositoryCommand extends Command
             return $result;
         }
 
-        $response = $this->ask("Contract file already exists. Do you want to overwrite it?", 'Yes');
+        $response = $this->ask('Contract file already exists. Do you want to overwrite it?', 'Yes');
         if (!$this->isResponsePositive($response)) {
             $this->warn("Contract wasn't created");
+
             return false;
         }
 
         $result = $this->contractCreator->complete();
         if (!is_array($result)) {
-            throw new Exception("There was an error while creating contract file");
+            throw new Exception('There was an error while creating contract file');
         }
 
         return $result;
@@ -165,12 +169,12 @@ class MakeRepositoryCommand extends Command
     /**
      * Create a new repository.
      *
-     * @param String $contract
-     * @param String $contractName
+     * @param string $contract
+     * @param string $contractName
      *
      * @return void
      */
-    protected function createRepository(String $contractNamespace, String $contractName): bool
+    protected function createRepository(string $contractNamespace, string $contractName): bool
     {
         $this->repositoryCreator->initializeReplacementsParts(
             $contractNamespace,
@@ -182,14 +186,15 @@ class MakeRepositoryCommand extends Command
             return true;
         }
 
-        $response = $this->ask("Implementations file already exists. Do you want to overwrite it?", 'Yes');
+        $response = $this->ask('Implementations file already exists. Do you want to overwrite it?', 'Yes');
         if (!$this->isResponsePositive($response)) {
             $this->warn("Implementation class wasn't created");
+
             return false;
         }
 
         if (!$this->repositoryCreator->complete()) {
-            throw new Exception("There was an error while creating implementation file");
+            throw new Exception('There was an error while creating implementation file');
         }
 
         return true;
@@ -198,11 +203,11 @@ class MakeRepositoryCommand extends Command
     /**
      * Determine if the user input is positive.
      *
-     * @param String $response
+     * @param string $response
      *
      * @return bool
      */
-    private function isResponsePositive(String $response): bool
+    private function isResponsePositive(string $response): bool
     {
         return in_array(strtolower($response), ['y', 'yes'], true);
     }

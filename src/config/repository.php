@@ -14,7 +14,7 @@ return [
     |
      */
     'base' => [
-        'path' => app()->basePath(), // 'app/' which is the best choice
+        'path'      => app()->basePath(), // 'app/' which is the best choice
         'namespace' => app()->getNamespace(), // 'App\' which is the best choice
     ],
 
@@ -29,7 +29,7 @@ return [
     | Note that anti-slash in the end is not set so make sure you don't add it.
      */
     'namespaces' => [
-        'contracts' => 'Repositories\Contracts',
+        'contracts'       => 'Repositories\Contracts',
         'implementations' => 'Repositories\Implementations',
         // 'criteria' => 'Repositories\Criteria',
     ],
@@ -45,7 +45,7 @@ return [
     | Note that anti-slash in the end is not set so make sure you don't add it.
      */
     'paths' => [
-        'contracts' => 'Repositories/Contracts',
+        'contracts'       => 'Repositories/Contracts',
         'implementations' => 'Repositories/Implementations',
         // 'criteria' => 'Repositories/Criteria',
     ],

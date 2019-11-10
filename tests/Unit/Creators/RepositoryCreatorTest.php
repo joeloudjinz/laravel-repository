@@ -19,7 +19,7 @@ class RepositoryCreatorTest extends TestCase
      */
     private $attributesData = [
         'classNameSuffix' => 'Repository',
-        'pathConfig' => 'Repositories/Implementations',
+        'pathConfig'      => 'Repositories/Implementations',
         'namespaceConfig' => 'Repositories\Implementations',
     ];
 
@@ -63,7 +63,7 @@ class RepositoryCreatorTest extends TestCase
         $this->assertEquals($this->subDirectoryName, $creator->getSubdirectory());
         $this->assertEquals($this->attributesData['classNameSuffix'], $creator->getClassNameSuffix());
         $this->assertEquals($this->attributesData['pathConfig'], $creator->getPathConfig());
-        $this->assertEquals($this->attributesData['namespaceConfig'] . '\\', $creator->getNamespaceConfig());
+        $this->assertEquals($this->attributesData['namespaceConfig'].'\\', $creator->getNamespaceConfig());
     }
 
     /**
@@ -83,7 +83,7 @@ class RepositoryCreatorTest extends TestCase
         $this->assertEquals($this->subDirectoryName, $creator->getSubdirectory());
         $this->assertEquals($this->attributesData['classNameSuffix'], $creator->getClassNameSuffix());
         $this->assertEquals($this->attributesData['pathConfig'], $creator->getPathConfig());
-        $this->assertEquals($this->attributesData['namespaceConfig'] . '\\', $creator->getNamespaceConfig());
+        $this->assertEquals($this->attributesData['namespaceConfig'].'\\', $creator->getNamespaceConfig());
     }
 
     /**
@@ -103,11 +103,12 @@ class RepositoryCreatorTest extends TestCase
         $this->assertEquals($this->subDirectoryName, $creator->getSubdirectory());
         $this->assertEquals($this->attributesData['classNameSuffix'], $creator->getClassNameSuffix());
         $this->assertEquals($this->attributesData['pathConfig'], $creator->getPathConfig());
-        $this->assertEquals($this->attributesData['namespaceConfig'] . '\\', $creator->getNamespaceConfig());
+        $this->assertEquals($this->attributesData['namespaceConfig'].'\\', $creator->getNamespaceConfig());
     }
 
     /**
-     * extractStubContent(): bool
+     * extractStubContent(): bool.
+     *
      * @test
      * @group repository_creator_test
      * */
@@ -122,7 +123,8 @@ class RepositoryCreatorTest extends TestCase
     }
 
     /**
-     * replaceContentParts(): bool
+     * replaceContentParts(): bool.
+     *
      * @test
      * @group repository_creator_test
      * */
@@ -145,7 +147,8 @@ class RepositoryCreatorTest extends TestCase
     }
 
     /**
-     * createClassName(modelName): String
+     * createClassName(modelName): String.
+     *
      * @test
      * @group repository_creator_test
      * */
@@ -156,11 +159,12 @@ class RepositoryCreatorTest extends TestCase
 
         $this->assertNotNull($result);
         $this->assertIsString($result);
-        $this->assertEquals($this->modelName . $creator->getClassNameSuffix(), $result);
+        $this->assertEquals($this->modelName.$creator->getClassNameSuffix(), $result);
     }
 
     /**
-     * generateDirectoryFullPath(): String
+     * generateDirectoryFullPath(): String.
+     *
      * @test
      * @group repository_creator_test
      * */
@@ -179,7 +183,8 @@ class RepositoryCreatorTest extends TestCase
     }
 
     /**
-     * generateFileFullPath(): String
+     * generateFileFullPath(): String.
+     *
      * @test
      * @group repository_creator_test
      * */
@@ -187,7 +192,7 @@ class RepositoryCreatorTest extends TestCase
     {
         $path = $this->prepareFakeStorage();
         $creator = $this->createInstance($this->modelName);
-        $fileName = $this->modelName . $this->attributesData['classNameSuffix'];
+        $fileName = $this->modelName.$this->attributesData['classNameSuffix'];
 
         $result = $creator->generateFileFullPath($path, $fileName);
 
@@ -203,14 +208,15 @@ class RepositoryCreatorTest extends TestCase
     }
 
     /**
-     * createDirectory(): bool
+     * createDirectory(): bool.
+     *
      * @test
      * @group repository_creator_test
      * */
     public function test_create_directory()
     {
         $creator = $this->createInstance($this->modelName);
-        $fullPath = $this->prepareFakeStorage() . DIRECTORY_SEPARATOR . 'TestRepository';
+        $fullPath = $this->prepareFakeStorage().DIRECTORY_SEPARATOR.'TestRepository';
 
         $result = $creator->createDirectory($fullPath);
 
@@ -221,7 +227,8 @@ class RepositoryCreatorTest extends TestCase
     }
 
     /**
-     * createFile(): int
+     * createFile(): int.
+     *
      * @test
      * @group repository_creator_test
      * */
@@ -229,7 +236,7 @@ class RepositoryCreatorTest extends TestCase
     {
         $path = $this->prepareFakeStorage();
         $creator = $this->createInstance($this->modelName);
-        $fullPath = $path . DIRECTORY_SEPARATOR . 'TestRepository.php';
+        $fullPath = $path.DIRECTORY_SEPARATOR.'TestRepository.php';
 
         $result = $creator->createFile($fullPath, 'This is a content');
 
@@ -239,7 +246,8 @@ class RepositoryCreatorTest extends TestCase
     }
 
     /**
-     * getClassFullNamespace(): int
+     * getClassFullNamespace(): int.
+     *
      * @test
      * @group repository_creator_test
      * */
@@ -257,7 +265,8 @@ class RepositoryCreatorTest extends TestCase
     }
 
     /**
-     * create() where the path is specified
+     * create() where the path is specified.
+     *
      * @test
      * @group repository_creator_test
      * */
@@ -280,7 +289,8 @@ class RepositoryCreatorTest extends TestCase
     }
 
     /**
-     * create() where the path is specified with a subdirectory
+     * create() where the path is specified with a subdirectory.
+     *
      * @test
      * @group repository_creator_test
      * */
@@ -303,7 +313,8 @@ class RepositoryCreatorTest extends TestCase
     }
 
     /**
-     * complete()
+     * complete().
+     *
      * @test
      * @group repository_creator_test
      * */

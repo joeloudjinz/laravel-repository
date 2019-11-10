@@ -11,25 +11,25 @@ class ModelCreator
      */
     protected $appNamespace;
     /**
-     * Model name specified by the developer
+     * Model name specified by the developer.
      *
-     * @var String
+     * @var string
      */
     protected $modelName;
     /**
-     * Model namespace
+     * Model namespace.
      *
-     * @var String
+     * @var string
      */
     protected $modelNamespace;
     /**
-     * Input value where a slash is replaced with anti-slash
+     * Input value where a slash is replaced with anti-slash.
      *
-     * @var String
+     * @var string
      */
     protected $antiSlashedInput;
 
-    public function __construct(String $input)
+    public function __construct(string $input)
     {
         $this->appNamespace = app()->getNamespace();
         // replacing a ll slash occurrences with anti-slash
@@ -52,14 +52,14 @@ class ModelCreator
         $this->modelNamespace = $this->appNamespace;
         if (count($explodedInput) > 0) {
             foreach ($explodedInput as $value) {
-                $this->modelNamespace .= $value . '\\';
+                $this->modelNamespace .= $value.'\\';
             }
         }
         $this->modelNamespace .= $this->modelName;
     }
 
     /**
-     * Checking the existence of the model class
+     * Checking the existence of the model class.
      *
      * @return bool
      */
@@ -71,7 +71,7 @@ class ModelCreator
     /**
      * Return the model's full namespace, model class name is included.
      *
-     * @return String
+     * @return string
      */
     public function getModelFullNamespace()
     {
@@ -81,7 +81,7 @@ class ModelCreator
     /**
      * Return the model's name.
      *
-     * @return String
+     * @return string
      */
     public function getModelName()
     {
