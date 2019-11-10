@@ -2,17 +2,17 @@
 
 namespace Inz;
 
+// use Inz\Commands\MakeBindingCommand;
+// use Inz\Commands\MakeCriteriaCommand;
 use Illuminate\Support\ServiceProvider;
-use Inz\Commands\MakeBindingCommand;
-use Inz\Commands\MakeCriteriaCommand;
 use Inz\Commands\MakeRepositoryCommand;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
     private $repoCommands = [
-        MakeCriteriaCommand::class,
+        // MakeBindingCommand::class,
+        // MakeCriteriaCommand::class,
         MakeRepositoryCommand::class,
-        MakeBindingCommand::class,
     ];
 
     /**
@@ -29,11 +29,9 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/config/repository.php', 'repository');
 
-        $this->publishes([
-            __DIR__ . '/config/repository.php' => app()->basePath() . '/config/repository.php',
-        ],
-        // TODO: rename this tag
-            'config'
+        $this->publishes(
+            [__DIR__ . '/config/repository.php' => app()->basePath() . '/config/repository.php'],
+            'inz-repository'
         );
 
         $this->registerCommands();

@@ -92,7 +92,7 @@ class MakeRepositoryCommand extends Command
         }
         $this->info("{$this->repositoryCreator->getClassName()} created successfully");
 
-        $this->bindClasses();
+        // $this->bindClasses();
     }
 
     /**
