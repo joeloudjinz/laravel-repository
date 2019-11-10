@@ -36,7 +36,7 @@ class ContractCreator extends Creator
     public function initializeReplacementsParts()
     {
         $this->replacements = [
-            '%contractsNamespace%' => $this->baseNamespace . $this->namespaceConfig . $this->subdirectory,
+            '%contractsNamespace%' => $this->baseNamespace(),
             '%contractName%' => $this->className,
         ];
     }

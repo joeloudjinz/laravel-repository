@@ -70,7 +70,6 @@ class MakeRepositoryCommand extends Command
      */
     public function handle()
     {
-
         if (!$this->isValidArgument('model')) {
             $this->error('Model name is missing');
             return;
@@ -86,12 +85,14 @@ class MakeRepositoryCommand extends Command
         if (is_bool($result)) {
             return;
         }
+        $this->info("{$this->contractCreator->getClassName()} created successfully");
 
-        if ($this->createRepository($result[0], $result[1])) {
+        if (!$this->createRepository($result[0], $result[1])) {
             return;
         }
+        $this->info("{$this->repositoryCreator->getClassName()} created successfully");
 
-        $this->bindClasses();
+        // $this->bindClasses();
     }
 
     /**
@@ -130,7 +131,7 @@ class MakeRepositoryCommand extends Command
         }
 
         $this->callSilent('make:model', ['name' => $this->modelArgument]);
-        $this->line("Model [{$this->modelArgument}] created successfully");
+        $this->info("Model {$this->modelArgument} created successfully");
         return true;
     }
 
@@ -158,7 +159,6 @@ class MakeRepositoryCommand extends Command
             throw new Exception("There was an error while creating contract file");
         }
 
-        $this->line("Contract [{$this->contractCreator->getClassName()}] created successfully");
         return $result;
     }
 
@@ -192,7 +192,6 @@ class MakeRepositoryCommand extends Command
             throw new Exception("There was an error while creating implementation file");
         }
 
-        $this->line("Implementation [{$this->repositoryCreator->getClassName()}] created successfully");
         return true;
     }
 
