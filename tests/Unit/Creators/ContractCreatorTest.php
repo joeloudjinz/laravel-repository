@@ -2,9 +2,9 @@
 
 namespace Inz\Repository\Test\Unit\Creators;
 
+use Inz\Repository\Test\TestCase;
 use Illuminate\Filesystem\Filesystem;
 use Inz\Base\Creators\ContractCreator;
-use Inz\Repository\Test\TestCase;
 use Inz\Repository\Test\Traits\DifferentModelNames;
 use Inz\Repository\Test\Traits\FakeStorageInitiator;
 
@@ -63,7 +63,7 @@ class ContractCreatorTest extends TestCase
         $this->assertEquals($this->subDirectoryName, $creator->getSubdirectory());
         $this->assertEquals($this->attributesData['classNameSuffix'], $creator->getClassNameSuffix());
         $this->assertEquals($this->attributesData['pathConfig'], $creator->getPathConfig());
-        $this->assertEquals($this->attributesData['namespaceConfig'] . '\\', $creator->getNamespaceConfig());
+        $this->assertEquals($this->attributesData['namespaceConfig'], $creator->getNamespaceConfig());
     }
 
     /**
@@ -83,7 +83,7 @@ class ContractCreatorTest extends TestCase
         $this->assertEquals($this->subDirectoryName, $creator->getSubdirectory());
         $this->assertEquals($this->attributesData['classNameSuffix'], $creator->getClassNameSuffix());
         $this->assertEquals($this->attributesData['pathConfig'], $creator->getPathConfig());
-        $this->assertEquals($this->attributesData['namespaceConfig'] . '\\', $creator->getNamespaceConfig());
+        $this->assertEquals($this->attributesData['namespaceConfig'], $creator->getNamespaceConfig());
     }
 
     /**
@@ -103,7 +103,7 @@ class ContractCreatorTest extends TestCase
         $this->assertEquals($this->subDirectoryName, $creator->getSubdirectory());
         $this->assertEquals($this->attributesData['classNameSuffix'], $creator->getClassNameSuffix());
         $this->assertEquals($this->attributesData['pathConfig'], $creator->getPathConfig());
-        $this->assertEquals($this->attributesData['namespaceConfig'] . '\\', $creator->getNamespaceConfig());
+        $this->assertEquals($this->attributesData['namespaceConfig'], $creator->getNamespaceConfig());
     }
 
     /**
