@@ -1,4 +1,4 @@
-# Repository pattern files generator
+# Repository pattern generator
 
 This package helps you get started quickly to use **repository pattern** in your next, or current, laravel project because after watching those laracon videos (which by the way are A LOT :p) that talks about design patterns and SOLID principals you became all hipped to try and adapt them, at least i'm :D.
 
@@ -10,18 +10,18 @@ This package helps you get started quickly to use **repository pattern** in your
 - [installation](#installation)
 - [configuration](#configuration)
 - [usage](#usage)
-  - [generating contract & implementation classes](#generating-1)
+  - [generating contract & implementation](#generating-1)
 - [Tests](#tests)
 
 ---
 
 ## <a id="introductory">Introductory</a>
 
-Using this package will help you spend more time focusing on your application's logic by taking care of generating and implementing a layer that sits between that logic and the database.
+Using this package will help you spend more time focusing on your application's logic by taking care of generating and implementing a layer that sits between the logic and the database.
 It generates:
 
 - **Repository Contract**:
-  which is an empty interface class that you can use to add custom methods to the repository implementation class so you can extend it's functionality, it's also used during binding process.
+  which is an empty interface that can be used to add custom methods to the repository implementation class so you can extend the functionalities, it's also used during binding process.
 
 - **Implementation Class**:
   a class in which the repository logic reside, it extends `Inz\Abstractions\AbstractRepository` and implements the generated contract.
@@ -83,7 +83,7 @@ The configuration file for the package contains a group of settings which can be
     ],
 ```
 
-- **namespaces** array determines the namespaces for the different files, note that `App\` is not present because the package will take care of adding it if it's specified.
+- **namespaces** array determines the namespaces for different files, note that `App\` is not present because it will be added if specified.
 
 ```php
     /*
@@ -102,7 +102,7 @@ The configuration file for the package contains a group of settings which can be
     ],
 ```
 
-- **paths** array determines the paths for the different files, `Repositories` represent the root directory for them and what goes after the slash is the directory for those files, note that `app/` is not present because the package will take care of adding it if it's specified.
+- **paths** array determines the paths for different files, `Repositories` represent the root directory for them and what goes after the slash is the directory for those files, note that `app/` is not present because it will be added if specified.
 
 ## <a id="usage">Usage</a>
 
@@ -110,7 +110,7 @@ The configuration file for the package contains a group of settings which can be
 
 To generate a full scaffold, you run
 
-```php
+```shell
 // the pattern
 php artisan make:repository Model
 
@@ -126,9 +126,9 @@ php artisan make:repository Models/Blog/Post
 
 #### Notes
 
-- if the model doesn't exist, it will ask you if you want to create it, if so it will create the model and continue generating files.
+- if the model doesn't exist, you will be asked if you want to create it, if so it will be created.
 
-- If one of the other files exist already it will ask you if you want to override it, if so it will, thus **be careful** about this situation to avoid losing written code.
+- If one of the other files exist already you will be asked to override it, if so it will, thus **be careful** about this situation to avoid losing written code.
 
 ## <a id="tests">Tests</a>
 
