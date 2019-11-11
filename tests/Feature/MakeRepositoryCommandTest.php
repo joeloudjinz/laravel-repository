@@ -4,15 +4,11 @@ namespace Inz\Repository\Test\Feature;
 use Inz\Repository\Test\TestCase;
 use Inz\Base\Creators\ContractCreator;
 use Inz\Base\Creators\RepositoryCreator;
-use Inz\Repository\Test\Traits\FakeStorageInitiator;
 
 class MakeRepositoryCommandTest extends TestCase
 {
-    use FakeStorageInitiator;
-
     private $command = 'make:repository';
     private $model = 'Post';
-    private $fullModel = 'Blog/Post';
 
     /**
      * testing the case where the model name is empty or not specified.
@@ -34,8 +30,6 @@ class MakeRepositoryCommandTest extends TestCase
      */
     public function test_command_with_model_and_negative_answer()
     {
-        $this->prepareFakeStorage();
-
         $this->artisan($this->command, ['model' => $this->model])
             ->expectsQuestion("Model [{$this->model}] does not exist. Would you like to create it?", 'no')
             ->expectsOutput("Model wasn't created, aborting command.")
@@ -50,8 +44,6 @@ class MakeRepositoryCommandTest extends TestCase
      */
     public function test_command_with_model_and_positive_answer()
     {
-        $this->prepareFakeStorage();
-
         $this->artisan($this->command, ['model' => $this->model])
             ->expectsQuestion("Model [{$this->model}] does not exist. Would you like to create it?", 'yes')
             ->expectsOutput("Model {$this->model} created successfully")
@@ -66,8 +58,6 @@ class MakeRepositoryCommandTest extends TestCase
      */
     public function test_command_where_contract_file_exist_and_answer_negative()
     {
-        $this->prepareFakeStorage();
-
         (new ContractCreator($this->model))->create();
 
         $this->artisan($this->command, ['model' => $this->model])
@@ -123,8 +113,6 @@ class MakeRepositoryCommandTest extends TestCase
      */
     public function test_command_where_implementation_file_exist_and_answer_positive()
     {
-        $this->prepareFakeStorage();
-
         $creator = new RepositoryCreator($this->model);
         $creator->create();
 

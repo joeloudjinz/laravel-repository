@@ -3,10 +3,7 @@
 namespace Inz\Commands;
 
 use Exception;
-use Illuminate\Console\Command;
-use Inz\Base\Creators\ContractCreator;
-use Inz\Base\Creators\ModelAssistor;
-use Inz\Base\Creators\RepositoryCreator;
+use Inz\Base\Abstractions\Command;
 
 class MakeRepositoryCommand extends Command
 {
@@ -21,25 +18,7 @@ class MakeRepositoryCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Create a new repository';
-    /**
-     * The input of the command.
-     *
-     * @var String
-     */
-    protected $modelArgument;
-    /**
-     * @var ModelAssistor
-     */
-    private $modelAssistor;
-    /**
-     * @var ContractCreator
-     */
-    private $contractCreator;
-    /**
-     * @var RepositoryCreator
-     */
-    private $repositoryCreator;
+    protected $description = "Create a new repository with it's interface";
 
     /**
      * Create a new command instance.
@@ -50,20 +29,6 @@ class MakeRepositoryCommand extends Command
     }
 
     /**
-     * Takes care of initializing class attributes after the constructor
-     * has completed constructing the object.
-     *
-     * @return void
-     */
-    private function initializeAttributes()
-    {
-        $this->modelArgument = $this->argument('model');
-        $this->modelAssistor = new ModelAssistor($this->modelArgument);
-        $this->contractCreator = new ContractCreator($this->modelArgument);
-        $this->repositoryCreator = new RepositoryCreator($this->modelArgument);
-    }
-
-    /**
      * Execute the console command.
      *
      * @return mixed
@@ -71,11 +36,11 @@ class MakeRepositoryCommand extends Command
     public function handle()
     {
         if (!$this->isValidArgument('model')) {
-            $this->error('Model name is missing');
+            $this->missingArgumentError('model');
             return;
         }
 
-        $this->initializeAttributes();
+        $this->prepareForMakeRepository();
 
         if (!$this->processModelExistence()) {
             return;
@@ -92,25 +57,7 @@ class MakeRepositoryCommand extends Command
         }
         $this->info("{$this->repositoryCreator->getClassName()} created successfully");
 
-        // $this->bindClasses();
-    }
-
-    /**
-     * Checks the presence & validity of the argument with the given name.
-     *
-     * @param String $name
-     *
-     * @return bool
-     */
-    private function isValidArgument(String $name): bool
-    {
-        return $this->hasArgument($name) &&
-        $this->argument($name) !== '';
-    }
-
-    public function bindClasses()
-    {
-        $this->call('make:binding', ['repository' => $this->modelArgument]);
+        $this->call('bind:repository', ['model' => $this->modelArgument]);
     }
 
     /**
@@ -193,17 +140,5 @@ class MakeRepositoryCommand extends Command
         }
 
         return true;
-    }
-
-    /**
-     * Determine if the user input is positive.
-     *
-     * @param String $response
-     *
-     * @return bool
-     */
-    private function isResponsePositive(String $response): bool
-    {
-        return in_array(strtolower($response), ['y', 'yes'], true);
     }
 }
