@@ -86,8 +86,6 @@ class MakeRepositoryCommandTest extends TestCase
      */
     public function test_command_where_contract_file_exist_and_answer_positive()
     {
-        $this->prepareFakeStorage();
-
         $creator = new ContractCreator($this->model);
         $creator->create();
 
@@ -107,8 +105,6 @@ class MakeRepositoryCommandTest extends TestCase
      */
     public function test_command_where_implementation_file_exist_and_answer_negative()
     {
-        $this->prepareFakeStorage();
-
         (new RepositoryCreator($this->model))->create();
 
         $this->artisan($this->command, ['model' => $this->model])

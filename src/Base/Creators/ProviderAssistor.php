@@ -38,7 +38,7 @@ class ProviderAssistor
      *
      * @var String
      */
-    protected $stub = __DIR__ . '/../Stub/provider.stub';
+    protected $stub = __DIR__ . '/../Stubs/provider.stub';
 
     public function __construct(String $name)
     {
@@ -54,7 +54,7 @@ class ProviderAssistor
      */
     public function providerExist(): bool
     {
-        return class_exists($this->getFullClassName());
+        return File::exists($this->getFullClassPath());
     }
 
     /**
