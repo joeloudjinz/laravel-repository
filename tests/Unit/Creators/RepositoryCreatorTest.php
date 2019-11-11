@@ -6,11 +6,10 @@ use Inz\Repository\Test\TestCase;
 use Illuminate\Filesystem\Filesystem;
 use Inz\Base\Creators\RepositoryCreator;
 use Inz\Repository\Test\Traits\DifferentModelNames;
-use Inz\Repository\Test\Traits\FakeStorageInitiator;
 
 class RepositoryCreatorTest extends TestCase
 {
-    use FakeStorageInitiator, DifferentModelNames;
+    use DifferentModelNames;
 
     /**
      * Initial values for the attributes of the ContractCreator class.
@@ -166,14 +165,12 @@ class RepositoryCreatorTest extends TestCase
      * */
     public function test_generate_directory_full_path()
     {
-        $path = $this->prepareFakeStorage();
-
         $creator = $this->createInstance($this->modelName);
-        $result = $creator->generateDirectoryFullPath($path, $creator->getPathConfig());
+        $result = $creator->generateDirectoryFullPath($this->fakeStoragePath, $creator->getPathConfig());
 
         $this->assertNotNull($result);
         $this->assertIsString($result);
-        $this->assertStringContainsString($path, $result);
+        $this->assertStringContainsString($this->fakeStoragePath, $result);
         $this->assertStringContainsString($creator->getPathConfig(), $result);
         $this->assertStringContainsString(DIRECTORY_SEPARATOR, $result);
     }
@@ -185,15 +182,14 @@ class RepositoryCreatorTest extends TestCase
      * */
     public function test_generate_file_full_path()
     {
-        $path = $this->prepareFakeStorage();
         $creator = $this->createInstance($this->modelName);
         $fileName = $this->modelName . $this->attributesData['classNameSuffix'];
 
-        $result = $creator->generateFileFullPath($path, $fileName);
+        $result = $creator->generateFileFullPath($this->fakeStoragePath, $fileName);
 
         $this->assertNotNull($result);
         $this->assertIsString($result);
-        $this->assertStringContainsString($path, $result);
+        $this->assertStringContainsString($this->fakeStoragePath, $result);
         $this->assertStringContainsString($fileName, $result);
         $this->assertStringContainsString(DIRECTORY_SEPARATOR, $result);
         $this->assertStringContainsString('.php', $result);
@@ -210,7 +206,7 @@ class RepositoryCreatorTest extends TestCase
     public function test_create_directory()
     {
         $creator = $this->createInstance($this->modelName);
-        $fullPath = $this->prepareFakeStorage() . DIRECTORY_SEPARATOR . 'TestRepository';
+        $fullPath = $this->fakeStoragePath . DIRECTORY_SEPARATOR . 'TestRepository';
 
         $result = $creator->createDirectory($fullPath);
 
@@ -227,9 +223,8 @@ class RepositoryCreatorTest extends TestCase
      * */
     public function test_create_file()
     {
-        $path = $this->prepareFakeStorage();
         $creator = $this->createInstance($this->modelName);
-        $fullPath = $path . DIRECTORY_SEPARATOR . 'TestRepository.php';
+        $fullPath = $this->fakeStoragePath . DIRECTORY_SEPARATOR . 'TestRepository.php';
 
         $result = $creator->createFile($fullPath, 'This is a content');
 
@@ -264,7 +259,6 @@ class RepositoryCreatorTest extends TestCase
     public function test_create_implementation_file_in_specific_path()
     {
         // preparing
-        $this->prepareFakeStorage();
         $creator = $this->createInstance($this->modelName);
 
         // initializing replacements attribute
@@ -287,7 +281,6 @@ class RepositoryCreatorTest extends TestCase
     public function test_create_implementation_file_in_specific_path_in_subdirectory()
     {
         // preparing
-        $this->prepareFakeStorage();
         $creator = $this->createInstance('Blog/Post');
 
         // initializing replacements attribute
@@ -310,7 +303,6 @@ class RepositoryCreatorTest extends TestCase
     public function test_complete_implementation_file_creation()
     {
         // preparing
-        $this->prepareFakeStorage();
         $creator = $this->createInstance($this->modelName);
         $creator->initializeReplacementsParts('ContractNamespace', 'ContractName', 'Post');
         $result = $creator->create();

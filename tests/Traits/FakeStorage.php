@@ -11,13 +11,13 @@ trait FakeStorageInitiator
      *
      * @var \Illuminate\Contracts\Filesystem\Filesystem
      */
-    private $fakeStorage;
+    protected $fakeStorage;
     /**
      * The path to fake directory
      *
      * @var String
      */
-    private $fakeStoragePath;
+    protected $fakeStoragePath;
 
     /**
      * Create a fake storage for testing and return the full path to it.

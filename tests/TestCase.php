@@ -2,12 +2,15 @@
 
 namespace Inz\Repository\Test;
 
-use Inz\Base\ConfigurationResolver;
 use Inz\RepositoryServiceProvider;
+use Inz\Base\ConfigurationResolver;
+use Inz\Repository\Test\Traits\FakeStorageInitiator;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 
 class TestCase extends OrchestraTestCase
 {
+    use FakeStorageInitiator;
+
     /**
      * Setup the test environment.
      *
@@ -16,6 +19,8 @@ class TestCase extends OrchestraTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->prepareFakeStorage();
+
         config()->set(
             ConfigurationResolver::$configName . '.base.path',
             storage_path('framework/testing/disks/app')
