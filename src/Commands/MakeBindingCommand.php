@@ -62,14 +62,8 @@ class MakeBindingCommand extends Command
      **/
     private function bind()
     {
-        $contract = $this->contractCreator->getClassFullNamespace(
-            $this->contractCreator->baseNamespace(),
-            $this->contractCreator->getClassName()
-        );
-        $implementation = $this->repositoryCreator->getClassFullNamespace(
-            $this->repositoryCreator->baseNamespace(),
-            $this->repositoryCreator->getClassName()
-        );
+        $contract = $this->contractCreator->getClassFullNamespace();
+        $implementation = $this->repositoryCreator->getClassFullNamespace();
         return $this->providerAssistor->addRepositoryEntry($contract, $implementation);
     }
 }

@@ -3,9 +3,8 @@
 namespace Inz\Base\Abstractions;
 
 use Exception;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Arr;
 use Inz\Base\ConfigurationResolver;
+use Illuminate\Support\Facades\File;
 
 /**
  * Abstracts the creation process of the files, this way we can reuse the logic to
@@ -14,12 +13,6 @@ use Inz\Base\ConfigurationResolver;
  */
 abstract class Creator
 {
-    /**
-     * File manager.
-     *
-     * @var Illuminate\Filesystem\Filesystem
-     */
-    protected $fileManager;
     /**
      * Application's path.
      *
@@ -96,7 +89,6 @@ abstract class Creator
 
     public function __construct(String $input)
     {
-        $this->fileManager = app()->make(Filesystem::class);
         $this->baseNamespace = ConfigurationResolver::baseNamespace();
         $this->basePath = ConfigurationResolver::basePath();
         $this->namespaceConfig = ConfigurationResolver::namespaceFor(get_called_class());
@@ -118,7 +110,7 @@ abstract class Creator
     public function extractStubContent(String $stubPath): bool
     {
         if (!is_null($stubPath)) {
-            $this->content = $this->fileManager->get($stubPath);
+            $this->content = File::get($stubPath);
             return true;
         }
         $this->content = null;
@@ -215,7 +207,7 @@ abstract class Creator
      */
     public function directoryExists(String $path): bool
     {
-        return $this->fileManager->exists($path);
+        return File::exists($path);
     }
 
     /**
@@ -226,7 +218,7 @@ abstract class Creator
     public function createDirectory(String $path): bool
     {
         try {
-            return $this->fileManager->makeDirectory($path, $this->permissions, true);
+            return File::makeDirectory($path, $this->permissions, true);
         } catch (Exception $e) {
             return false;
         }
@@ -239,7 +231,7 @@ abstract class Creator
      */
     public function fileExists(String $path): bool
     {
-        return $this->fileManager->exists($path);
+        return File::exists($path);
     }
 
     /**
@@ -249,7 +241,7 @@ abstract class Creator
      */
     public function createFile(String $path, String $content): int
     {
-        return $this->fileManager->put($path, $content);
+        return File::put($path, $content);
     }
 
     /**
@@ -257,9 +249,9 @@ abstract class Creator
      *
      * @return String
      */
-    public function getClassFullNamespace(String $base, String $className): String
+    public function getClassFullNamespace(): String
     {
-        return $base . '\\' . $className;
+        return $this->baseNamespace() . '\\' . $this->className;
     }
 
     /**
@@ -373,11 +365,6 @@ abstract class Creator
     public function getNamespaceConfig()
     {
         return $this->namespaceConfig;
-    }
-
-    public function getFileManager()
-    {
-        return $this->fileManager;
     }
 
     public function getAppNamespace()
