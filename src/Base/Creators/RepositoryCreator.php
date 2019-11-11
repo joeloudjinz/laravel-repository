@@ -17,6 +17,7 @@ class RepositoryCreator extends Creator
         parent::__construct($input);
         $this->stub = __DIR__ . '/../Stubs/implementation.stub';
         $this->classNameSuffix = 'Repository';
+        $this->createClassName($this->modelName);
     }
 
     /**
@@ -51,9 +52,6 @@ class RepositoryCreator extends Creator
 
         // replacing each string that match a key in $replacements with the value of that key in $content
         $this->replaceContentParts($this->replacements);
-
-        // preparing repository repository (interface) class name
-        $this->createClassName($this->modelName);
 
         // preparing the full path to the directory where the repositories will be stored
         $this->generateDirectoryFullPath($this->directoryBasePath(), $this->pathConfig);

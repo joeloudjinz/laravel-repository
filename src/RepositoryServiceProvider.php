@@ -2,7 +2,7 @@
 
 namespace Inz;
 
-// use Inz\Commands\MakeBindingCommand;
+use Inz\Commands\MakeBindingCommand;
 // use Inz\Commands\MakeCriteriaCommand;
 use Illuminate\Support\ServiceProvider;
 use Inz\Commands\MakeRepositoryCommand;
@@ -10,7 +10,7 @@ use Inz\Commands\MakeRepositoryCommand;
 class RepositoryServiceProvider extends ServiceProvider
 {
     private $repoCommands = [
-        // MakeBindingCommand::class,
+        MakeBindingCommand::class,
         // MakeCriteriaCommand::class,
         MakeRepositoryCommand::class,
     ];
