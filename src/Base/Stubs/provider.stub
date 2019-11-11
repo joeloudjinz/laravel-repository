@@ -1,0 +1,49 @@
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Support\ServiceProvider;
+
+class RepositoryServiceProvider extends ServiceProvider
+{
+    /**
+     * Repository contracts mapped to their implementation classes
+     *
+     * @var array
+     */
+    public $classes = [
+        // contract => concrete
+    ];
+
+    /**
+     * Register services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        //
+    }
+
+    /**
+     * Bootstrap services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->bindRepositoryClasses();
+    }
+
+    /**
+     * Binds all repository contracts with their implementation classes.
+     *
+     * @return void
+     */
+    private function bindRepositoryClasses()
+    {
+        foreach ($this->class as $contract => $implementation) {
+            $this->app->bind($contract, $implementation);
+        }
+    }
+}

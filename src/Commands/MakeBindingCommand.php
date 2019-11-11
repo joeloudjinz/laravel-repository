@@ -30,6 +30,7 @@ class MakeBindingCommand extends RepositoryCommand
      */
     public function __construct()
     {
+        // initializing provider destination
         $this->providerDist = app()->basePath() . '/app/Providers/' . $this->providerName . '.php';
         parent::__construct();
     }
@@ -65,6 +66,7 @@ class MakeBindingCommand extends RepositoryCommand
     public function isBinded()
     {
         $provider = File::get($this->providerDist);
+        // if the repository full namespace exist in the provider class
         if (strpos($provider, $this->getRepository())) {
             return true;
         }
@@ -74,17 +76,22 @@ class MakeBindingCommand extends RepositoryCommand
 
     public function makeProviderIfNotExist()
     {
+        // if the provider file doesn't exist
         if (!file_exists($this->providerDist)) {
+            // create it
             $this->call('make:provider', [
                 'name' => $this->providerName,
             ]);
 
             // placeholder to mark the place in file where to prepend repository bindings
             $provider = File::get($this->providerDist);
-            File::put($this->providerDist, vsprintf(str_replace('//', '%s', $provider), [
-                '//',
-                $this->bindPlaceholder,
-            ]));
+            // replacing the occurrences of double slashes with %s and then,
+            // replacing the first %s to slash & the second one to the
+            // value of $this->bindPlaceholder
+            File::put($this->providerDist, vsprintf(
+                str_replace('//', '%s', $provider),
+                ['//', $this->bindPlaceholder]
+            ));
         }
     }
 
