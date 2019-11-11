@@ -3,7 +3,6 @@
 namespace Inz\Repository\Test\Unit\Creators;
 
 use Inz\Repository\Test\TestCase;
-use Illuminate\Filesystem\Filesystem;
 use Inz\Base\Creators\RepositoryCreator;
 use Inz\Repository\Test\Traits\DifferentModelNames;
 
@@ -35,10 +34,7 @@ class RepositoryCreatorTest extends TestCase
     {
         $creator = $this->createInstance($this->modelName);
 
-        $this->assertNotNull($creator->getFileManager());
-        $this->assertInstanceOf(Filesystem::class, $creator->getFileManager());
         $this->assertNotNull($creator->getAppNamespace());
-
         $this->assertNotNull($creator->getStub());
         $this->assertEquals($this->attributesData['classNameSuffix'], $creator->getClassNameSuffix());
         $this->assertEquals($this->attributesData['pathConfig'], $creator->getPathConfig());
@@ -53,10 +49,7 @@ class RepositoryCreatorTest extends TestCase
     {
         $creator = $this->createInstance($this->modelWithSubDirectory);
 
-        $this->assertNotNull($creator->getFileManager());
-        $this->assertInstanceOf(Filesystem::class, $creator->getFileManager());
         $this->assertNotNull($creator->getAppNamespace());
-
         $this->assertNotNull($creator->getStub());
         $this->assertNotNull($creator->getSubdirectory());
         $this->assertEquals($this->subDirectoryName, $creator->getSubdirectory());
@@ -73,10 +66,7 @@ class RepositoryCreatorTest extends TestCase
     {
         $creator = $this->createInstance($this->modelWithSubDirectoryInModels);
 
-        $this->assertNotNull($creator->getFileManager());
-        $this->assertInstanceOf(Filesystem::class, $creator->getFileManager());
         $this->assertNotNull($creator->getAppNamespace());
-
         $this->assertNotNull($creator->getStub());
         $this->assertNotNull($creator->getSubdirectory());
         $this->assertEquals($this->subDirectoryName, $creator->getSubdirectory());
@@ -93,10 +83,7 @@ class RepositoryCreatorTest extends TestCase
     {
         $creator = $this->createInstance($this->fullModelName);
 
-        $this->assertNotNull($creator->getFileManager());
-        $this->assertInstanceOf(Filesystem::class, $creator->getFileManager());
         $this->assertNotNull($creator->getAppNamespace());
-
         $this->assertNotNull($creator->getStub());
         $this->assertNotNull($creator->getSubdirectory());
         $this->assertEquals($this->subDirectoryName, $creator->getSubdirectory());
@@ -155,6 +142,7 @@ class RepositoryCreatorTest extends TestCase
 
         $this->assertNotNull($result);
         $this->assertIsString($result);
+        $this->assertNotEmpty($result);
         $this->assertEquals($this->modelName . $creator->getClassNameSuffix(), $result);
     }
 
@@ -170,9 +158,7 @@ class RepositoryCreatorTest extends TestCase
 
         $this->assertNotNull($result);
         $this->assertIsString($result);
-        $this->assertStringContainsString($this->fakeStoragePath, $result);
-        $this->assertStringContainsString($creator->getPathConfig(), $result);
-        $this->assertStringContainsString(DIRECTORY_SEPARATOR, $result);
+        $this->assertNotEmpty($result);
     }
 
     /**
@@ -189,13 +175,10 @@ class RepositoryCreatorTest extends TestCase
 
         $this->assertNotNull($result);
         $this->assertIsString($result);
-        $this->assertStringContainsString($this->fakeStoragePath, $result);
-        $this->assertStringContainsString($fileName, $result);
-        $this->assertStringContainsString(DIRECTORY_SEPARATOR, $result);
-        $this->assertStringContainsString('.php', $result);
-
+        $this->assertNotEmpty($result);
         $this->assertNotNull($creator->getFileFullPath());
         $this->assertIsString($creator->getFileFullPath());
+        $this->assertNotEmpty($creator->getFileFullPath());
     }
 
     /**
@@ -242,13 +225,11 @@ class RepositoryCreatorTest extends TestCase
     {
         $creator = $this->createInstance($this->modelName);
 
-        $result = $creator->getClassFullNamespace($creator->baseNamespace(), $this->modelName);
+        $result = $creator->getClassFullNamespace();
 
         $this->assertNotNull($result);
         $this->assertIsString($result);
-        $this->assertStringContainsString($creator->baseNamespace(), $result);
-        $this->assertStringContainsString($creator->getNamespaceConfig(), $result);
-        $this->assertStringContainsString($this->modelName, $result);
+        $this->assertNotEmpty($result);
     }
 
     /**

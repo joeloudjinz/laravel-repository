@@ -32,15 +32,16 @@ class ModelAssistorTest extends TestCase
 
     /**
      * @test
-     * @group model_creator_test
+     * @group model_assistor_test
      **/
     public function test_class_attributes_initialized_using_model_in_base_app_directory()
     {
         $creator = $this->createInstance($this->modelName);
 
         $this->assertNotNull($creator->getModelName());
+        $this->assertNotEmpty($creator->getModelName());
         $this->assertNotNull($creator->getModelFullNamespace());
-
+        $this->assertNotEmpty($creator->getModelFullNamespace());
         $this->assertEquals($this->attributesData['modelName'], $creator->getModelName());
         $this->assertEquals(
             $this->attributesData['namespaceOfModelName'],
@@ -50,7 +51,7 @@ class ModelAssistorTest extends TestCase
 
     /**
      * @test
-     * @group model_creator_test
+     * @group model_assistor_test
      **/
     public function test_class_attributes_initialized_using_model_in_subdirectory()
     {
@@ -58,7 +59,8 @@ class ModelAssistorTest extends TestCase
 
         $this->assertNotNull($creator->getModelName());
         $this->assertNotNull($creator->getModelFullNamespace());
-
+        $this->assertNotEmpty($creator->getModelName());
+        $this->assertNotEmpty($creator->getModelFullNamespace());
         $this->assertEquals($this->attributesData['modelName'], $creator->getModelName());
         $this->assertEquals(
             $this->attributesData['namespaceOfModelNameWithSubdirectory'],
@@ -68,7 +70,7 @@ class ModelAssistorTest extends TestCase
 
     /**
      * @test
-     * @group model_creator_test
+     * @group model_assistor_test
      **/
     public function test_class_attributes_initialized_using_model_in_models_directory()
     {
@@ -76,7 +78,8 @@ class ModelAssistorTest extends TestCase
 
         $this->assertNotNull($creator->getModelName());
         $this->assertNotNull($creator->getModelFullNamespace());
-
+        $this->assertNotEmpty($creator->getModelName());
+        $this->assertNotEmpty($creator->getModelFullNamespace());
         $this->assertEquals($this->attributesData['modelName'], $creator->getModelName());
         $this->assertEquals(
             $this->attributesData['namespaceOfFullModelName'],

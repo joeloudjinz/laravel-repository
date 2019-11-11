@@ -109,7 +109,7 @@ class ContractCreator extends Creator
     private function getReturnedData(): array
     {
         return [
-            $this->getClassFullNamespace($this->baseNamespace(), $this->className),
+            $this->getClassFullNamespace(),
             $this->className,
         ];
     }
