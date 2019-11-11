@@ -129,7 +129,8 @@ class ProviderAssistor
      */
     public function isRepositoryBound(String $contract): bool
     {
-        return Arr::has($this->instance->classes, $contract);
+        $content = File::get($this->getFullClassPath());
+        return is_int(strpos($content, $contract));
     }
 
     public function getBasePath(): String
@@ -145,18 +146,5 @@ class ProviderAssistor
     public function getInstance()
     {
         return $this->instance;
-    }
-    /**
-     * Adds a key value pair directly into the given array.
-     *
-     * @param array $array passed by reference
-     * @param mixed $key
-     * @param mixed $value
-     *
-     * @return array
-     */
-    private function addKeyValue(array &$array, $key, $value)
-    {
-        return $array = Arr::add($array, $key, $value);
     }
 }
