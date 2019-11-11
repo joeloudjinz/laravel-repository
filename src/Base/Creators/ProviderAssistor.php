@@ -3,6 +3,7 @@
 namespace Inz\Base\Creators;
 
 use Illuminate\Support\Arr;
+use Inz\Base\ConfigurationResolver;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
 
@@ -42,8 +43,8 @@ class ProviderAssistor
     public function __construct(String $name)
     {
         $this->name = $name;
-        $this->basePath = app()->basePath() . '/app/Providers/';
-        $this->baseNamespace = app()->getNamespace() . 'Providers';
+        $this->basePath = $this->getBasePath();
+        $this->baseNamespace = $this->getBaseNamespace();
     }
 
     /**
@@ -109,12 +110,23 @@ class ProviderAssistor
     {
         return $this->basePath . $this->name . '.php';
     }
+
     /**
      *
      */
     public function isRepositoryBound(String $contract): bool
     {
         return Arr::has($this->instance->classes, $contract);
+    }
+
+    public function getBasePath(): String
+    {
+        return ConfigurationResolver::basePathOfProviders() . DIRECTORY_SEPARATOR . 'Providers' . DIRECTORY_SEPARATOR;
+    }
+
+    public function getBaseNamespace(): String
+    {
+        return ConfigurationResolver::baseNamespaceOfProviders() . 'Providers';
     }
 
     /**

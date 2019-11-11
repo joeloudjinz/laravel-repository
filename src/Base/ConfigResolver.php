@@ -25,6 +25,20 @@ class ConfigurationResolver
     }
 
     /**
+     * Retrieve the base path of the providers classes from configuration file
+     *
+     * @return String
+     */
+    public static function basePathOfProviders()
+    {
+        $value = config(self::$configName . ".base.providers.path");
+        if (is_null($value) || $value === '') {
+            return app_path();
+        }
+        return $value;
+    }
+
+    /**
      * Retrieve the base namespace from configuration file
      *
      * @return String
@@ -35,6 +49,20 @@ class ConfigurationResolver
         if (self::validateConfigValue($value, "base namespace")) {
             return $value;
         }
+    }
+
+    /**
+     * Retrieve the base namespace fo providers classes from configuration file
+     *
+     * @return String
+     */
+    public static function baseNamespaceOfProviders()
+    {
+        $value = config(self::$configName . ".base.providers.namespace");
+        if (is_null($value) || $value === '') {
+            return app()->getNamespace();
+        }
+        return $value;
     }
 
     /**
@@ -105,7 +133,7 @@ class ConfigurationResolver
         if ($value == '') {
             throw new InvalidConfigurationValueException($whatsWrong);
         }
-        
+
         return true;
     }
 }
