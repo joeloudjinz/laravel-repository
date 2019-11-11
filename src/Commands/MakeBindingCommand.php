@@ -4,6 +4,7 @@ namespace Inz\Commands;
 
 use File;
 use Illuminate\Console\Command;
+use Inz\Base\Creators\ProviderAssistor;
 
 class MakeBindingCommand extends RepositoryCommand
 {
@@ -12,24 +13,30 @@ class MakeBindingCommand extends RepositoryCommand
      *
      * @var string
      */
-    protected $signature = 'make:binding {repository}';
+    protected $signature = 'make:binding {model}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Add repository bindings to service provider.';
+    protected $description = 'Add repository binding of the given model to service provider.';
 
     protected $providerDist = '';
     protected $providerName = 'RepositoryServiceProvider';
     protected $bindPlaceholder = '//:end-bindings:';
 
     /**
+     * @var ProviderAssistor
+     */
+    private $assistor;
+
+    /**
      * Create a new command instance.
      */
     public function __construct()
     {
+        $this->assistor = new ProviderAssistor($this->providerName);
         // initializing provider destination
         $this->providerDist = app()->basePath() . '/app/Providers/' . $this->providerName . '.php';
         parent::__construct();
@@ -42,6 +49,20 @@ class MakeBindingCommand extends RepositoryCommand
      */
     public function handle()
     {
+        // test if doesn't exists
+        if (!$this->assistor->providerExist()) {
+            $this->call('make:provider', [
+                'name' => $this->providerName,
+            ]);
+
+            $this->assistor->replaceContent();
+            $this->assistor->addRepositoryEntry(
+                $this->getContractFullName(),
+                $this->getRepositoryFullName()
+            );
+        }
+
+        // test if bound
         $this->addRepositoryToProvider();
     }
 

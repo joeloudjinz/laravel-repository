@@ -65,6 +65,24 @@ class ProviderAssistorTest extends TestCase
         $this->assertTrue($result);
     }
 
+    /**
+     * @group provider_assistor_test1
+     */
+    public function test_add_repository_entry()
+    {
+        $this->fakeStorage->put(
+            'Providers' . DIRECTORY_SEPARATOR . $this->providerName . '.php',
+            'content'
+        );
+        $assistor = $this->createInstance();
+        $assistor->replaceContent();
+        $result = $assistor->addRepositoryEntry('Contract\PostContract', 'Repository\PostRepository');
+
+        $this->assertNotNull($result);
+        $this->assertIsBool($result);
+        $this->assertTrue($result);
+    }
+
     // public function addRepositoryEntry($contract, $implementation): bool
     // public function replaceContent(): bool
     // public function isRepositoryBound(String $contract): bool

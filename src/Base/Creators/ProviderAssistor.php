@@ -3,9 +3,9 @@
 namespace Inz\Base\Creators;
 
 use Illuminate\Support\Arr;
-use Inz\Base\ConfigurationResolver;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
+use Inz\Base\ConfigurationResolver;
 
 class ProviderAssistor
 {
@@ -76,8 +76,21 @@ class ProviderAssistor
      */
     public function addRepositoryEntry($contract, $implementation): bool
     {
-        $this->addKeyValue($this->instance->classes, $contract, $implementation);
-        return $this->isRepositoryBound($contract);
+        $oldContent = File::get($this->getFullClassPath());
+        // figuring out the position where we want to insert the key value pairs,
+        // we are adding 2 to pass these two chars '[' & '\n'
+        $position = strpos($oldContent, "[\n") + 2;
+        // extracting the first slice of the content, this slice holds the name
+        // of the array classes
+        $firstSlice = substr($oldContent, 0, $position);
+        // extracting the second slice of the content, this slice holds the
+        // content of classes array which we will operate on
+        $lastSlice = substr($oldContent, $position);
+        // adding the key values pairs to classes array
+        $lastSlice = "        '{$contract}' => '{$implementation}',\n" . $lastSlice;
+        // constructing the new content of the provider file
+        $newContent = $firstSlice . $lastSlice;
+        return is_int(File::put($this->getFullClassPath(), $newContent));
     }
 
     /**
@@ -129,6 +142,10 @@ class ProviderAssistor
         return ConfigurationResolver::baseNamespaceOfProviders() . 'Providers';
     }
 
+    public function getInstance()
+    {
+        return $this->instance;
+    }
     /**
      * Adds a key value pair directly into the given array.
      *
