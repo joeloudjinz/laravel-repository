@@ -12,6 +12,12 @@ trait FakeStorageInitiator
      * @var \Illuminate\Contracts\Filesystem\Filesystem
      */
     private $fakeStorage;
+    /**
+     * The path to fake directory
+     *
+     * @var String
+     */
+    private $fakeStoragePath;
 
     /**
      * Create a fake storage for testing and return the full path to it.
@@ -22,6 +28,6 @@ trait FakeStorageInitiator
     {
         Storage::fake($name);
         $this->fakeStorage = Storage::disk($name);
-        return storage_path('framework/testing/disks/' . $name . DIRECTORY_SEPARATOR);
+        return $this->fakeStoragePath = storage_path('framework/testing/disks/' . $name . DIRECTORY_SEPARATOR);
     }
 }

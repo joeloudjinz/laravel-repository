@@ -20,6 +20,10 @@ class TestCase extends OrchestraTestCase
             ConfigurationResolver::$configName . '.base.path',
             storage_path('framework/testing/disks/app')
         );
+        config()->set(
+            ConfigurationResolver::$configName . '.base.providers.path',
+            storage_path('framework/testing/disks/app')
+        );
     }
 
     protected function getPackageProviders($app)
