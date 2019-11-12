@@ -71,7 +71,7 @@ abstract class Repository implements RepositoryInterface
      * Fetches records based on the passed column name & it's value.
      *
      * @param String $column
-     * @param $value
+     * @param mixed $value
      *
      * @return Collection
      */
@@ -84,7 +84,7 @@ abstract class Repository implements RepositoryInterface
      * Fetches the first record based on the passed column name & it's value.
      *
      * @param String $column
-     * @param $value
+     * @param mixed $value
      *
      * @return Collection|null
      */
@@ -152,8 +152,9 @@ abstract class Repository implements RepositoryInterface
     /**
      * Instantiating the model object.
      *
-     * @throw MissingModelMethodException
-     * @throw NotEloquentModelException
+     * @throws MissingModelMethodException
+     * @throws NotEloquentModelException
+     *
      * @return Illuminate\Database\Eloquent\Model
      */
     protected function resolveModel()

@@ -31,7 +31,7 @@ interface RepositoryInterface
      * Fetches records based on the passed column name & it's value.
      *
      * @param String $column
-     * @param $value
+     * @param mixed $value
      *
      * @return Collection|null
      */
@@ -41,7 +41,7 @@ interface RepositoryInterface
      * Fetches the first record based on the passed column name & it's value.
      *
      * @param String $column
-     * @param $value
+     * @param mixed $value
      *
      * @return Collection|null
      */
