@@ -1,11 +1,10 @@
 <?php
 
-namespace Inz\Base\Creators;
+namespace Inz\Base\Assistors;
 
-use Illuminate\Support\Arr;
+use Inz\Base\ConfigurationResolver;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
-use Inz\Base\ConfigurationResolver;
 
 class ProviderAssistor
 {

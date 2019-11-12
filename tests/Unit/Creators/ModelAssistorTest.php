@@ -3,7 +3,7 @@
 namespace Inz\Repository\Test\Unit\Creators;
 
 use Inz\Repository\Test\TestCase;
-use Inz\Base\Creators\ModelAssistor;
+use Inz\Base\Assistors\ModelAssistor;
 use Inz\Repository\Test\Traits\DifferentModelNames;
 
 class ModelAssistorTest extends TestCase

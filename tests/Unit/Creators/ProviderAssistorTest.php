@@ -3,7 +3,7 @@
 namespace Inz\Repository\Test\Unit\Creators;
 
 use Inz\Repository\Test\TestCase;
-use Inz\Base\Creators\ProviderAssistor;
+use Inz\Base\Assistors\ProviderAssistor;
 
 class ProviderAssistorTest extends TestCase
 {

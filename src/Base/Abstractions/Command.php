@@ -2,9 +2,9 @@
 
 namespace Inz\Base\Abstractions;
 
-use Inz\Base\Creators\ModelAssistor;
+use Inz\Base\Assistors\ModelAssistor;
 use Inz\Base\Creators\ContractCreator;
-use Inz\Base\Creators\ProviderAssistor;
+use Inz\Base\Assistors\ProviderAssistor;
 use Inz\Base\Creators\RepositoryCreator;
 use Illuminate\Console\Command as BaseCommand;
 
@@ -17,7 +17,7 @@ abstract class Command extends BaseCommand
     /**
      * @var ModelAssistor
      */
-    private $modelAssistor;
+    protected $modelAssistor;
     /**
      * @var ContractCreator
      */
