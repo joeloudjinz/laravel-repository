@@ -2,147 +2,147 @@
 
 namespace Inz\Base\Abstractions;
 
-use Inz\Exceptions\NoModelDefined;
+use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Model;
-use Inz\Exceptions\RepositoryException;
+use Illuminate\Database\Eloquent\Collection;
 use Inz\Base\Interfaces\RepositoryInterface;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Inz\Exceptions\NotEloquentModelException;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Inz\Exceptions\MissingModelMethodException;
 
-abstract class AbstractRepository implements RepositoryInterface
+abstract class Repository implements RepositoryInterface
 {
     /**
-     * @var mixed
+     * Model instance related to current repository.
+     *
+     * @var Model
      */
     protected $model;
-
     /**
-     * Constructor.
+     * Attributes of the model.
+     *
+     * @var array
      */
+    protected $attributes;
+
     public function __construct()
     {
         $this->model = $this->resolveModel();
+        $this->attributes = $this->model->attributesToArray();
+    }
+
+    abstract public function model();
+
+    /**
+     * Fetches all columns data, or specific ones.
+     *
+     * @param array $cols
+     *
+     * @return Collection
+     */
+    public function all($cols = ['*'])
+    {
+        return $this->model->all($cols);
     }
 
     /**
-     * @param null|mixed $paginate
+     * Fetches the first row's data.
      *
-     * @return mixed
+     * @return Model|null
      */
-    public function all()
-    {
-        return $this->model->get();
-    }
-
     public function first()
     {
         return $this->model->first();
     }
 
     /**
-     * find by id.
+     * Fetches a record based on the passed id.
      *
-     * @param $id
+     * @param mixed $id
      *
-     * @return mixed
+     * @return Collection|null
      */
     public function find($id)
     {
-        $model = $this->model->find($id);
-
-        if (!$model) {
-            throw (new ModelNotFoundException())->setModel(
-                get_class($this->model->getModel()),
-                $id
-            );
-        }
-
-        return $model;
+        return $this->model->find($id);
     }
 
     /**
-     * @param $column
-     * @param $value
-     * @param null|mixed $paginate
+     * Fetches records based on the passed column name & it's value.
      *
-     * @return mixed
+     * @param String $column
+     * @param $value
+     *
+     * @return Collection
      */
-    public function findWhere($column, $value)
+    public function findWhere(String $column, $value)
     {
         return $this->model->where($column, $value)->get();
     }
 
     /**
-     * @param $column
+     * Fetches the first record based on the passed column name & it's value.
+     *
+     * @param String $column
      * @param $value
      *
-     * @return mixed
+     * @return Collection|null
      */
-    public function findWhereFirst($column, $value)
+    public function findFirstWhere(String $column, $value)
     {
-        $model = $this->model->where($column, $value)->first();
+        return $this->model->where($column, $value)->first();
+    }
 
-        if (!$model) {
-            throw (new ModelNotFoundException())->setModel(
-                get_class($this->model->getModel())
-            );
+    /**
+     * Fetches paginated records.
+     *
+     * @param int $count
+     *
+     * @return LengthAwarePaginator
+     */
+    public function paginate(int $count = 10)
+    {
+        return $this->model->paginate($count);
+    }
+
+    /**
+     * Saves a new record based on the passed set of attributes
+     *
+     * @param array $data a key value pair where the key is the attribute's name.
+     *
+     * @return bool
+     */
+    public function save(array $data)
+    {
+        $temp = app()->make($this->model());
+        return $this->persist($temp, $data);
+    }
+
+    /**
+     * Updates a record based on the passed set of attributes.
+     *
+     * @param mixed $id
+     * @param array $data
+     *
+     * @return bool
+     */
+    public function update($id, array $data)
+    {
+        $temp = $this->find($id);
+
+        if (is_null($temp)) {
+            return false;
         }
 
-        return $model;
+        return $this->persist($temp, $data);
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function findWhereLike($columns, $value)
-    {
-        $query = $this->model;
-
-        if (is_string($columns)) {
-            $columns = [$columns];
-        }
-
-        foreach ($columns as $column) {
-            $query->orWhere($column, 'like', $value);
-        }
-
-        return $query->get();
-    }
-
-    /**
-     * @param $perPage
+     * Deletes a record of the given id.
      *
-     * @return mixed
-     */
-    public function paginate($perPage = 10)
-    {
-        return $this->model->paginate($perPage);
-    }
-
-    /**
-     * @param array $properties
+     * @param mixed $id
      *
-     * @return mixed
-     */
-    public function create(array $properties)
-    {
-        return $this->model->create($properties);
-    }
-
-    /**
-     * @param $id
-     * @param array $properties
-     *
-     * @return mixed
-     */
-    public function update($id, array $properties)
-    {
-        return $this->find($id)->update($properties);
-    }
-
-    /**
-     * @param $id
-     *
-     * @return mixed
+     * @return bool
      */
     public function delete($id)
     {
@@ -150,21 +150,44 @@ abstract class AbstractRepository implements RepositoryInterface
     }
 
     /**
-     * Resolve model.
+     * Instantiating the model object.
+     *
+     * @throw MissingModelMethodException
+     * @throw NotEloquentModelException
+     * @return Illuminate\Database\Eloquent\Model
      */
     protected function resolveModel()
     {
         if (!method_exists($this, 'model')) {
-            throw new NoModelDefined('Method model not defined');
+            throw new MissingModelMethodException();
         }
 
-        $model = app($this->model());
+        $model = app()->make($this->model());
 
         if (!$model instanceof Model) {
-            throw new RepositoryException("Class {$this->model()} must be an instance of Illuminate\\Database\\Eloquent\\Model");
+            throw new NotEloquentModelException($this->model());
         }
 
         return $model;
+    }
+
+    /**
+     * Inserts the new values of the attributes in data array and persist the new model.
+     *
+     * @param Model $model
+     * @param array $data
+     *
+     * @return bool
+     */
+    private function persist(&$model, array $data)
+    {
+        foreach ($this->attributes as $attribute) {
+            if (Arr::has($data, $attribute)) {
+                $model[$attribute] = $data[$attribute];
+            }
+        }
+
+        return $model->save();
     }
 
     /**
@@ -175,8 +198,32 @@ abstract class AbstractRepository implements RepositoryInterface
      *
      * @return Collection
      */
-    private function processPagination($query, $paginate)
-    {
-        return $paginate ? $query->paginate($paginate) : $query->get();
-    }
+    // private function processPagination($query, $paginate)
+    // {
+    //     return $paginate ? $query->paginate($paginate) : $query->get();
+    // }
+
+    // if (!$model) {
+    //     throw (new ModelNotFoundException())->setModel(
+    //         get_class($this->model->getModel())
+    //     );
+    // }
+
+    /**
+     * {@inheritdoc}
+     */
+    // public function findWhereLike($columns, $value)
+    // {
+    //     $query = $this->model;
+
+    //     if (is_string($columns)) {
+    //         $columns = [$columns];
+    //     }
+
+    //     foreach ($columns as $column) {
+    //         $query->orWhere($column, 'like', $value);
+    //     }
+
+    //     return $query->get();
+    // }
 }
