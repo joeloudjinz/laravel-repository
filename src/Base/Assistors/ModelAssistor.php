@@ -1,6 +1,6 @@
 <?php
 
-namespace Inz\Base\Creators;
+namespace Inz\Base\Assistors;
 
 class ModelAssistor
 {
