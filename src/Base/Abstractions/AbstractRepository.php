@@ -5,11 +5,10 @@ namespace Inz\Base\Abstractions;
 use Inz\Exceptions\NoModelDefined;
 use Illuminate\Database\Eloquent\Model;
 use Inz\Exceptions\RepositoryException;
-use Inz\Base\Interfaces\CriteriaInterface;
 use Inz\Base\Interfaces\RepositoryInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-abstract class AbstractRepository implements RepositoryInterface, CriteriaInterface
+abstract class AbstractRepository implements RepositoryInterface
 {
     /**
      * @var mixed
@@ -148,22 +147,6 @@ abstract class AbstractRepository implements RepositoryInterface, CriteriaInterf
     public function delete($id)
     {
         return $this->find($id)->delete();
-    }
-
-    /**
-     * @param $criteria
-     *
-     * @return mixed
-     */
-    public function withCriteria(...$criteria)
-    {
-        $criteria = array_flatten($criteria);
-
-        foreach ($criteria as $criterion) {
-            $this->model = $criterion->apply($this->model);
-        }
-
-        return $this;
     }
 
     /**

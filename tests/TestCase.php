@@ -19,12 +19,19 @@ class TestCase extends OrchestraTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        // setting up the fake storage
         $this->prepareFakeStorage();
 
+        // setting up 'base path' in configuration file of the package so
+        // it can generates files in that directory and not using 'app'
+        // folder
         config()->set(
             ConfigurationResolver::$configName . '.base.path',
             storage_path('framework/testing/disks/app')
         );
+        // setting up the 'providers base path' in configuration file of the
+        // package so provider assistor class (in the package) can work
+        // on that directory
         config()->set(
             ConfigurationResolver::$configName . '.base.providers.path',
             storage_path('framework/testing/disks/app')
