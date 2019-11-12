@@ -5,9 +5,9 @@ namespace %repositoriesNamespaces%;
 use %modelNamespace%;
 use %contractNamespace%;
 
-use Inz\Base\Abstractions\AbstractRepository;
+use Inz\Base\Abstractions\AbstractRepository as Repository;
 
-class %modelName%Repository extends AbstractRepository implements %contractName%
+class %modelName%Repository extends Repository implements %contractName%
 {
     public function model()
     {

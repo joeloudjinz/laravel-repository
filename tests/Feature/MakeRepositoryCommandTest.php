@@ -19,7 +19,7 @@ class MakeRepositoryCommandTest extends TestCase
     public function test_command_with_invalid_model()
     {
         $this->artisan($this->command, ['model' => ''])
-            ->expectsOutput('Model name is missing');
+            ->expectsOutput('Model argument is missing');
     }
 
     /**
