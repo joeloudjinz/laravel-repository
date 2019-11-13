@@ -3,6 +3,7 @@
 namespace Inz\Base\Abstractions;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
 use Inz\Base\Interfaces\RepositoryInterface;
@@ -24,11 +25,21 @@ abstract class Repository implements RepositoryInterface
      * @var array
      */
     protected $attributes;
+    /**
+     * Unprocessed columns during insertion & updating.
+     *
+     * @var array
+     */
+    protected $excludedColumns = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
 
     public function __construct()
     {
         $this->model = $this->resolveModel();
-        $this->attributes = $this->model->attributesToArray();
+        $this->attributes = $this->resolveAttributes();
     }
 
     abstract public function model();
@@ -170,6 +181,32 @@ abstract class Repository implements RepositoryInterface
         }
 
         return $model;
+    }
+
+    /**
+     * Resolves the model's attributes list.
+     *
+     * @return array
+     */
+    protected function resolveAttributes()
+    {
+        $columns = collect(Schema::getColumnListing($this->model->getTable()));
+
+        if ($columns->isEmpty()) {
+            // if we found that the list of columns of the table related to the model is
+            // empty we will throw an exception, this means either the table is missing
+            // from the database (not migrated yet) or it doesn't have any column.
+            throw new TableHasNoColumnsException($this->model->getTable());
+        }
+
+        foreach ($this->excludedColumns as $unwanted) {
+            $key = $columns->search($unwanted);
+            if (!is_bool($key)) {
+                $columns->forget($key);
+            }
+        }
+
+        return $columns->toArray();
     }
 
     /**
