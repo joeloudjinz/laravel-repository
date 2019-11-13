@@ -36,7 +36,6 @@ return [
     'namespaces' => [
         'contracts' => 'Repositories\Contracts',
         'implementations' => 'Repositories\Implementations',
-        // 'criteria' => 'Repositories\Criteria',
     ],
 
     /*
@@ -47,11 +46,10 @@ return [
     | you can re-define these values to control where the files should be stored, by
     | default they are stored in the application directory.
     |
-    | Note that anti-slash in the end is not set so make sure you don't add it.
+    | Note that slash in the end is not set so make sure you don't add it.
      */
     'paths' => [
         'contracts' => 'Repositories/Contracts',
         'implementations' => 'Repositories/Implementations',
-        // 'criteria' => 'Repositories/Criteria',
     ],
 ];

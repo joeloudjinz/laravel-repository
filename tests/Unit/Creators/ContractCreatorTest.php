@@ -34,11 +34,15 @@ class ContractCreatorTest extends TestCase
     {
         $creator = $this->createInstance($this->modelName);
 
-        $this->assertNotNull($creator->getAppNamespace());
-        $this->assertNotNull($creator->getStub());
         $this->assertEquals($this->attributesData['classNameSuffix'], $creator->getClassNameSuffix());
         $this->assertEquals($this->attributesData['pathConfig'], $creator->getPathConfig());
         $this->assertEquals($this->attributesData['namespaceConfig'], $creator->getNamespaceConfig());
+        $this->assertNotNull($creator->getStub());
+        $this->assertNotNull($creator->getContent());
+        $this->assertNotNull($creator->getClassName());
+        $this->assertNotNull($creator->getFileFullPath());
+        $this->assertNotNull($creator->getBaseNamespace());
+        $this->assertNotNull($creator->getDirectoryFullPath());
     }
 
     /**
@@ -49,13 +53,17 @@ class ContractCreatorTest extends TestCase
     {
         $creator = $this->createInstance($this->modelWithSubDirectory);
 
-        $this->assertNotNull($creator->getAppNamespace());
-        $this->assertNotNull($creator->getStub());
         $this->assertNotNull($creator->getSubdirectory());
         $this->assertEquals($this->subDirectoryName, $creator->getSubdirectory());
-        $this->assertEquals($this->attributesData['classNameSuffix'], $creator->getClassNameSuffix());
         $this->assertEquals($this->attributesData['pathConfig'], $creator->getPathConfig());
+        $this->assertEquals($this->attributesData['classNameSuffix'], $creator->getClassNameSuffix());
         $this->assertEquals($this->attributesData['namespaceConfig'], $creator->getNamespaceConfig());
+        $this->assertNotNull($creator->getStub());
+        $this->assertNotNull($creator->getContent());
+        $this->assertNotNull($creator->getClassName());
+        $this->assertNotNull($creator->getFileFullPath());
+        $this->assertNotNull($creator->getBaseNamespace());
+        $this->assertNotNull($creator->getDirectoryFullPath());
     }
 
     /**
@@ -66,13 +74,17 @@ class ContractCreatorTest extends TestCase
     {
         $creator = $this->createInstance($this->modelWithSubDirectoryInModels);
 
-        $this->assertNotNull($creator->getAppNamespace());
-        $this->assertNotNull($creator->getStub());
         $this->assertNotNull($creator->getSubdirectory());
         $this->assertEquals($this->subDirectoryName, $creator->getSubdirectory());
-        $this->assertEquals($this->attributesData['classNameSuffix'], $creator->getClassNameSuffix());
         $this->assertEquals($this->attributesData['pathConfig'], $creator->getPathConfig());
+        $this->assertEquals($this->attributesData['classNameSuffix'], $creator->getClassNameSuffix());
         $this->assertEquals($this->attributesData['namespaceConfig'], $creator->getNamespaceConfig());
+        $this->assertNotNull($creator->getStub());
+        $this->assertNotNull($creator->getContent());
+        $this->assertNotNull($creator->getClassName());
+        $this->assertNotNull($creator->getFileFullPath());
+        $this->assertNotNull($creator->getBaseNamespace());
+        $this->assertNotNull($creator->getDirectoryFullPath());
     }
 
     /**
@@ -83,27 +95,17 @@ class ContractCreatorTest extends TestCase
     {
         $creator = $this->createInstance($this->fullModelName);
 
-        $this->assertNotNull($creator->getAppNamespace());
-        $this->assertNotNull($creator->getStub());
         $this->assertNotNull($creator->getSubdirectory());
         $this->assertEquals($this->subDirectoryName, $creator->getSubdirectory());
-        $this->assertEquals($this->attributesData['classNameSuffix'], $creator->getClassNameSuffix());
         $this->assertEquals($this->attributesData['pathConfig'], $creator->getPathConfig());
+        $this->assertEquals($this->attributesData['classNameSuffix'], $creator->getClassNameSuffix());
         $this->assertEquals($this->attributesData['namespaceConfig'], $creator->getNamespaceConfig());
-    }
-
-    /**
-     * extractStubContent(): bool
-     * @test
-     * @group contract_creator_test
-     * */
-    public function test_extract_content_from_stub_file()
-    {
-        $creator = $this->createInstance($this->modelName);
-        $result = $creator->extractStubContent($creator->getStub());
-        $this->assertIsBool($result);
-        $this->assertTrue($result);
+        $this->assertNotNull($creator->getStub());
         $this->assertNotNull($creator->getContent());
+        $this->assertNotNull($creator->getClassName());
+        $this->assertNotNull($creator->getFileFullPath());
+        $this->assertNotNull($creator->getBaseNamespace());
+        $this->assertNotNull($creator->getDirectoryFullPath());
     }
 
     /**
@@ -114,69 +116,12 @@ class ContractCreatorTest extends TestCase
     public function test_replace_content_parts()
     {
         $creator = $this->createInstance($this->modelName);
-        // extracting the content first
-        $creator->extractStubContent($creator->getStub());
-        // saving the old content
-        $oldContent = $creator->getContent();
-        // performing the replacement process second
+
         $result = $creator->replaceContentParts($creator->getReplacements());
 
         $this->assertIsBool($result);
         $this->assertTrue($result);
         $this->assertNotNull($creator->getContent());
-        // asserting that the parts are replaced
-        $this->assertNotEquals($creator->getContent(), $oldContent);
-    }
-
-    /**
-     * createClassName(modelName): String
-     * @test
-     * @group contract_creator_test
-     * */
-    public function test_create_class_name()
-    {
-        $creator = $this->createInstance($this->modelName);
-        $result = $creator->createClassName($this->modelName);
-        $this->assertNotNull($result);
-        $this->assertIsString($result);
-        $this->assertNotEmpty($result);
-        $this->assertEquals($this->modelName . $creator->getClassNameSuffix(), $result);
-    }
-
-    /**
-     * generateDirectoryFullPath(): String
-     * @test
-     * @group contract_creator_test
-     * */
-    public function test_generate_directory_full_path()
-    {
-        $creator = $this->createInstance($this->modelName);
-        $result = $creator->generateDirectoryFullPath($this->fakeStoragePath, $creator->getPathConfig());
-
-        $this->assertNotNull($result);
-        $this->assertIsString($result);
-        $this->assertNotEmpty($result);
-    }
-
-    /**
-     * generateFileFullPath(): String
-     * @test
-     * @group contract_creator_test
-     * */
-    public function test_generate_file_full_path()
-    {
-        $creator = $this->createInstance($this->modelName);
-        // .php will be added by the method
-        $fileName = $this->modelName . $this->attributesData['classNameSuffix'];
-
-        $result = $creator->generateFileFullPath($this->fakeStoragePath, $fileName);
-
-        $this->assertNotNull($result);
-        $this->assertIsString($result);
-        $this->assertNotEmpty($result);
-        $this->assertNotNull($creator->getFileFullPath());
-        $this->assertIsString($creator->getFileFullPath());
-        $this->assertNotEmpty($creator->getFileFullPath());
     }
 
     /**
@@ -187,82 +132,60 @@ class ContractCreatorTest extends TestCase
     public function test_create_directory()
     {
         $creator = $this->createInstance($this->modelName);
-        $fullPath = $this->fakeStoragePath . DIRECTORY_SEPARATOR . 'TestRepository';
 
-        $result = $creator->createDirectory($fullPath);
+        $result = $creator->createDirectory();
 
         $this->assertNotNull($result);
         $this->assertIsBool($result);
         $this->assertTrue($result);
-        $this->fakeStorage->assertExists('TestRepository');
+        $this->fakeStorage->assertExists($creator->getPathConfig());
     }
 
     /**
      * createFile(): int
      * @test
-     * @group contract_creator_test
+     * @group contract_creator_test1
      * */
     public function test_create_file()
     {
         $creator = $this->createInstance($this->modelName);
-        $fullPath = $this->fakeStoragePath . DIRECTORY_SEPARATOR . 'TestRepository.php';
+        $creator->createDirectory();
 
-        $result = $creator->createFile($fullPath, 'This is a content');
+        $result = $creator->createFile();
 
         $this->assertNotNull($result);
         $this->assertIsInt($result);
-        $this->fakeStorage->assertExists('TestRepository.php');
+        $fileName = $creator->getPathConfig() . DIRECTORY_SEPARATOR . $creator->getClassName() . '.php';
+        $this->fakeStorage->assertExists($fileName);
     }
 
     /**
-     * getClassFullNamespace(): int
+     * create()
      * @test
      * @group contract_creator_test
      * */
-    public function test_get_class_full_namespace()
+    public function test_create_contract_file()
     {
         $creator = $this->createInstance($this->modelName);
 
-        $result = $creator->getClassFullNamespace();
-
-        $this->assertNotNull($result);
-        $this->assertIsString($result);
-        $this->assertNotEmpty($result);
-    }
-
-    /**
-     * create() where the path is specified
-     * @test
-     * @group contract_creator_test
-     * */
-    public function test_create_contract_file_in_specific_path()
-    {
-        // preparing
-        $creator = $this->createInstance($this->modelName);
-
-        // execution
         $result = $creator->create();
 
-        // assertions
         $this->assertNotNull($result, 'creation result is NULL');
         $this->assertIsArray($result, 'create() return value is NOT OF TYPE ARRAY');
         $this->assertCount(2, $result);
     }
 
     /**
-     * create() where the path is specified with a subdirectory
+     * create() with a subdirectory
      * @test
      * @group contract_creator_test
      * */
-    public function test_create_contract_file_in_specific_path_in_subdirectory()
+    public function test_create_contract_file_in_subdirectory()
     {
-        // preparing
         $creator = $this->createInstance($this->modelWithSubDirectory);
 
-        // execution
         $result = $creator->create();
 
-        // assertions
         $this->assertNotNull($result, 'creation result is NULL');
         $this->assertIsArray($result, 'create() return value is NOT OF TYPE ARRAY');
         $this->assertCount(2, $result);
@@ -275,14 +198,11 @@ class ContractCreatorTest extends TestCase
      * */
     public function test_complete_contract_file_creation()
     {
-        // preparing
         $creator = $this->createInstance($this->modelName);
 
         $result = $creator->create();
-        // execution
         $result = $creator->complete();
 
-        // assertions
         $this->assertNotNull($result, 'creation result is NULL');
         $this->assertIsArray($result, 'create() return value is NOT OF TYPE ARRAY');
         $this->assertCount(2, $result);
