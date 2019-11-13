@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
 use Inz\Base\Interfaces\RepositoryInterface;
 use Inz\Exceptions\NotEloquentModelException;
+use Inz\Exceptions\TableHasNoColumnsException;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Inz\Exceptions\MissingModelMethodException;
 
@@ -161,6 +162,36 @@ abstract class Repository implements RepositoryInterface
     }
 
     /**
+     * Returns columns list of the model's table.
+     *
+     * @return array
+     */
+    public function getColumns()
+    {
+        return array_merge($this->attributes, $this->excludedColumns);
+    }
+
+    /**
+     * Returns excluded columns list from the repository operations.
+     *
+     * @return array
+     */
+    public function getExcludedColumns()
+    {
+        return $this->excludedColumns;
+    }
+
+    /**
+     * Returns columns list which the repository operates on.
+     *
+     * @return array
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
+    /**
      * Instantiating the model object.
      *
      * @throws MissingModelMethodException
@@ -186,6 +217,8 @@ abstract class Repository implements RepositoryInterface
     /**
      * Resolves the model's attributes list.
      *
+     * @throws TableHasNoColumnsException
+     *
      * @return array
      */
     protected function resolveAttributes()
@@ -210,7 +243,7 @@ abstract class Repository implements RepositoryInterface
     }
 
     /**
-     * Inserts the new values of the attributes in data array and persist the new model.
+     * Inserts the new values of the attributes found in data array and persists the new model.
      *
      * @param Model $model
      * @param array $data
@@ -227,41 +260,4 @@ abstract class Repository implements RepositoryInterface
 
         return $model->save();
     }
-
-    /**
-     * Build pagination.
-     *
-     * @param Builder  $query
-     * @param null|int $paginate
-     *
-     * @return Collection
-     */
-    // private function processPagination($query, $paginate)
-    // {
-    //     return $paginate ? $query->paginate($paginate) : $query->get();
-    // }
-
-    // if (!$model) {
-    //     throw (new ModelNotFoundException())->setModel(
-    //         get_class($this->model->getModel())
-    //     );
-    // }
-
-    /**
-     * {@inheritdoc}
-     */
-    // public function findWhereLike($columns, $value)
-    // {
-    //     $query = $this->model;
-
-    //     if (is_string($columns)) {
-    //         $columns = [$columns];
-    //     }
-
-    //     foreach ($columns as $column) {
-    //         $query->orWhere($column, 'like', $value);
-    //     }
-
-    //     return $query->get();
-    // }
 }
