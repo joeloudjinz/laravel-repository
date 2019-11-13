@@ -90,6 +90,8 @@ class MakeRepositoryCommand extends Command
      */
     protected function createContract()
     {
+        $this->contractCreator->initializeReplacementsParts();
+
         $result = $this->contractCreator->create();
         if (is_array($result)) {
             return $result;

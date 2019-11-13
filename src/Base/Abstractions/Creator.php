@@ -8,8 +8,7 @@ use Illuminate\Support\Facades\File;
 
 /**
  * Abstracts the creation process of the files, this way we can reuse the logic to
- * generate any type of file for any pattern based on the configuration set up
- * in the config file of the package.
+ * generate any type of file for any pattern based on the configuration set up.
  */
 abstract class Creator
 {
@@ -38,6 +37,12 @@ abstract class Creator
      */
     protected $content;
     /**
+     * Key value pairs array of parts that will be replaced in the content.
+     *
+     * @var array
+     */
+    protected $replacements = [];
+    /**
      * Permissions for directory, used during creation of the directory.
      *
      * @var int
@@ -57,7 +62,6 @@ abstract class Creator
     protected $namespaceConfig;
     /**
      * The string that will be concatenated with the class name.
-     * Ex: in case of generating an interface, the value should be 'Interface'
      *
      * @var String
      */
@@ -96,8 +100,47 @@ abstract class Creator
         $this->extractValuesFromInput($input);
     }
 
-    abstract public function create();
-    abstract public function complete();
+    abstract public function returnedDataWhenSuccess();
+    abstract public function returnedDataWhenFailure();
+
+    /**
+     * Takes care of the creation process of the contract file, if the file does exist
+     * it will abort the process.
+     *
+     * @return mixed bool|array
+     */
+    public function create()
+    {
+        $this->replaceContentParts($this->replacements);
+
+        if (!$this->directoryExists()) {
+            $this->createDirectory();
+        }
+
+        if ($this->fileExists()) {
+            return $this->returnedDataWhenFailure();
+        }
+
+        if (is_bool($this->createFile())) {
+            return $this->returnedDataWhenFailure();
+        }
+
+        return $this->returnedDataWhenSuccess();
+    }
+
+    /**
+     * Completes the creation process when it was aborted due to the existence of the file.
+     *
+     * @return array|bool
+     */
+    public function complete()
+    {
+        if (is_bool($this->createFile())) {
+            return $this->returnedDataWhenFailure();
+        }
+
+        return $this->returnedDataWhenSuccess();
+    }
 
     /**
      * Extracts the content from the stub file when the $stub attribute is defined, else
@@ -158,9 +201,9 @@ abstract class Creator
      *
      * @return String
      */
-    public function generateDirectoryFullPath(String $basePath, String $directoryName): String
+    public function generateDirectoryFullPath(): String
     {
-        $base = $basePath . $directoryName . DIRECTORY_SEPARATOR;
+        $base = $this->basePath . DIRECTORY_SEPARATOR . $this->pathConfig . DIRECTORY_SEPARATOR;
 
         if ($this->isNotEmpty($this->subdirectory)) {
             return $this->directory = $base . $this->subdirectory . DIRECTORY_SEPARATOR;
@@ -170,34 +213,13 @@ abstract class Creator
     }
 
     /**
-     * Returns the base path of the directory in which the generated classes are stored.
-     *
-     * @return String
-     */
-    public function directoryBasePath()
-    {
-        $base = $this->basePath . DIRECTORY_SEPARATOR;
-        // if the base path points directly to the application's root directory, append
-        // 'app' word to the directory base path so it points to the app folder.
-        if (app()->basePath() === $this->basePath) {
-            return $base . 'app' . DIRECTORY_SEPARATOR;
-        }
-
-        return $base;
-    }
-
-    /**
      * Generates a full path value to the file that is generated.
      *
      * @return String
      */
-    public function generateFileFullPath(String $directoryPath, String $fileName): String
+    public function generateFileFullPath(): String
     {
-        if (!$this->isNotEmpty($directoryPath) && !$this->isNotEmpty($fileName)) {
-            return null;
-        }
-
-        return $this->path = $directoryPath . $fileName . '.php';
+        return $this->path = $this->directory . $this->className . '.php';
     }
 
     /**
@@ -205,9 +227,9 @@ abstract class Creator
      *
      * @return bool
      */
-    public function directoryExists(String $path): bool
+    public function directoryExists(): bool
     {
-        return File::exists($path);
+        return File::exists($this->directory);
     }
 
     /**
@@ -215,10 +237,10 @@ abstract class Creator
      *
      * @return bool
      */
-    public function createDirectory(String $path): bool
+    public function createDirectory(): bool
     {
         try {
-            return File::makeDirectory($path, $this->permissions, true);
+            return File::makeDirectory($this->directory, $this->permissions, true);
         } catch (Exception $e) {
             return false;
         }
@@ -229,9 +251,9 @@ abstract class Creator
      *
      * @return bool
      */
-    public function fileExists(String $path): bool
+    public function fileExists(): bool
     {
-        return File::exists($path);
+        return File::exists($this->path);
     }
 
     /**
@@ -239,9 +261,9 @@ abstract class Creator
      *
      * @return int
      */
-    public function createFile(String $path, String $content): int
+    public function createFile(): int
     {
-        return File::put($path, $content);
+        return File::put($this->path, $this->content);
     }
 
     /**
@@ -332,7 +354,7 @@ abstract class Creator
      *
      * @return String
      */
-    public function getDirectory()
+    public function getDirectoryFullPath()
     {
         return $this->directory;
     }
@@ -367,7 +389,7 @@ abstract class Creator
         return $this->namespaceConfig;
     }
 
-    public function getAppNamespace()
+    public function getBaseNamespace()
     {
         return $this->baseNamespace;
     }
@@ -380,6 +402,11 @@ abstract class Creator
     public function getClassName()
     {
         return $this->className;
+    }
+
+    public function getReplacements()
+    {
+        return $this->replacements;
     }
 
     /**
