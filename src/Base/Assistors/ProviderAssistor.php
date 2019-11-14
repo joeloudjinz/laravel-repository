@@ -2,9 +2,8 @@
 
 namespace Inz\Base\Assistors;
 
-use Inz\Base\ConfigurationResolver;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\ServiceProvider;
+use Inz\Base\ConfigurationResolver;
 
 class ProviderAssistor
 {
@@ -42,8 +41,9 @@ class ProviderAssistor
     public function __construct(String $name)
     {
         $this->name = $name;
-        $this->basePath = $this->getBasePath();
-        $this->baseNamespace = $this->getBaseNamespace();
+        $this->basePath = ConfigurationResolver::basePathOfProviders() . DIRECTORY_SEPARATOR
+            . 'Providers' . DIRECTORY_SEPARATOR;
+        $this->baseNamespace = ConfigurationResolver::baseNamespaceOfProviders() . 'Providers';
     }
 
     /**
@@ -54,16 +54,6 @@ class ProviderAssistor
     public function providerExist(): bool
     {
         return File::exists($this->getFullClassPath());
-    }
-
-    /**
-     * Initialize an object of the given provider class.
-     *
-     * @return ServiceProvider
-     */
-    public function providerInitiator(): ServiceProvider
-    {
-        return $this->instance = app()->make($this->getFullClassName());
     }
 
     /**
@@ -134,16 +124,11 @@ class ProviderAssistor
 
     public function getBasePath(): String
     {
-        return ConfigurationResolver::basePathOfProviders() . DIRECTORY_SEPARATOR . 'Providers' . DIRECTORY_SEPARATOR;
+        return $this->basePath;
     }
 
     public function getBaseNamespace(): String
     {
-        return ConfigurationResolver::baseNamespaceOfProviders() . 'Providers';
-    }
-
-    public function getInstance()
-    {
-        return $this->instance;
+        return $this->baseNamespace;
     }
 }

@@ -82,8 +82,4 @@ class ProviderAssistorTest extends TestCase
         $this->assertIsBool($result);
         $this->assertTrue($result);
     }
-
-    // public function addRepositoryEntry($contract, $implementation): bool
-    // public function replaceContent(): bool
-    // public function isRepositoryBound(String $contract): bool
 }
