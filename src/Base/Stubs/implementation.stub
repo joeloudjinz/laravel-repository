@@ -1,0 +1,21 @@
+<?php
+
+namespace %repositoriesNamespaces%;
+
+use %modelNamespace%;
+use %contractNamespace%;
+
+use Inz\Base\Abstractions\Repository;
+
+class %modelName%Repository extends Repository implements %contractName%
+{
+    /**
+    * The model related to the repository.
+    *
+    * @return String
+    */
+    public function model()
+    {
+        return %modelName%::class;
+    }
+}

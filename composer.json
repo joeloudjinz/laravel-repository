@@ -1,22 +1,25 @@
 {
     "name": "inz/repository",
     "description": "Repository pattern file generator for laravel projects",
-    "authors": [
-        {
-            "name": "abdellah addoun",
-            "email": "addoun.abdellah@gmail.com"
-        }
-    ],
+    "authors": [{
+        "name": "abdellah addoun",
+        "email": "addoun.abdellah@gmail.com"
+    }],
     "require": {},
     "autoload": {
         "psr-4": {
-            "Inz\\Repository\\": "src/"
+            "Inz\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Inz\\Repository\\Test\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Inz\\Repository\\RepositoryServiceProvider"
+                "Inz\\RepositoryServiceProvider"
             ]
         }
     },

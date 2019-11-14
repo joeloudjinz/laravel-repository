@@ -1,36 +1,27 @@
 <?php
 
-namespace Inz\Repository\Commands;
+namespace Inz\Commands;
 
-use File;
-use Illuminate\Console\Command;
+use Inz\Base\Abstractions\Command;
 
-class MakeBindingCommand extends RepositoryCommand
+class MakeBindingCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'make:binding {repository}';
+    protected $signature = 'bind:repository {model}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Add repository bindings to service provider.';
+    protected $description = 'Add repository binding of the given model to service provider.';
 
-    protected $providerDist = '';
-    protected $providerName = 'RepositoryServiceProvider';
-    protected $bindPlaceholder = '//:end-bindings:';
-
-    /**
-     * Create a new command instance.
-     */
     public function __construct()
     {
-        $this->providerDist = app()->basePath().'/app/Providers/'.$this->providerName.'.php';
         parent::__construct();
     }
 
@@ -41,72 +32,38 @@ class MakeBindingCommand extends RepositoryCommand
      */
     public function handle()
     {
-        $this->addRepositoryToProvider();
-    }
-
-    public function addRepositoryToProvider()
-    {
-        $this->makeProviderIfNotExist();
-
-        if ($this->isBinded()) {
-            $this->line('Binding is already exist in RepositoryServiceProvider');
-
+        if (!$this->isValidArgument('model')) {
+            $this->missingArgumentError('model');
             return;
         }
 
-        $provider = File::get($this->providerDist);
-        $repositoryInterface = '\\'.$this->getRepository().'::class';
-        $repositoryEloquent = '\\'.$this->getEloquentRepository().'::class';
-        File::put($this->providerDist, str_replace($this->bindPlaceholder, "\$this->app->bind({$repositoryInterface}, {$repositoryEloquent});".PHP_EOL.'        '.$this->bindPlaceholder, $provider));
+        $this->prepareForBindRepository();
 
-        $this->info('Binding have been added to RepositoryServiceProvider created successfully.');
-    }
-
-    public function isBinded()
-    {
-        $provider = File::get($this->providerDist);
-        if (strpos($provider, $this->getRepository())) {
-            return true;
+        if (!$this->providerAssistor->providerExist()) {
+            $this->call('make:provider', ['name' => $this->providerName]);
+            $this->providerAssistor->replaceContent();
+        } elseif ($this->providerAssistor->isRepositoryBound($this->contractCreator->getClassName())) {
+            $this->warn("Model's repository already bound in the service provider");
+            return;
         }
 
-        return false;
-    }
-
-    public function makeProviderIfNotExist()
-    {
-        if (!file_exists($this->providerDist)) {
-            $this->call('make:provider', [
-                'name' => $this->providerName,
-            ]);
-
-            // placeholder to mark the place in file where to prepend repository bindings
-            $provider = File::get($this->providerDist);
-            File::put($this->providerDist, vsprintf(str_replace('//', '%s', $provider), [
-                '//',
-                $this->bindPlaceholder,
-            ]));
-        }
-    }
-
-    public function getRepository()
-    {
-        return app()->getNamespace().$this->config('namespaces.contracts').'\\'.
-          str_replace('/', '\\', $this->argument('repository')).'Repository';
-    }
-
-    public function getEloquentRepository()
-    {
-        $repository = str_replace('/', '\\', $this->argument('repository'));
-        $repo_ex = explode('\\', $repository);
-
-        $repositoryName = array_pop($repo_ex);
-
-        $prefixName = '';
-        if (count($repo_ex) > 0) {
-            $prefixName = implode('\\', $repo_ex).'\\';
+        if ($this->bind()) {
+            $this->info('Repository bound successfully');
+            return;
         }
 
-        return app()->getNamespace().$this->config('namespaces.repositories').'\\'.
-        $prefixName.'Eloquent'.$repositoryName.'Repository';
+        $this->warn('Error while binding repository!');
+    }
+
+    /**
+     * Perform the binding process
+     *
+     * @return bool
+     **/
+    private function bind()
+    {
+        $contract = $this->contractCreator->getClassFullNamespace();
+        $implementation = $this->repositoryCreator->getClassFullNamespace();
+        return $this->providerAssistor->addRepositoryEntry($contract, $implementation);
     }
 }
