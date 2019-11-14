@@ -98,7 +98,7 @@ abstract class Repository implements RepositoryInterface
      * @param String $column
      * @param mixed $value
      *
-     * @return Collection|null
+     * @return Model|null
      */
     public function findFirstWhere(String $column, $value)
     {
