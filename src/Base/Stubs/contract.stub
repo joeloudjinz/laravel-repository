@@ -4,5 +4,12 @@ namespace %contractsNamespace%;
 
 interface %contractName%
 {
-    //
+    /*
+    |--------------------------------------------------------------------------
+    | %contractName%
+    |--------------------------------------------------------------------------
+    | Use this interface to extend the functionalities of implementation class and to 
+    | make the container inject a repository instance where you want to. 
+    |
+    | */
 }
