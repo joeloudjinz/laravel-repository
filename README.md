@@ -162,10 +162,11 @@ php artisan bind:repository Model
 ### <a id="func-1">Repository abstract class</a>
 
 In `Inz\Base\Abstractions\Repository` you can find the implementation of `Inz\Base\Interfaces\RepositoryInterface` that describes the methods used to access the database.
-| Properties | Why |
-| ---------- | --- |
-| `protected $attributes;` | attributes list of the model, also the list of columns of the table, excluding the ones in `$excludedColumns`. |
-| `protected $excludedColumns;`| to define the columns that will be excluded when the repository object operates on the table, to add other columns to this array just override it in your repository implementation class. |
+
+| Properties                    | Why                                                                                                                                                                                        |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `protected $attributes;`      | attributes list of the model, also the list of columns of the table, excluding the ones in `$excludedColumns`.                                                                             |
+| `protected $excludedColumns;` | to define the columns that will be excluded when the repository object operates on the table, to add other columns to this array just override it in your repository implementation class. |
 
 ### <a id="func-2">Methods</a>
 
