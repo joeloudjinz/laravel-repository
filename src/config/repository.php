@@ -16,10 +16,9 @@ return [
     'base' => [
         'path' => app_path(), // 'app/' which is the best choice
         'namespace' => app()->getNamespace(), // 'App\' which is the best choice
-        // service providers base values
         'providers' => [
-            'path' => app_path(), // 'app/' default
-            'namespace' => app()->getNamespace(), // 'App\' default
+            'path' => app_path(),
+            'namespace' => app()->getNamespace(),
         ],
     ],
 
