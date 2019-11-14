@@ -9,12 +9,11 @@ return [
     | path is used to create the base directory in which all generated files are stored, on
     | the other hand, namespace is used to define the base namespace for those files.
     |
-    | Note that (in the comments) the slash & anti-slash, for path & namespace
-    | respectively, are required when defining these values.
+    | Note that (in the comments) the anti-slash for namespace is required.
     |
      */
     'base' => [
-        'path' => app_path(), // 'app/' which is the best choice
+        'path' => app_path(), // 'app' which is the best choice
         'namespace' => app()->getNamespace(), // 'App\' which is the best choice
         'providers' => [
             'path' => app_path(),

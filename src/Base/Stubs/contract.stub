@@ -2,14 +2,16 @@
 
 namespace %contractsNamespace%;
 
-interface %contractName%
+use Inz\Base\Interfaces\RepositoryInterface;
+
+interface %contractName% extends RepositoryInterface
 {
     /*
     |--------------------------------------------------------------------------
     | %contractName%
     |--------------------------------------------------------------------------
-    | Use this interface to extend the functionalities of implementation class and to 
-    | make the container inject a repository instance where you want to. 
+    | Use this interface to extend the functionalities of implementation class and to
+    | make the container inject a repository instance where you want to.
     |
     | */
 }

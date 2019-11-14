@@ -45,7 +45,7 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     private function bindRepositoryClasses()
     {
-        foreach ($this->class as $contract => $implementation) {
+        foreach ($this->classes as $contract => $implementation) {
             $this->app->bind($contract, $implementation);
         }
     }
