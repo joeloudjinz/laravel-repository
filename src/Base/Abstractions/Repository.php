@@ -84,12 +84,13 @@ abstract class Repository implements RepositoryInterface
      *
      * @param String $column
      * @param mixed $value
+     * @param String $operator default is '='
      *
      * @return Collection
      */
-    public function findWhere(String $column, $value)
+    public function findWhere(String $column, $value, String $operator = '=')
     {
-        return $this->model->where($column, $value)->get();
+        return $this->model->where($column, $operator, $value)->get();
     }
 
     /**
@@ -97,12 +98,13 @@ abstract class Repository implements RepositoryInterface
      *
      * @param String $column
      * @param mixed $value
+     * @param String $operator default is '='
      *
      * @return Model|null
      */
-    public function findFirstWhere(String $column, $value)
+    public function findFirstWhere(String $column, $value, String $operator = '=')
     {
-        return $this->model->where($column, $value)->first();
+        return $this->model->where($column, $operator, $value)->first();
     }
 
     /**
