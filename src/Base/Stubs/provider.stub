@@ -8,7 +8,7 @@ class RepositoryServiceProvider extends ServiceProvider
 {
     /**
      * Repository contracts mapped to their implementation classes where the keys
-     * are the contract interfaces and the values are the implementation classes.
+     * are the contracts and the values are the implementation classes.
      *
      * Note: don't modify this array's signature or alignment because they are
      * used to add more entries for binding.

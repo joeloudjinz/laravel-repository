@@ -17,6 +17,7 @@ This package helps you get started quickly to use **repository pattern** in your
 - [Functionalities](#functionalities)
   - [Repository abstract class](#func-1)
   - [Methods](#func-2)
+- [Contribution](#contribution)
 
 ---
 
@@ -29,7 +30,9 @@ It generates:
   which is an empty interface that can be used to add custom methods to the repository implementation class so you can extend the functionalities, it's also used during binding process.
 
 - **Implementation Class**:
-  a class in which the repository logic reside, it extends `Inz\Abstractions\AbstractRepository` and implements the generated contract.
+  a class in which the repository logic reside, it implements the generated contract.
+
+> **Note**: for now, the minimum laravel version this package is tested on is **5.5**
 
 ## <a id="installation">Installation</a>
 
@@ -37,10 +40,20 @@ It generates:
 composer require inz/repository
 ```
 
+if you using **laravel 5.4 and below**, you need to add the package's service provider in `config/app.php`
+
+```php
+'providers' => [
+    ...
+    Inz\RepositoryServiceProvider::class,
+    ...
+],
+```
+
 then, you need to publish the configuration file so the package can do it's work properly:
 
 ```shell
-php artisan vendor:publish tag=inz-repository
+php artisan vendor:publish --tag=inz-repository
 ```
 
 this will copy the package's configuration file into config folder of the application, more about it in [configuration](#configuration) section
@@ -62,7 +75,7 @@ The configuration file for the package contains a group of settings which can be
     |
      */
     'base' => [
-        'path' => app_path(), // 'app/' which is the best choice
+        'path' => app_path(), // 'app folder' which is the best choice
         'namespace' => app()->getNamespace(), // 'App\' which is the best choice
         'providers' => [
             'path' => app_path(),
@@ -165,21 +178,29 @@ In `Inz\Base\Abstractions\Repository` you can find the implementation of `Inz\Ba
 
 | Properties                    | Why                                                                                                                                                                                        |
 | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `protected $model;`           | model instance used to query data                                                                                                                                                          |
 | `protected $attributes;`      | attributes list of the model, also the list of columns of the table, excluding the ones in `$excludedColumns`.                                                                             |
 | `protected $excludedColumns;` | to define the columns that will be excluded when the repository object operates on the table, to add other columns to this array just override it in your repository implementation class. |
 
 ### <a id="func-2">Methods</a>
 
-Here is the list of available methods of the repository class, more will be added in up coming versions:
+Here is the list of available methods of the repository class:
 
-| Method            | Parameters                                  | Return                        | Description                                                                                                          |
-| ----------------- | ------------------------------------------- | ----------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| all();            | array `cols` default `['*']`                | Collection                    | similar to `all()` of eloquent model                                                                                 |
-| first();          | none                                        | Model instance or null        | similar to `first()` of eloquent model                                                                               |
-| find(\$id);       | mixed `id`                                  | Model instance or null        | similar to `find()` of eloquent model                                                                                |
-| findWhere();      | String `column` & mixed `value`             | Collection                    | finds all records that match the condition of where clause                                                           |
-| findFirstWhere(); | String `column` & mixed `value`             | Model instance or null        | finds the first record that matches the condition of where clause                                                    |
-| paginate();       | int `count` default `10`                    | LengthAwarePaginator instance | similar to `paginate()` of eloquent model                                                                            |
-| save();           | array `data = [column => value]`            | boolean                       | creates a new instance based on the passed data and persist it to storage                                            |
-| update();         | int `id` & array `data = [column => value]` | boolean                       | updates a record based on the passed data and persist it to storage, if the record doesn't exist `false` is returned |
-| delete();         | int `id`                                    | boolean                       | similar to `delete()` of eloquent model                                                                              |
+> **Note**: Repository class should be implemented the way you desire, so use the interface to define the blueprint for it and implement additional methods or override existing ones in the concrete class.
+
+| Method            | Parameters                                         | Return                        | Description                                                                                                          |
+| ----------------- | -------------------------------------------------- | ----------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| all();            | array `cols` default `['*']`                       | Collection                    | similar to `all()` of eloquent model                                                                                 |
+| first();          | none                                               | Model instance or null        | similar to `first()` of eloquent model                                                                               |
+| find();           | mixed `id`                                         | Model instance or null        | similar to `find()` of eloquent model                                                                                |
+| findWhere();      | String `column`, mixed `value` & String `operator` | Collection                    | finds all records that match the condition of where clause                                                           |
+| findFirstWhere(); | String `column`, mixed `value` & String `operator` | Model instance or null        | finds the first record that matches the condition of where clause                                                    |
+| paginate();       | int `count` default `10`                           | LengthAwarePaginator instance | similar to `paginate()` of eloquent model                                                                            |
+| save();           | array `data = [column => value]`                   | boolean                       | creates a new instance based on the passed data and persist it to storage                                            |
+| update();         | int `id` & array `data = [column => value]`        | boolean                       | updates a record based on the passed data and persist it to storage, if the record doesn't exist `false` is returned |
+| delete();         | int `id`                                           | boolean                       | similar to `delete()` of eloquent model                                                                              |
+
+## <a id="contribution">Contribution</a>
+
+I work on this package 3 days in the week, so feel free to make any pull request, any contribution is welcomed.
+If you encountered a problem, use the issues section.
