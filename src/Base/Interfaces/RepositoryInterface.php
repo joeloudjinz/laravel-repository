@@ -32,20 +32,22 @@ interface RepositoryInterface
      *
      * @param String $column
      * @param mixed $value
+     * @param String $operator default is '='
      *
      * @return Collection|null
      */
-    public function findWhere(String $column, $value);
+    public function findWhere(String $column, $value, String $operator = '=');
 
     /**
      * Fetches the first record based on the passed column name & it's value.
      *
      * @param String $column
      * @param mixed $value
+     * @param String $operator default is '='
      *
      * @return Model|null
      */
-    public function findFirstWhere(String $column, $value);
+    public function findFirstWhere(String $column, $value, String $operator = '=');
 
     /**
      * Fetches paginated records.

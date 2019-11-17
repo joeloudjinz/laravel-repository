@@ -1,11 +1,15 @@
 {
     "name": "inz/repository",
     "description": "Repository pattern file generator for laravel projects",
+    "keywords": ["laravel", "repository-pattern", "principals", "solid"],
+    "license": "MIT",
     "authors": [{
         "name": "abdellah addoun",
         "email": "addoun.abdellah@gmail.com"
     }],
-    "require": {},
+    "require": {
+        "php": ">=7.0.2"
+    },
     "autoload": {
         "psr-4": {
             "Inz\\": "src/"
