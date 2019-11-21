@@ -44,7 +44,7 @@ trait TrashedOperations
      *
      * @param mixed $id
      *
-     * @return Collection|null
+     * @return Model|null
      */
     public function findTrashed($id)
     {
@@ -55,10 +55,30 @@ trait TrashedOperations
      *
      * @param mixed $id
      *
-     * @return Collection|null
+     * @return Model|null
      */
     public function findWithTrashed($id)
     {
         return $this->model->withTrashed()->find($id);
+    }
+
+    /**
+     * Returns the count of soft-deleted records only.
+     *
+     * @return int
+     */
+    public function countTrashed()
+    {
+        return $this->model->onlyTrashed()->count();
+    }
+
+    /**
+     * Returns the count of all records.
+     *
+     * @return int
+     */
+    public function countWithTrashed()
+    {
+        return $this->model->withTrashed()->count();
     }
 }

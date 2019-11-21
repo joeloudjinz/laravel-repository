@@ -198,7 +198,7 @@ Here is the list of available methods of the repository class:
 | Method            | Parameters                                         | Return                        | Description                                                                                                          |
 | ----------------- | -------------------------------------------------- | ----------------------------- | -------------------------------------------------------------------------------------------------------------------- |
 | all();            | array `cols` default `['*']`                       | Collection                    | similar to `all()` of eloquent model                                                                                 |
-| first();          | none                                               | Model instance or null        | similar to `first()` of eloquent model                                                                               |
+| first();          |                                                    | Model instance or null        | similar to `first()` of eloquent model                                                                               |
 | find();           | mixed `id`                                         | Model instance or null        | similar to `find()` of eloquent model                                                                                |
 | findWhere();      | String `column`, mixed `value` & String `operator` | Collection                    | finds all records that match the condition of where clause                                                           |
 | findFirstWhere(); | String `column`, mixed `value` & String `operator` | Model instance or null        | finds the first record that matches the condition of where clause                                                    |
@@ -214,11 +214,13 @@ To handle trashed records of the table (if using soft delete trait in the model)
 
 | Method             | Parameters                   | Return                 | Description                                              |
 | ------------------ | ---------------------------- | ---------------------- | -------------------------------------------------------- |
-| allTrashed();      | array `cols` default `['*']` | Collection             | returns a set of records from trashed ones only          |
-| allWithTrashed();  | array `cols` default `['*']` | Collection             | returns a set of records from the whole table            |
-| firstTrashed();    |                              | Collection             | fetches the first record from trashed ones only          |
+| allTrashed();      | array `cols` default `['*']` | Collection             | returns soft-deleted records only                        |
+| allWithTrashed();  | array `cols` default `['*']` | Collection             | returns the whole records of the table                   |
+| firstTrashed();    |                              | Model instance or null | fetches the first record from trashed ones only          |
 | findTrashed();     | mixed `id`                   | Model instance or null | fetches a record of the passed id from trashed ones only |
 | findWithTrashed(); | mixed `id`                   | Model instance or null | fetches a record of the passed id from the whole table   |
+| countTrashed();    |                              | int                    | returns the count of trashed records in the table        |
+| countWithTrashed() |                              | int                    | returns the count of all records in the table            |
 
 ## <a id="contribution">Contribution</a>
 
