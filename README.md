@@ -1,4 +1,10 @@
 [![Build Status](https://semaphoreci.com/api/v1/projects/b74ac48e-13ce-4e03-ab12-236f989c9c37/3009082/badge.svg)](https://semaphoreci.com/joe-inz-94/laravel-repository)
+![Packagist Version](https://img.shields.io/packagist/v/inz/repository)
+![Packagist](https://img.shields.io/packagist/dm/inz/repository)
+![PHP from Packagist](https://img.shields.io/packagist/php-v/inz/repository)
+![GitHub](https://img.shields.io/github/license/joeloudjinz/laravel-repository)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/joeloudjinz/laravel-repository)
+![GitHub repo size](https://img.shields.io/github/repo-size/joeloudjinz/laravel-repository)
 
 # Repository pattern generator
 
@@ -17,6 +23,7 @@ This package helps you get started quickly to use **repository pattern** in your
 - [Functionalities](#functionalities)
   - [Repository abstract class](#func-1)
   - [Methods](#func-2)
+  - [Soft-deleted records](#func-3)
 - [Contribution](#contribution)
 
 ---
@@ -191,7 +198,7 @@ Here is the list of available methods of the repository class:
 | Method            | Parameters                                         | Return                        | Description                                                                                                          |
 | ----------------- | -------------------------------------------------- | ----------------------------- | -------------------------------------------------------------------------------------------------------------------- |
 | all();            | array `cols` default `['*']`                       | Collection                    | similar to `all()` of eloquent model                                                                                 |
-| first();          | none                                               | Model instance or null        | similar to `first()` of eloquent model                                                                               |
+| first();          |                                                    | Model instance or null        | similar to `first()` of eloquent model                                                                               |
 | find();           | mixed `id`                                         | Model instance or null        | similar to `find()` of eloquent model                                                                                |
 | findWhere();      | String `column`, mixed `value` & String `operator` | Collection                    | finds all records that match the condition of where clause                                                           |
 | findFirstWhere(); | String `column`, mixed `value` & String `operator` | Model instance or null        | finds the first record that matches the condition of where clause                                                    |
@@ -199,8 +206,24 @@ Here is the list of available methods of the repository class:
 | save();           | array `data = [column => value]`                   | boolean                       | creates a new instance based on the passed data and persist it to storage                                            |
 | update();         | int `id` & array `data = [column => value]`        | boolean                       | updates a record based on the passed data and persist it to storage, if the record doesn't exist `false` is returned |
 | delete();         | int `id`                                           | boolean                       | similar to `delete()` of eloquent model                                                                              |
+| count();          |                                                    | int                           | similar to `count()` of eloquent model                                                                               |
+
+### <a id="func-3">Soft deleted records</a>
+
+To handle trashed records of the table (if using soft delete trait in the model), use trait `Inz\Base\Traits\TrashedOperations` in repository implementation class, it contains this set of methods:
+
+| Method             | Parameters                   | Return                 | Description                                              |
+| ------------------ | ---------------------------- | ---------------------- | -------------------------------------------------------- |
+| allTrashed();      | array `cols` default `['*']` | Collection             | returns soft-deleted records only                        |
+| allWithTrashed();  | array `cols` default `['*']` | Collection             | returns the whole records of the table                   |
+| firstTrashed();    |                              | Model instance or null | fetches the first record from trashed ones only          |
+| findTrashed();     | mixed `id`                   | Model instance or null | fetches a record of the passed id from trashed ones only |
+| findWithTrashed(); | mixed `id`                   | Model instance or null | fetches a record of the passed id from the whole table   |
+| countTrashed();    |                              | int                    | returns the count of trashed records in the table        |
+| countWithTrashed() |                              | int                    | returns the count of all records in the table            |
+| restore();         | mixed `id`                   | boolean                | restore a soft-deleted record in trashed ones            |
+| erase();           | mixed `id`                   | boolean                | permanently deletes a record from the table              |
 
 ## <a id="contribution">Contribution</a>
 
-I work on this package 3 days in the week, so feel free to make any pull request, any contribution is welcomed.
-If you encountered a problem, use the issues section.
+Feel free to make any pull request, any contribution is welcomed. If you encountered a problem, use the issues section.
