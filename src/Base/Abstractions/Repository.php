@@ -153,6 +153,7 @@ abstract class Repository implements RepositoryInterface
 
     /**
      * Deletes a record of the given id.
+     * if the record wasn't found, it will return **false**.
      *
      * @param mixed $id
      *
@@ -160,6 +161,12 @@ abstract class Repository implements RepositoryInterface
      */
     public function delete($id)
     {
+        $temp = $this->find($id);
+
+        if (is_null($temp)) {
+            return false;
+        }
+
         return $this->find($id)->delete();
     }
 

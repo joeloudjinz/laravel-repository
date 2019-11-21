@@ -81,4 +81,44 @@ trait TrashedOperations
     {
         return $this->model->withTrashed()->count();
     }
+
+    /**
+     * Restores a soft-deleted record of the given id, it will
+     * look for the record in trashed ones only., if the
+     * record wasn't found, it will return **false**.
+     *
+     * @param mixed $id
+     *
+     * @return bool
+     */
+    public function restore($id)
+    {
+        $temp = $this->findTrashed($id);
+
+        if (is_null($temp)) {
+            return false;
+        }
+
+        return $temp->restore();
+    }
+
+    /**
+     * Permanently erase a record of the given id, it will
+     * look for the record in all the whole table's, if
+     * the record wasn't found, it will return **false**.
+     *
+     * @param mixed $id
+     *
+     * @return bool
+     */
+    public function erase($id)
+    {
+        $temp = $this->findWithTrashed($id);
+
+        if (is_null($temp)) {
+            return false;
+        }
+
+        return $temp->forceDelete($id);
+    }
 }

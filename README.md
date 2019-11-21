@@ -221,6 +221,8 @@ To handle trashed records of the table (if using soft delete trait in the model)
 | findWithTrashed(); | mixed `id`                   | Model instance or null | fetches a record of the passed id from the whole table   |
 | countTrashed();    |                              | int                    | returns the count of trashed records in the table        |
 | countWithTrashed() |                              | int                    | returns the count of all records in the table            |
+| restore();         | mixed `id`                   | boolean                | restore a soft-deleted record in trashed ones            |
+| erase();           | mixed `id`                   | boolean                | permanently deletes a record from the table              |
 
 ## <a id="contribution">Contribution</a>
 
