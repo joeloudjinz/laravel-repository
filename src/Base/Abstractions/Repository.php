@@ -72,7 +72,7 @@ abstract class Repository implements RepositoryInterface
      *
      * @param mixed $id
      *
-     * @return Collection|null
+     * @return Model|null
      */
     public function find($id)
     {
@@ -153,6 +153,7 @@ abstract class Repository implements RepositoryInterface
 
     /**
      * Deletes a record of the given id.
+     * if the record wasn't found, it will return **false**.
      *
      * @param mixed $id
      *
@@ -160,7 +161,25 @@ abstract class Repository implements RepositoryInterface
      */
     public function delete($id)
     {
+        $temp = $this->find($id);
+
+        if (is_null($temp)) {
+            return false;
+        }
+
         return $this->find($id)->delete();
+    }
+
+    /**
+     * Returns the count of records.
+     *
+     * @param mixed $id
+     *
+     * @return int
+     */
+    public function count()
+    {
+        return $this->model->count();
     }
 
     /**
