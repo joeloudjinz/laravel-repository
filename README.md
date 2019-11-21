@@ -5,6 +5,7 @@
 ![GitHub](https://img.shields.io/github/license/joeloudjinz/laravel-repository)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/joeloudjinz/laravel-repository)
 ![GitHub repo size](https://img.shields.io/github/repo-size/joeloudjinz/laravel-repository)
+
 # Repository pattern generator
 
 This package helps you get started quickly to use **repository pattern** in your next, or current, laravel project because after watching those laracon videos (which by the way are A LOT :p) that talks about design patterns and SOLID principals you became all hipped to try and adapt them, at least i'm :D.
@@ -205,6 +206,7 @@ Here is the list of available methods of the repository class:
 | save();           | array `data = [column => value]`                   | boolean                       | creates a new instance based on the passed data and persist it to storage                                            |
 | update();         | int `id` & array `data = [column => value]`        | boolean                       | updates a record based on the passed data and persist it to storage, if the record doesn't exist `false` is returned |
 | delete();         | int `id`                                           | boolean                       | similar to `delete()` of eloquent model                                                                              |
+| count();          |                                                    | int                           | similar to `count()` of eloquent model                                                                               |
 
 ### <a id="func-3">Soft deleted records</a>
 

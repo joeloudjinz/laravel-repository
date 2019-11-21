@@ -23,7 +23,7 @@ interface RepositoryInterface
      *
      * @param mixed $id
      *
-     * @return Collection|null
+     * @return Model|null
      */
     public function find($id);
 
