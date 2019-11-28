@@ -29,5 +29,11 @@
     },
     "require-dev": {
         "orchestra/testbench": "^4.3"
+    },
+    "scripts": {
+        "test": [
+            "Composer\\Config::disableProcessTimeout",
+            "vendor/bin/phpunit"
+        ]
     }
 }
